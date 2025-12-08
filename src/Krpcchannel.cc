@@ -84,6 +84,7 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
     // 发送RPC请求到服务器
     if (-1 == send(m_clientfd, send_rpc_str.c_str(), send_rpc_str.size(), 0)) {
         close(m_clientfd);  // 发送失败，关闭socket
+        m_clientfd = -1;  // 重置socket文件描述符
         char errtxt[512] = {};
         std::cout << "send error: " << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         controller->SetFailed(errtxt);  // 设置错误信息
@@ -103,6 +104,7 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
     // 将接收到的响应数据反序列化为response对象
     if (!response->ParseFromArray(recv_buf, recv_size)) {
         close(m_clientfd);  // 反序列化失败，关闭socket
+        m_clientfd = -1;  // 重置socket文件描述符
         char errtxt[512] = {};
         std::cout << "parse error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         controller->SetFailed(errtxt);  // 设置错误信息
