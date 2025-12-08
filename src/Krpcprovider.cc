@@ -37,8 +37,8 @@ void KrpcProvider::NotifyService(google::protobuf::Service *service) {
         std::cout << "method_name=" << method_name << std::endl;
         service_info.method_map.emplace(method_name, pmd);  // 将方法名和方法描述符存入map
     }
-    service_info.service = service;  // 保存服务对象
-    service_map.emplace(service_name, service_info);  // 将服务信息存入服务map
+    service_info.service.reset(service);  // 保存服务对象并托管内存
+    service_map.emplace(service_name, std::move(service_info));  // 将服务信息存入服务map
 }
 
 // 启动RPC服务节点，开始提供远程网络调用服务
@@ -149,7 +149,7 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
         return;
     }
 
-    google::protobuf::Service *service = it->second.service;  // 获取服务对象
+    google::protobuf::Service *service = it->second.service.get();  // 获取服务对象
     const google::protobuf::MethodDescriptor *method = mit->second;  // 获取方法对象
 
     // 生成RPC方法调用请求的request和响应的response参数

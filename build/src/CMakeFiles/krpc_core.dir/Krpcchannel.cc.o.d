@@ -251,7 +251,12 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
- /home/zzz/Krpc/src/Krpcheader.pb.h /usr/include/c++/11/limits \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/chrono \
+ /usr/include/c++/11/ratio /usr/include/c++/11/limits \
+ /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
+ /usr/include/c++/11/bits/std_mutex.h \
+ /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/mutex \
+ /home/zzz/Krpc/src/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/climits \
  /usr/include/c++/11/cstring /usr/include/google/protobuf/stubs/logging.h \
@@ -274,11 +279,7 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/google/protobuf/generated_enum_util.h \
  /usr/include/google/protobuf/message_lite.h \
  /usr/include/google/protobuf/metadata_lite.h \
- /usr/include/google/protobuf/stubs/once.h /usr/include/c++/11/mutex \
- /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
- /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
- /usr/include/c++/11/bits/std_mutex.h \
- /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/google/protobuf/stubs/once.h \
  /usr/include/google/protobuf/map_type_handler.h \
  /usr/include/google/protobuf/parse_context.h \
  /usr/include/google/protobuf/io/zero_copy_stream.h \

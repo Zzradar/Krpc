@@ -10,6 +10,7 @@
 #include<functional>
 #include<string>
 #include<unordered_map>
+#include<memory>
 
 class KrpcProvider
 {
@@ -23,7 +24,7 @@ private:
     muduo::net::EventLoop event_loop;
     struct ServiceInfo
     {
-        google::protobuf::Service* service;
+        std::unique_ptr<google::protobuf::Service> service;
         std::unordered_map<std::string, const google::protobuf::MethodDescriptor*> method_map;
     };
     std::unordered_map<std::string, ServiceInfo>service_map;//保存服务对象和rpc方法

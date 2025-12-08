@@ -1,9 +1,11 @@
 #ifndef _zookeeperutil_h_
 #define _zookeeperutil_h_
 
-#include<semaphore.h>
-#include<zookeeper/zookeeper.h>
-#include<string>
+#include <semaphore.h>
+#include <zookeeper/zookeeper.h>
+#include <string>
+#include <condition_variable>
+#include <mutex>
 
 //封装的zk客户端
 class ZkClient
@@ -20,5 +22,11 @@ public:
 private:
     //Zk的客户端句柄
     zhandle_t* m_zhandle;
+    std::mutex m_mutex;
+    std::condition_variable m_cv;
+    bool m_connected;
+
+    static void GlobalWatcher(zhandle_t *zh, int type, int status, const char *path, void *watcherCtx);
+    void NotifyConnected();
 };
 #endif

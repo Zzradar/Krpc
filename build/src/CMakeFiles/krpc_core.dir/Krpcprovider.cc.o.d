@@ -251,6 +251,11 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/chrono \
+ /usr/include/c++/11/ratio /usr/include/c++/11/limits \
+ /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
+ /usr/include/c++/11/bits/std_mutex.h \
+ /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/mutex \
  /usr/include/muduo/net/TcpServer.h /usr/include/muduo/base/Atomic.h \
  /usr/include/muduo/base/noncopyable.h /usr/include/muduo/base/Types.h \
  /usr/include/muduo/net/TcpConnection.h \
@@ -312,12 +317,7 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /usr/include/muduo/base/Mutex.h /usr/include/muduo/base/CurrentThread.h \
  /usr/include/muduo/net/TimerId.h \
  /usr/include/google/protobuf/descriptor.h \
- /usr/include/google/protobuf/stubs/mutex.h /usr/include/c++/11/mutex \
- /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
- /usr/include/c++/11/limits /usr/include/c++/11/ctime \
- /usr/include/c++/11/bits/parse_numbers.h \
- /usr/include/c++/11/bits/std_mutex.h \
- /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/google/protobuf/stubs/mutex.h \
  /usr/include/google/protobuf/stubs/once.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
@@ -327,7 +327,7 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /home/zzz/Krpc/src/include/Krpcconfig.h \
  /home/zzz/Krpc/src/include/Krpcchannel.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
- /home/zzz/Krpc/src/include/Krpcheader.pb.h \
+ /home/zzz/Krpc/src/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
  /usr/include/c++/11/climits /usr/include/google/protobuf/stubs/logging.h \
  /usr/include/google/protobuf/stubs/strutil.h \

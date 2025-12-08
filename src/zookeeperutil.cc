@@ -4,23 +4,8 @@
 #include "KrpcLogger.h"
 #include <condition_variable>
 
-std::mutex cv_mutex;        // 全局锁，用于保护共享变量的线程安全
-std::condition_variable cv; // 条件变量，用于线程间通信
-bool is_connected = false;  // 标记ZooKeeper客户端是否连接成功
-
-// 全局的watcher观察器，用于接收ZooKeeper服务器的通知
-void global_watcher(zhandle_t *zh, int type, int status, const char *path, void *watcherCtx) {
-    if (type == ZOO_SESSION_EVENT) {  // 回调消息类型和会话相关的事件
-        if (status == ZOO_CONNECTED_STATE) {  // ZooKeeper客户端和服务器连接成功
-            std::lock_guard<std::mutex> lock(cv_mutex);  // 加锁保护
-            is_connected = true;  // 标记连接成功
-        }
-    }
-    cv.notify_all();  // 通知所有等待的线程
-}
-
 // 构造函数，初始化ZooKeeper客户端句柄为空
-ZkClient::ZkClient() : m_zhandle(nullptr) {}
+ZkClient::ZkClient() : m_zhandle(nullptr), m_connected(false) {}
 
 // 析构函数，关闭ZooKeeper连接
 ZkClient::~ZkClient() {
@@ -35,6 +20,10 @@ void ZkClient::Start() {
     std::string host = KrpcApplication::GetInstance().GetConfig().Load("zookeeperip");
     std::string port = KrpcApplication::GetInstance().GetConfig().Load("zookeeperport");
     std::string connstr = host + ":" + port;  // 拼接连接字符串
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_connected = false;
+    }
 
     /*
     zookeeper_mt：多线程版本
@@ -45,15 +34,15 @@ void ZkClient::Start() {
     */
 
     // 使用zookeeper_init初始化一个ZooKeeper客户端对象，异步建立与服务器的连接
-    m_zhandle = zookeeper_init(connstr.c_str(), global_watcher, 6000, nullptr, nullptr, 0);
+    m_zhandle = zookeeper_init(connstr.c_str(), ZkClient::GlobalWatcher, 6000, nullptr, this, 0);
     if (nullptr == m_zhandle) {  // 初始化失败
         LOG(ERROR) << "zookeeper_init error";
         exit(EXIT_FAILURE);  // 退出程序
     }
 
     // 等待连接成功
-    std::unique_lock<std::mutex> lock(cv_mutex);
-    cv.wait(lock, [] { return is_connected; });  // 阻塞等待，直到连接成功
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_cv.wait(lock, [this] { return m_connected; });  // 阻塞等待，直到连接成功
     LOG(INFO) << "zookeeper_init success";  // 记录日志，表示连接成功
 }
 
@@ -90,4 +79,19 @@ std::string ZkClient::GetData(const char *path) {
         return buf;  // 返回节点数据
     }
     return "";  // 默认返回空字符串
+}
+
+void ZkClient::GlobalWatcher(zhandle_t *zh, int type, int status, const char *path, void *watcherCtx) {
+    if (type == ZOO_SESSION_EVENT && status == ZOO_CONNECTED_STATE && watcherCtx != nullptr) {
+        auto *client = static_cast<ZkClient *>(watcherCtx);
+        client->NotifyConnected();
+    }
+}
+
+void ZkClient::NotifyConnected() {
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_connected = true;
+    }
+    m_cv.notify_all();
 }

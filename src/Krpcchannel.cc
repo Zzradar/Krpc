@@ -30,15 +30,24 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
         ZkClient zkCli;
         zkCli.Start();  // 连接ZooKeeper服务器
         std::string host_data = QueryServiceHost(&zkCli, service_name, method_name, m_idx);  // 查询服务地址
+        if (host_data.empty()) {
+            if (controller) {
+                controller->SetFailed("service node not found: " + service_name + "/" + method_name);
+            }
+            return;
+        }
         m_ip = host_data.substr(0, m_idx);  // 从查询结果中提取IP地址
         std::cout << "ip: " << m_ip << std::endl;
         m_port = atoi(host_data.substr(m_idx + 1, host_data.size() - m_idx).c_str());  // 从查询结果中提取端口号
         std::cout << "port: " << m_port << std::endl;
 
         // 尝试连接服务器
-        auto rt = newConnect(m_ip.c_str(), m_port);
+        std::string connect_error;
+        auto rt = newConnect(m_ip.c_str(), m_port, &connect_error);
         if (!rt) {
-            LOG(ERROR) << "connect server error";  // 连接失败，记录错误日志
+            if (controller) {
+                controller->SetFailed(connect_error.empty() ? "connect server error" : connect_error);
+            }
             return;
         } else {
             LOG(INFO) << "connect server success";  // 连接成功，记录日志
@@ -115,13 +124,16 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
 }
 
 // 创建新的socket连接
-bool KrpcChannel::newConnect(const char *ip, uint16_t port) {
+bool KrpcChannel::newConnect(const char *ip, uint16_t port, std::string *errMsg) {
     // 创建socket
     int clientfd = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == clientfd) {
         char errtxt[512] = {0};
         std::cout << "socket error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         LOG(ERROR) << "socket error:" << errtxt;  // 记录错误日志
+        if (errMsg) {
+            *errMsg = errtxt;
+        }
         return false;
     }
 
@@ -137,6 +149,9 @@ bool KrpcChannel::newConnect(const char *ip, uint16_t port) {
         char errtxt[512] = {0};
         std::cout << "connect error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         LOG(ERROR) << "connect server error" << errtxt;  // 记录错误日志
+        if (errMsg) {
+            *errMsg = errtxt;
+        }
         return false;
     }
 
@@ -155,13 +170,13 @@ std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string servic
 
     if (host_data_1 == "") {  // 如果未找到服务地址
         LOG(ERROR) << method_path + " is not exist!";  // 记录错误日志
-        return " ";
+        return "";
     }
 
     idx = host_data_1.find(":");  // 查找IP和端口的分隔符
     if (idx == -1) {  // 如果分隔符不存在
         LOG(ERROR) << method_path + " address is invalid!";  // 记录错误日志
-        return " ";
+        return "";
     }
 
     return host_data_1;  // 返回服务地址
@@ -174,10 +189,11 @@ KrpcChannel::KrpcChannel(bool connectNow) : m_clientfd(-1), m_idx(0) {
     }
 
     // 尝试连接服务器，最多重试3次
-    auto rt = newConnect(m_ip.c_str(), m_port);
+    std::string errtxt;
+    auto rt = newConnect(m_ip.c_str(), m_port, &errtxt);
     int count = 3;  // 重试次数
     while (!rt && count--) {
-        rt = newConnect(m_ip.c_str(), m_port);
+        rt = newConnect(m_ip.c_str(), m_port, &errtxt);
     }
 
 }

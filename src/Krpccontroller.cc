@@ -1,10 +1,7 @@
 #include "Krpccontroller.h"
 
 // 构造函数，初始化控制器状态
-Krpccontroller::Krpccontroller() {
-    m_failed = false;  // 初始状态为未失败
-    m_errText = "";    // 错误信息初始为空
-}
+Krpccontroller::Krpccontroller() : m_failed(false), m_errText("") {}
 
 // 重置控制器状态，将失败标志和错误信息清空
 void Krpccontroller::Reset() {
