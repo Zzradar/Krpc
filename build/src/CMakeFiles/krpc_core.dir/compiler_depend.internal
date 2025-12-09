@@ -692,9 +692,13 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o
  /home/zzz/Krpc/src/include/Krpcchannel.h
  /home/zzz/Krpc/src/include/Krpccontroller.h
  /home/zzz/Krpc/src/include/Krpccontroller.h
+ /home/zzz/Krpc/src/include/Krpcprotocol.h
  /usr/include/arpa/inet.h
  /usr/include/netinet/in.h
  /usr/include/x86_64-linux-gnu/bits/in.h
+ /usr/include/poll.h
+ /usr/include/x86_64-linux-gnu/sys/poll.h
+ /usr/include/x86_64-linux-gnu/bits/poll.h
  /home/zzz/Krpc/src/include/KrpcLogger.h
  /usr/include/glog/logging.h
  /usr/include/c++/11/sstream
@@ -1903,6 +1907,7 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o
  /usr/include/c++/11/bits/hashtable_policy.h
  /usr/include/c++/11/bits/enable_special_members.h
  /usr/include/c++/11/bits/unordered_map.h
+ /home/zzz/Krpc/src/include/Krpcprotocol.h
  /home/zzz/Krpc/src/include/Krpcapplication.h
  /home/zzz/Krpc/src/include/Krpcconfig.h
  /home/zzz/Krpc/src/include/Krpcchannel.h

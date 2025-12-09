@@ -307,8 +307,11 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /home/zzz/Krpc/src/include/Krpcconfig.h \
  /home/zzz/Krpc/src/include/Krpcchannel.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
- /home/zzz/Krpc/src/include/Krpccontroller.h /usr/include/arpa/inet.h \
+ /home/zzz/Krpc/src/include/Krpccontroller.h \
+ /home/zzz/Krpc/src/include/Krpcprotocol.h /usr/include/arpa/inet.h \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
+ /usr/include/poll.h /usr/include/x86_64-linux-gnu/sys/poll.h \
+ /usr/include/x86_64-linux-gnu/bits/poll.h \
  /home/zzz/Krpc/src/include/KrpcLogger.h /usr/include/glog/logging.h \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
  /usr/include/inttypes.h /usr/include/gflags/gflags.h \

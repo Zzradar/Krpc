@@ -11,3 +11,6 @@
 /home/zzz/Krpc/build/example/caller/CMakeFiles/client.dir
 /home/zzz/Krpc/build/example/caller/CMakeFiles/edit_cache.dir
 /home/zzz/Krpc/build/example/caller/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/timeout_client.dir
+/home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/rebuild_cache.dir

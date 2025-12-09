@@ -323,6 +323,7 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \
+ /home/zzz/Krpc/src/include/Krpcprotocol.h \
  /home/zzz/Krpc/src/include/Krpcapplication.h \
  /home/zzz/Krpc/src/include/Krpcconfig.h \
  /home/zzz/Krpc/src/include/Krpcchannel.h \

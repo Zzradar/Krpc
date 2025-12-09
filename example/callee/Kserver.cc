@@ -3,6 +3,8 @@
 #include "../user.pb.h"
 #include "Krpcapplication.h"
 #include "Krpcprovider.h"
+#include <thread>
+#include <chrono>
 
 /*
 UserService 原本是一个本地服务，提供了两个本地方法：Login 和 GetFriendLists。
@@ -30,6 +32,12 @@ public:
         // 从请求中获取用户名和密码
         std::string name = request->name();
         std::string pwd = request->pwd();
+
+        // 如果客户端传入特殊用户名，模拟耗时操作以便测试 RPC 超时
+        if (name == "sleep" || name == "timeout") {
+            std::cout << "simulate slow call" << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+        }
 
         // 调用本地业务逻辑处理登录
         bool login_result = Login(name, pwd); 

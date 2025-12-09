@@ -690,9 +690,13 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: ../src/Krpcchannel.cc \
   ../src/include/Krpcchannel.h \
   ../src/include/Krpccontroller.h \
   ../src/include/Krpccontroller.h \
+  ../src/include/Krpcprotocol.h \
   /usr/include/arpa/inet.h \
   /usr/include/netinet/in.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
+  /usr/include/poll.h \
+  /usr/include/x86_64-linux-gnu/sys/poll.h \
+  /usr/include/x86_64-linux-gnu/bits/poll.h \
   ../src/include/KrpcLogger.h \
   /usr/include/glog/logging.h \
   /usr/include/c++/11/sstream \
@@ -1897,6 +1901,7 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: ../src/Krpcprovider.cc \
   /usr/include/c++/11/bits/hashtable_policy.h \
   /usr/include/c++/11/bits/enable_special_members.h \
   /usr/include/c++/11/bits/unordered_map.h \
+  ../src/include/Krpcprotocol.h \
   ../src/include/Krpcapplication.h \
   ../src/include/Krpcconfig.h \
   ../src/include/Krpcchannel.h \
@@ -2296,8 +2301,6 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 
 /usr/include/boost/type_traits/is_array.hpp:
 
-/usr/include/boost/type_traits/decay.hpp:
-
 /usr/include/boost/type_traits/remove_reference.hpp:
 
 /usr/include/boost/type_traits/remove_cv.hpp:
@@ -2366,11 +2369,19 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 
 /usr/include/c++/11/sstream:
 
+/usr/include/boost/type_traits/decay.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/poll.h:
+
+/usr/include/x86_64-linux-gnu/sys/poll.h:
+
 /usr/include/boost/type_traits/is_lvalue_reference.hpp:
 
 /usr/include/netinet/in.h:
 
 /usr/include/arpa/inet.h:
+
+../src/include/Krpcprotocol.h:
 
 /usr/include/c++/11/cassert:
 
@@ -2789,6 +2800,8 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 /usr/include/stdc-predef.h:
 
 /usr/include/c++/11/bits/alloc_traits.h:
+
+/usr/include/poll.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 

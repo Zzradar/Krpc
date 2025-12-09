@@ -2,7 +2,23 @@
 #include "Krpcapplication.h"
 #include "Krpcheader.pb.h"
 #include "KrpcLogger.h"
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <iostream>
+
+KrpcProvider::SendResponseClosure::SendResponseClosure(KrpcProvider *provider,
+                                                      muduo::net::TcpConnectionPtr conn,
+                                                      uint64_t request_id,
+                                                      google::protobuf::Message *response)
+    : provider_(provider),
+      conn_(std::move(conn)),
+      request_id_(request_id),
+      response_(response) {}
+
+void KrpcProvider::SendResponseClosure::Run() {
+    provider_->SendRpcResponse(conn_, request_id_, response_);
+    delete this;
+}
 
 // 注册服务对象及其方法，以便服务端能够处理客户端的RPC请求
 void KrpcProvider::NotifyService(google::protobuf::Service *service) {
@@ -105,36 +121,53 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
     google::protobuf::io::CodedInputStream coded_input(&raw_input);
 
     uint32_t header_size{};
-    coded_input.ReadVarint32(&header_size);  // 解析header_size
+    if (!coded_input.ReadVarint32(&header_size)) {
+        KrpcLogger::ERROR("read header_size error");
+        return;
+    }
 
     // 根据header_size读取数据头的原始字符流，反序列化数据，得到RPC请求的详细信息
     std::string rpc_header_str;
-    Krpc::RpcHeader krpcHeader;
-    std::string service_name;
-    std::string method_name;
-    uint32_t args_size{};
-
-    // 设置读取限制
     google::protobuf::io::CodedInputStream::Limit msg_limit = coded_input.PushLimit(header_size);
-    coded_input.ReadString(&rpc_header_str, header_size);
-    // 恢复之前的限制，以便安全地继续读取其他数据
+    bool header_read_ok = coded_input.ReadString(&rpc_header_str, header_size);
     coded_input.PopLimit(msg_limit);
+    if (!header_read_ok) {
+        KrpcLogger::ERROR("read header error");
+        return;
+    }
 
-    if (krpcHeader.ParseFromString(rpc_header_str)) {
-        service_name = krpcHeader.service_name();
-        method_name = krpcHeader.method_name();
-        args_size = krpcHeader.args_size();
-    } else {
+    Krpc::RpcHeader rpc_header;
+    if (!rpc_header.ParseFromString(rpc_header_str)) {
         KrpcLogger::ERROR("krpcHeader parse error");
         return;
     }
 
-    std::string args_str;  // RPC参数
-    // 直接读取args_size长度的字符串数据
-    bool read_args_success = coded_input.ReadString(&args_str, args_size);
-    if (!read_args_success) {
-        KrpcLogger::ERROR("read args error");
+    if (rpc_header.magic() != KrpcProtocol::kDefaultMagic) {
+        KrpcLogger::ERROR("invalid magic number");
         return;
+    }
+
+    if (rpc_header.version() != KrpcProtocol::kDefaultVersion) {
+        KrpcLogger::ERROR("invalid rpc version");
+        return;
+    }
+
+    if (rpc_header.msg_type() != Krpc::MSG_TYPE_REQUEST) {
+        KrpcLogger::ERROR("unsupported msg type");
+        return;
+    }
+
+    const std::string service_name = rpc_header.service_name();
+    const std::string method_name = rpc_header.method_name();
+    const uint32_t body_size = rpc_header.body_size();
+    const uint64_t request_id = rpc_header.request_id();
+
+    std::string args_str;  // RPC参数
+    if (body_size > 0) {
+        if (!coded_input.ReadString(&args_str, body_size)) {
+            KrpcLogger::ERROR("read args error");
+            return;
+        }
     }
 
     // 获取service对象和method对象
@@ -161,26 +194,45 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
     google::protobuf::Message *response = service->GetResponsePrototype(method).New();  // 动态创建响应对象
 
     // 绑定回调函数，用于在方法调用完成后发送响应
-    google::protobuf::Closure *done = google::protobuf::NewCallback<KrpcProvider,
-                                                                    const muduo::net::TcpConnectionPtr &,
-                                                                    google::protobuf::Message *>(this,
-                                                                                                 &KrpcProvider::SendRpcResponse,
-                                                                                                 conn, response);
+    google::protobuf::Closure *done = new SendResponseClosure(this, conn, request_id, response);
 
     // 在框架上根据远端RPC请求，调用当前RPC节点上发布的方法
     service->CallMethod(method, nullptr, request, response, done);  // 调用服务方法
 }
 
 // 发送RPC响应给客户端
-void KrpcProvider::SendRpcResponse(const muduo::net::TcpConnectionPtr &conn, google::protobuf::Message *response) {
+void KrpcProvider::SendRpcResponse(const muduo::net::TcpConnectionPtr &conn, uint64_t request_id, google::protobuf::Message *response) {
     std::string response_str;
-    if (response->SerializeToString(&response_str)) {
-        // 序列化成功，通过网络把RPC方法执行的结果返回给RPC调用方
-        conn->send(response_str);
-    } else {
+    if (!response->SerializeToString(&response_str)) {
         std::cout << "serialize error!" << std::endl;
+        delete response;
+        return;
     }
-    // conn->shutdown(); // 模拟HTTP短链接，由RpcProvider主动断开连接
+
+    Krpc::RpcHeader header;
+    header.set_magic(KrpcProtocol::kDefaultMagic);
+    header.set_version(KrpcProtocol::kDefaultVersion);
+    header.set_msg_type(Krpc::MSG_TYPE_RESPONSE);
+    header.set_request_id(request_id);
+    header.set_body_size(response_str.size());
+    header.set_compress_type(Krpc::COMPRESS_NONE);
+
+    std::string header_str;
+    if (!header.SerializeToString(&header_str)) {
+        KrpcLogger::ERROR("serialize response header error");
+        return;
+    }
+
+    std::string send_buf;
+    {
+        google::protobuf::io::StringOutputStream string_output(&send_buf);
+        google::protobuf::io::CodedOutputStream coded_output(&string_output);
+        coded_output.WriteVarint32(static_cast<uint32_t>(header_str.size()));
+        coded_output.WriteString(header_str);
+    }
+    send_buf += response_str;
+    conn->send(send_buf);
+    delete response;
 }
 
 // 析构函数，退出事件循环

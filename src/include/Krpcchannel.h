@@ -25,6 +25,9 @@ private:
     uint16_t m_port;
     std::string method_name;
     int m_idx; // 用来划分服务器ip和port的下标
+    int m_request_timeout_ms;
+    int m_heartbeat_interval_ms;
+    int m_heartbeat_miss_limit;
     bool newConnect(const char *ip, uint16_t port, std::string *errMsg = nullptr);
     std::string QueryServiceHost(ZkClient *zkclient, std::string service_name, std::string method_name, int &idx);
 };

@@ -1,8 +1,28 @@
 syntax="proto3";
 package Krpc;
 
+enum MsgType {
+    MSG_TYPE_UNKNOWN = 0;
+    MSG_TYPE_REQUEST = 1;
+    MSG_TYPE_RESPONSE = 2;
+    MSG_TYPE_PING = 3;
+    MSG_TYPE_PONG = 4;
+    MSG_TYPE_ONEWAY = 5;
+}
+
+enum CompressType {
+    COMPRESS_NONE = 0;
+    COMPRESS_GZIP = 1;
+    COMPRESS_SNAPPY = 2;
+}
+
 message RpcHeader{
-    bytes service_name=1;
-    bytes method_name=2;
-    uint32 args_size=3;
+    uint32 magic = 1;
+    uint32 version = 2;
+    MsgType msg_type = 3;
+    uint64 request_id = 4;
+    uint32 body_size = 5;
+    CompressType compress_type = 6;
+    bytes service_name = 7;
+    bytes method_name = 8;
 }

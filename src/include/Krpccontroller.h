@@ -13,6 +13,8 @@ public:
  bool Failed() const;
 std::string ErrorText() const;
 void SetFailed(const std::string &reason);
+ void SetTimeoutMs(int timeout_ms);
+ int TimeoutMs() const;
 
 //目前未实现具体的功能
 void StartCancel();
@@ -21,6 +23,7 @@ void NotifyOnCancel(google::protobuf::Closure* callback);
 private:
  bool m_failed;//RPC方法执行过程中的状态
  std::string m_errText;//RPC方法执行过程中的错误信息
+ int m_timeout_ms;//本次RPC调用的超时时间
 };
 
 #endif

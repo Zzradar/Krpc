@@ -11,6 +11,9 @@
 #include<string>
 #include<unordered_map>
 #include<memory>
+#include<cstdint>
+
+#include "Krpcprotocol.h"
 
 class KrpcProvider
 {
@@ -31,13 +34,21 @@ private:
     
     void OnConnection(const muduo::net::TcpConnectionPtr& conn);
     void OnMessage(const muduo::net::TcpConnectionPtr& conn, muduo::net::Buffer* buffer, muduo::Timestamp receive_time);
-    void SendRpcResponse(const muduo::net::TcpConnectionPtr& conn, google::protobuf::Message* response);
+    void SendRpcResponse(const muduo::net::TcpConnectionPtr& conn, uint64_t request_id, google::protobuf::Message* response);
+
+    class SendResponseClosure : public google::protobuf::Closure {
+    public:
+        SendResponseClosure(KrpcProvider *provider,
+                            muduo::net::TcpConnectionPtr conn,
+                            uint64_t request_id,
+                            google::protobuf::Message *response);
+        void Run() override;
+
+    private:
+        KrpcProvider *provider_;
+        muduo::net::TcpConnectionPtr conn_;
+        uint64_t request_id_;
+        google::protobuf::Message *response_;
+    };
 };
 #endif 
-
-
-
-
-
-
-

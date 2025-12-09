@@ -3,15 +3,40 @@
 #include "zookeeperutil.h"
 #include "Krpcapplication.h"
 #include "Krpccontroller.h"
+#include "Krpcprotocol.h"
 #include "memory"
 #include <errno.h>
+#include <cstring>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <atomic>
+#include <poll.h>
 #include "KrpcLogger.h"
 
 std::mutex g_data_mutx;  // 全局互斥锁，用于保护共享数据的线程安全
+
+namespace {
+std::atomic<uint64_t> g_request_id{1};
+
+uint64_t NextRequestId() {
+    return g_request_id.fetch_add(1, std::memory_order_relaxed);
+}
+
+int ParseConfigInt(const std::string &value, int default_value) {
+    if (value.empty()) {
+        return default_value;
+    }
+    try {
+        return std::stoi(value);
+    } catch (const std::exception &) {
+        return default_value;
+    }
+}
+} // namespace
 
 // RPC调用的核心方法，负责将客户端的请求序列化并发送到服务端，同时接收服务端的响应
 void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
@@ -64,11 +89,18 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
         return;
     }
 
+    const uint64_t request_id = NextRequestId();
+
     // 定义RPC请求的头部信息
     Krpc::RpcHeader krpcheader;
+    krpcheader.set_magic(KrpcProtocol::kDefaultMagic);
+    krpcheader.set_version(KrpcProtocol::kDefaultVersion);
+    krpcheader.set_msg_type(Krpc::MSG_TYPE_REQUEST);
+    krpcheader.set_request_id(request_id);
+    krpcheader.set_body_size(args_size);
+    krpcheader.set_compress_type(Krpc::COMPRESS_NONE);
     krpcheader.set_service_name(service_name);  // 设置服务名
     krpcheader.set_method_name(method_name);  // 设置方法名
-    krpcheader.set_args_size(args_size);  // 设置参数长度
 
     // 将RPC头部信息序列化为字符串，并计算其长度
     uint32_t header_size = 0;
@@ -100,18 +132,104 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
         return;
     }
 
+    int timeout_ms = m_request_timeout_ms;
+    if (controller) {
+        if (auto *krpc_controller = dynamic_cast<Krpccontroller *>(controller)) {
+            if (krpc_controller->TimeoutMs() > 0) {
+                timeout_ms = krpc_controller->TimeoutMs();
+            }
+        }
+    }
+
+    struct pollfd pfd;
+    pfd.fd = m_clientfd;
+    pfd.events = POLLIN;
+    pfd.revents = 0;
+    int poll_ret = poll(&pfd, 1, timeout_ms);
+    if (poll_ret == 0) {
+        close(m_clientfd);
+        m_clientfd = -1;
+        if (controller) {
+            controller->SetFailed("timeout");
+        }
+        return;
+    }
+
+    if (poll_ret < 0) {
+        char errtxt[512] = {};
+        std::cout << "poll error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;
+        if (controller) {
+            controller->SetFailed(errtxt);
+        }
+        return;
+    }
+
+    if (!(pfd.revents & POLLIN)) {
+        if (controller) {
+            controller->SetFailed("poll no data");
+        }
+        return;
+    }
+
     // 接收服务器的响应
-    char recv_buf[1024] = {0};
+    char recv_buf[2048] = {0};
     int recv_size = 0;
-    if (-1 == (recv_size = recv(m_clientfd, recv_buf, 1024, 0))) {
+    if (-1 == (recv_size = recv(m_clientfd, recv_buf, sizeof(recv_buf), 0))) {
         char errtxt[512] = {};
         std::cout << "recv error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         controller->SetFailed(errtxt);  // 设置错误信息
         return;
     }
 
+    google::protobuf::io::ArrayInputStream resp_input(recv_buf, recv_size);
+    google::protobuf::io::CodedInputStream resp_coded(&resp_input);
+    uint32_t resp_header_size{};
+    if (!resp_coded.ReadVarint32(&resp_header_size)) {
+        controller->SetFailed("read response header size error");
+        return;
+    }
+
+    std::string resp_header_str;
+    auto resp_limit = resp_coded.PushLimit(resp_header_size);
+    bool header_ok = resp_coded.ReadString(&resp_header_str, resp_header_size);
+    resp_coded.PopLimit(resp_limit);
+    if (!header_ok) {
+        controller->SetFailed("read response header error");
+        return;
+    }
+
+    Krpc::RpcHeader resp_header;
+    if (!resp_header.ParseFromString(resp_header_str)) {
+        controller->SetFailed("parse response header error");
+        return;
+    }
+
+    if (resp_header.magic() != KrpcProtocol::kDefaultMagic) {
+        controller->SetFailed("invalid response magic");
+        return;
+    }
+
+    if (resp_header.msg_type() != Krpc::MSG_TYPE_RESPONSE) {
+        controller->SetFailed("invalid response msg type");
+        return;
+    }
+
+    if (resp_header.request_id() != request_id) {
+        controller->SetFailed("response request id mismatch");
+        return;
+    }
+
+    std::string response_payload;
+    const uint32_t response_size = resp_header.body_size();
+    if (response_size > 0) {
+        if (!resp_coded.ReadString(&response_payload, response_size)) {
+            controller->SetFailed("read response payload error");
+            return;
+        }
+    }
+
     // 将接收到的响应数据反序列化为response对象
-    if (!response->ParseFromArray(recv_buf, recv_size)) {
+    if (!response->ParseFromString(response_payload)) {
         close(m_clientfd);  // 反序列化失败，关闭socket
         m_clientfd = -1;  // 重置socket文件描述符
         char errtxt[512] = {};
@@ -183,7 +301,18 @@ std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string servic
 }
 
 // 构造函数，支持延迟连接
-KrpcChannel::KrpcChannel(bool connectNow) : m_clientfd(-1), m_idx(0) {
+KrpcChannel::KrpcChannel(bool connectNow)
+    : m_clientfd(-1),
+      m_idx(0),
+      m_request_timeout_ms(KrpcProtocol::kDefaultRequestTimeoutMs),
+      m_heartbeat_interval_ms(KrpcProtocol::kDefaultHeartbeatIntervalMs),
+      m_heartbeat_miss_limit(KrpcProtocol::kDefaultHeartbeatMissLimit) {
+
+    auto &config = KrpcApplication::GetInstance().GetConfig();
+    m_request_timeout_ms = ParseConfigInt(config.Load("rpc_timeout_ms"), KrpcProtocol::kDefaultRequestTimeoutMs);
+    m_heartbeat_interval_ms = ParseConfigInt(config.Load("heartbeat_interval_ms"), KrpcProtocol::kDefaultHeartbeatIntervalMs);
+    m_heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"), KrpcProtocol::kDefaultHeartbeatMissLimit);
+
     if (!connectNow) {  // 如果不需要立即连接
         return;
     }

@@ -155,6 +155,19 @@ client/fast:
 	$(MAKE) $(MAKESILENT) -f example/caller/CMakeFiles/client.dir/build.make example/caller/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
+#=============================================================================
+# Target rules for targets named timeout_client
+
+# Build rule for target.
+timeout_client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 timeout_client
+.PHONY : timeout_client
+
+# fast build rule for target.
+timeout_client/fast:
+	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/build
+.PHONY : timeout_client/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -166,6 +179,7 @@ help:
 	@echo "... client"
 	@echo "... krpc_core"
 	@echo "... server"
+	@echo "... timeout_client"
 .PHONY : help
 
 

@@ -31,6 +31,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -64,6 +65,61 @@ template<> ::Krpc::RpcHeader* Arena::CreateMaybeMessage<::Krpc::RpcHeader>(Arena
 PROTOBUF_NAMESPACE_CLOSE
 namespace Krpc {
 
+enum MsgType : int {
+  MSG_TYPE_UNKNOWN = 0,
+  MSG_TYPE_REQUEST = 1,
+  MSG_TYPE_RESPONSE = 2,
+  MSG_TYPE_PING = 3,
+  MSG_TYPE_PONG = 4,
+  MSG_TYPE_ONEWAY = 5,
+  MsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  MsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool MsgType_IsValid(int value);
+constexpr MsgType MsgType_MIN = MSG_TYPE_UNKNOWN;
+constexpr MsgType MsgType_MAX = MSG_TYPE_ONEWAY;
+constexpr int MsgType_ARRAYSIZE = MsgType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MsgType_descriptor();
+template<typename T>
+inline const std::string& MsgType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MsgType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function MsgType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    MsgType_descriptor(), enum_t_value);
+}
+inline bool MsgType_Parse(
+    const std::string& name, MsgType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MsgType>(
+    MsgType_descriptor(), name, value);
+}
+enum CompressType : int {
+  COMPRESS_NONE = 0,
+  COMPRESS_GZIP = 1,
+  COMPRESS_SNAPPY = 2,
+  CompressType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  CompressType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool CompressType_IsValid(int value);
+constexpr CompressType CompressType_MIN = COMPRESS_NONE;
+constexpr CompressType CompressType_MAX = COMPRESS_SNAPPY;
+constexpr int CompressType_ARRAYSIZE = CompressType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CompressType_descriptor();
+template<typename T>
+inline const std::string& CompressType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, CompressType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function CompressType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    CompressType_descriptor(), enum_t_value);
+}
+inline bool CompressType_Parse(
+    const std::string& name, CompressType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CompressType>(
+    CompressType_descriptor(), name, value);
+}
 // ===================================================================
 
 class RpcHeader PROTOBUF_FINAL :
@@ -179,11 +235,16 @@ class RpcHeader PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kServiceNameFieldNumber = 1,
-    kMethodNameFieldNumber = 2,
-    kArgsSizeFieldNumber = 3,
+    kServiceNameFieldNumber = 7,
+    kMethodNameFieldNumber = 8,
+    kMagicFieldNumber = 1,
+    kVersionFieldNumber = 2,
+    kRequestIdFieldNumber = 4,
+    kMsgTypeFieldNumber = 3,
+    kBodySizeFieldNumber = 5,
+    kCompressTypeFieldNumber = 6,
   };
-  // bytes service_name = 1;
+  // bytes service_name = 7;
   void clear_service_name();
   const std::string& service_name() const;
   void set_service_name(const std::string& value);
@@ -208,7 +269,7 @@ class RpcHeader PROTOBUF_FINAL :
   std::string* _internal_mutable_service_name();
   public:
 
-  // bytes method_name = 2;
+  // bytes method_name = 8;
   void clear_method_name();
   const std::string& method_name() const;
   void set_method_name(const std::string& value);
@@ -233,13 +294,58 @@ class RpcHeader PROTOBUF_FINAL :
   std::string* _internal_mutable_method_name();
   public:
 
-  // uint32 args_size = 3;
-  void clear_args_size();
-  ::PROTOBUF_NAMESPACE_ID::uint32 args_size() const;
-  void set_args_size(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 magic = 1;
+  void clear_magic();
+  ::PROTOBUF_NAMESPACE_ID::uint32 magic() const;
+  void set_magic(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_args_size() const;
-  void _internal_set_args_size(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_magic() const;
+  void _internal_set_magic(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 version = 2;
+  void clear_version();
+  ::PROTOBUF_NAMESPACE_ID::uint32 version() const;
+  void set_version(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_version() const;
+  void _internal_set_version(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint64 request_id = 4;
+  void clear_request_id();
+  ::PROTOBUF_NAMESPACE_ID::uint64 request_id() const;
+  void set_request_id(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_request_id() const;
+  void _internal_set_request_id(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // .Krpc.MsgType msg_type = 3;
+  void clear_msg_type();
+  ::Krpc::MsgType msg_type() const;
+  void set_msg_type(::Krpc::MsgType value);
+  private:
+  ::Krpc::MsgType _internal_msg_type() const;
+  void _internal_set_msg_type(::Krpc::MsgType value);
+  public:
+
+  // uint32 body_size = 5;
+  void clear_body_size();
+  ::PROTOBUF_NAMESPACE_ID::uint32 body_size() const;
+  void set_body_size(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_body_size() const;
+  void _internal_set_body_size(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // .Krpc.CompressType compress_type = 6;
+  void clear_compress_type();
+  ::Krpc::CompressType compress_type() const;
+  void set_compress_type(::Krpc::CompressType value);
+  private:
+  ::Krpc::CompressType _internal_compress_type() const;
+  void _internal_set_compress_type(::Krpc::CompressType value);
   public:
 
   // @@protoc_insertion_point(class_scope:Krpc.RpcHeader)
@@ -251,7 +357,12 @@ class RpcHeader PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr service_name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_name_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 args_size_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 magic_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 version_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 request_id_;
+  int msg_type_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 body_size_;
+  int compress_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Krpcheader_2eproto;
 };
@@ -266,7 +377,127 @@ class RpcHeader PROTOBUF_FINAL :
 #endif  // __GNUC__
 // RpcHeader
 
-// bytes service_name = 1;
+// uint32 magic = 1;
+inline void RpcHeader::clear_magic() {
+  magic_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::_internal_magic() const {
+  return magic_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::magic() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.magic)
+  return _internal_magic();
+}
+inline void RpcHeader::_internal_set_magic(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  magic_ = value;
+}
+inline void RpcHeader::set_magic(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_magic(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.magic)
+}
+
+// uint32 version = 2;
+inline void RpcHeader::clear_version() {
+  version_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::_internal_version() const {
+  return version_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::version() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.version)
+  return _internal_version();
+}
+inline void RpcHeader::_internal_set_version(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  version_ = value;
+}
+inline void RpcHeader::set_version(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_version(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.version)
+}
+
+// .Krpc.MsgType msg_type = 3;
+inline void RpcHeader::clear_msg_type() {
+  msg_type_ = 0;
+}
+inline ::Krpc::MsgType RpcHeader::_internal_msg_type() const {
+  return static_cast< ::Krpc::MsgType >(msg_type_);
+}
+inline ::Krpc::MsgType RpcHeader::msg_type() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.msg_type)
+  return _internal_msg_type();
+}
+inline void RpcHeader::_internal_set_msg_type(::Krpc::MsgType value) {
+  
+  msg_type_ = value;
+}
+inline void RpcHeader::set_msg_type(::Krpc::MsgType value) {
+  _internal_set_msg_type(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.msg_type)
+}
+
+// uint64 request_id = 4;
+inline void RpcHeader::clear_request_id() {
+  request_id_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 RpcHeader::_internal_request_id() const {
+  return request_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 RpcHeader::request_id() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.request_id)
+  return _internal_request_id();
+}
+inline void RpcHeader::_internal_set_request_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  request_id_ = value;
+}
+inline void RpcHeader::set_request_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_request_id(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.request_id)
+}
+
+// uint32 body_size = 5;
+inline void RpcHeader::clear_body_size() {
+  body_size_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::_internal_body_size() const {
+  return body_size_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::body_size() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.body_size)
+  return _internal_body_size();
+}
+inline void RpcHeader::_internal_set_body_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  body_size_ = value;
+}
+inline void RpcHeader::set_body_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_body_size(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.body_size)
+}
+
+// .Krpc.CompressType compress_type = 6;
+inline void RpcHeader::clear_compress_type() {
+  compress_type_ = 0;
+}
+inline ::Krpc::CompressType RpcHeader::_internal_compress_type() const {
+  return static_cast< ::Krpc::CompressType >(compress_type_);
+}
+inline ::Krpc::CompressType RpcHeader::compress_type() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.compress_type)
+  return _internal_compress_type();
+}
+inline void RpcHeader::_internal_set_compress_type(::Krpc::CompressType value) {
+  
+  compress_type_ = value;
+}
+inline void RpcHeader::set_compress_type(::Krpc::CompressType value) {
+  _internal_set_compress_type(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.compress_type)
+}
+
+// bytes service_name = 7;
 inline void RpcHeader::clear_service_name() {
   service_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
@@ -347,7 +578,7 @@ inline void RpcHeader::unsafe_arena_set_allocated_service_name(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Krpc.RpcHeader.service_name)
 }
 
-// bytes method_name = 2;
+// bytes method_name = 8;
 inline void RpcHeader::clear_method_name() {
   method_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
@@ -428,26 +659,6 @@ inline void RpcHeader::unsafe_arena_set_allocated_method_name(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Krpc.RpcHeader.method_name)
 }
 
-// uint32 args_size = 3;
-inline void RpcHeader::clear_args_size() {
-  args_size_ = 0u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::_internal_args_size() const {
-  return args_size_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 RpcHeader::args_size() const {
-  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.args_size)
-  return _internal_args_size();
-}
-inline void RpcHeader::_internal_set_args_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  args_size_ = value;
-}
-inline void RpcHeader::set_args_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_args_size(value);
-  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.args_size)
-}
-
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -455,6 +666,21 @@ inline void RpcHeader::set_args_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace Krpc
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::Krpc::MsgType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Krpc::MsgType>() {
+  return ::Krpc::MsgType_descriptor();
+}
+template <> struct is_proto_enum< ::Krpc::CompressType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Krpc::CompressType>() {
+  return ::Krpc::CompressType_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 
