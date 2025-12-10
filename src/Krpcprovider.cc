@@ -6,6 +6,9 @@
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <iostream>
 #include <vector>
+#include <exception>
+#include <memory>
+#include <thread>
 
 namespace {
 
@@ -114,9 +117,11 @@ void KrpcProvider::Run() {
 
     // 启动网络服务
     ScheduleIdleScan();
+    StartWorkerPool();
 
     server->start();
     event_loop.loop();  // 进入事件循环
+    StopWorkerPool();
 }
 
 // 连接回调函数，处理客户端连接事件
@@ -131,100 +136,129 @@ void KrpcProvider::OnConnection(const muduo::net::TcpConnectionPtr &conn) {
 
 // 消息回调函数，处理客户端发送的RPC请求
 void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::net::Buffer *buffer, muduo::Timestamp receive_time) {
-    std::cout << "OnMessage" << std::endl;
+    (void)receive_time;
 
-    // 从网络缓冲区中读取远程RPC调用请求的字符流
-    std::string recv_buf = buffer->retrieveAllAsString();
+    while (true) {
+        const size_t readable = buffer->readableBytes();
+        if (readable == 0) {
+            break;
+        }
 
-    // 使用protobuf的CodedInputStream反序列化RPC请求
-    google::protobuf::io::ArrayInputStream raw_input(recv_buf.data(), recv_buf.size());
-    google::protobuf::io::CodedInputStream coded_input(&raw_input);
+        google::protobuf::io::ArrayInputStream raw_input(buffer->peek(), static_cast<int>(readable));
+        google::protobuf::io::CodedInputStream coded_input(&raw_input);
 
-    uint32_t header_size{};
-    if (!coded_input.ReadVarint32(&header_size)) {
-        KrpcLogger::ERROR("read header_size error");
-        return;
-    }
+        uint32_t header_size{};
+        if (!coded_input.ReadVarint32(&header_size)) {
+            // 等待更多数据到达
+            break;
+        }
 
-    // 根据header_size读取数据头的原始字符流，反序列化数据，得到RPC请求的详细信息
-    std::string rpc_header_str;
-    google::protobuf::io::CodedInputStream::Limit msg_limit = coded_input.PushLimit(header_size);
-    bool header_read_ok = coded_input.ReadString(&rpc_header_str, header_size);
-    coded_input.PopLimit(msg_limit);
-    if (!header_read_ok) {
-        KrpcLogger::ERROR("read header error");
-        return;
-    }
+        const size_t varint_bytes = static_cast<size_t>(coded_input.CurrentPosition());
+        if (readable < varint_bytes + header_size) {
+            break;
+        }
 
-    Krpc::RpcHeader rpc_header;
-    if (!rpc_header.ParseFromString(rpc_header_str)) {
-        KrpcLogger::ERROR("krpcHeader parse error");
-        return;
-    }
-
-    if (rpc_header.magic() != KrpcProtocol::kDefaultMagic) {
-        KrpcLogger::ERROR("invalid magic number");
-        return;
-    }
-
-    if (rpc_header.version() != KrpcProtocol::kDefaultVersion) {
-        KrpcLogger::ERROR("invalid rpc version");
-        return;
-    }
-
-    const std::string service_name = rpc_header.service_name();
-    const std::string method_name = rpc_header.method_name();
-    const uint32_t body_size = rpc_header.body_size();
-    const uint64_t request_id = rpc_header.request_id();
-
-    std::string args_str;  // RPC参数
-    if (body_size > 0) {
-        if (!coded_input.ReadString(&args_str, body_size)) {
-            KrpcLogger::ERROR("read args error");
+        std::string rpc_header_str;
+        auto msg_limit = coded_input.PushLimit(header_size);
+        if (!coded_input.ReadString(&rpc_header_str, header_size)) {
+            KrpcLogger::ERROR("read header error");
+            conn->forceClose();
             return;
         }
+        coded_input.PopLimit(msg_limit);
+
+        Krpc::RpcHeader rpc_header;
+        if (!rpc_header.ParseFromString(rpc_header_str)) {
+            KrpcLogger::ERROR("krpcHeader parse error");
+            conn->forceClose();
+            return;
+        }
+
+        if (rpc_header.magic() != KrpcProtocol::kDefaultMagic) {
+            KrpcLogger::ERROR("invalid magic number");
+            conn->forceClose();
+            return;
+        }
+
+        if (rpc_header.version() != KrpcProtocol::kDefaultVersion) {
+            KrpcLogger::ERROR("invalid rpc version");
+            conn->forceClose();
+            return;
+        }
+
+        const uint32_t body_size = rpc_header.body_size();
+        const size_t required = static_cast<size_t>(coded_input.CurrentPosition()) + body_size;
+        if (readable < required) {
+            break;
+        }
+
+        std::string args_str;
+        if (body_size > 0) {
+            if (!coded_input.ReadString(&args_str, body_size)) {
+                KrpcLogger::ERROR("read args error");
+                conn->forceClose();
+                return;
+            }
+        }
+
+        const size_t frame_size = static_cast<size_t>(coded_input.CurrentPosition());
+        buffer->retrieve(frame_size);
+
+        TouchConnection(conn);
+
+        if (rpc_header.msg_type() == Krpc::MSG_TYPE_PING || rpc_header.msg_type() == Krpc::MSG_TYPE_PONG) {
+            HandleHeartbeatFrame(conn, rpc_header);
+            continue;
+        }
+
+        if (rpc_header.msg_type() != Krpc::MSG_TYPE_REQUEST) {
+            KrpcLogger::ERROR("unsupported msg type");
+            conn->forceClose();
+            return;
+        }
+
+        const std::string &service_name = rpc_header.service_name();
+        const std::string &method_name = rpc_header.method_name();
+        const uint64_t request_id = rpc_header.request_id();
+
+        auto it = service_map.find(service_name);
+        if (it == service_map.end()) {
+            std::cout << service_name << " is not exist!" << std::endl;
+            continue;
+        }
+        auto mit = it->second.method_map.find(method_name);
+        if (mit == it->second.method_map.end()) {
+            std::cout << service_name << "." << method_name << " is not exist!" << std::endl;
+            continue;
+        }
+
+        google::protobuf::Service *service = it->second.service.get();
+        const google::protobuf::MethodDescriptor *method = mit->second;
+
+        google::protobuf::Message *request = service->GetRequestPrototype(method).New();
+        if (!request->ParseFromString(args_str)) {
+            std::cout << service_name << "." << method_name << " parse error!" << std::endl;
+            delete request;
+            continue;
+        }
+        google::protobuf::Message *response = service->GetResponsePrototype(method).New();
+
+        google::protobuf::Closure *done = new SendResponseClosure(this, conn, request_id, response);
+
+        RpcTask task;
+        task.service = service;
+        task.method = method;
+        task.request = request;
+        task.response = response;
+        task.done = done;
+
+        if (!EnqueueTask(task)) {
+            KrpcLogger::ERROR("task queue unavailable, executing request inline");
+            std::unique_ptr<google::protobuf::Message> request_guard(request);
+            service->CallMethod(method, nullptr, request_guard.get(), response, done);
+            request_guard.reset();
+        }
     }
-
-    TouchConnection(conn);
-
-    if (rpc_header.msg_type() == Krpc::MSG_TYPE_PING || rpc_header.msg_type() == Krpc::MSG_TYPE_PONG) {
-        HandleHeartbeatFrame(conn, rpc_header);
-        return;
-    }
-
-    if (rpc_header.msg_type() != Krpc::MSG_TYPE_REQUEST) {
-        KrpcLogger::ERROR("unsupported msg type");
-        return;
-    }
-
-    // 获取service对象和method对象
-    auto it = service_map.find(service_name);
-    if (it == service_map.end()) {
-        std::cout << service_name << " is not exist!" << std::endl;
-        return;
-    }
-    auto mit = it->second.method_map.find(method_name);
-    if (mit == it->second.method_map.end()) {
-        std::cout << service_name << "." << method_name << " is not exist!" << std::endl;
-        return;
-    }
-
-    google::protobuf::Service *service = it->second.service.get();  // 获取服务对象
-    const google::protobuf::MethodDescriptor *method = mit->second;  // 获取方法对象
-
-    // 生成RPC方法调用请求的request和响应的response参数
-    google::protobuf::Message *request = service->GetRequestPrototype(method).New();  // 动态创建请求对象
-    if (!request->ParseFromString(args_str)) {
-        std::cout << service_name << "." << method_name << " parse error!" << std::endl;
-        return;
-    }
-    google::protobuf::Message *response = service->GetResponsePrototype(method).New();  // 动态创建响应对象
-
-    // 绑定回调函数，用于在方法调用完成后发送响应
-    google::protobuf::Closure *done = new SendResponseClosure(this, conn, request_id, response);
-
-    // 在框架上根据远端RPC请求，调用当前RPC节点上发布的方法
-    service->CallMethod(method, nullptr, request, response, done);  // 调用服务方法
 }
 
 // 发送RPC响应给客户端
@@ -357,8 +391,154 @@ void KrpcProvider::OnIdleScan() {
     }
 }
 
+void KrpcProvider::StartWorkerPool() {
+    if (!worker_threads_.empty()) {
+        return;
+    }
+
+    auto &config = KrpcApplication::GetInstance().GetConfig();
+    unsigned int hw_threads = std::thread::hardware_concurrency();
+    if (hw_threads == 0) {
+        hw_threads = 4;
+    }
+
+    const int default_threads = static_cast<int>(hw_threads);
+    int configured_threads = ParseConfigInt(config.Load("provider_worker_threads"), default_threads);
+    if (configured_threads <= 0) {
+        configured_threads = default_threads;
+    }
+
+    int configured_capacity = ParseConfigInt(config.Load("provider_queue_capacity"), 1024);
+    if (configured_capacity <= 0) {
+        configured_capacity = 1024;
+    }
+
+    task_queue_capacity_ = static_cast<size_t>(configured_capacity);
+    queue_warn_threshold_ = task_queue_capacity_ > 0 ? task_queue_capacity_ * 8 / 10 : 0;
+    queue_high_watermark_ = 0;
+    queue_warn_active_ = false;
+    worker_thread_count_ = configured_threads;
+    stop_workers_.store(false);
+    worker_threads_.reserve(static_cast<size_t>(configured_threads));
+    for (int i = 0; i < configured_threads; ++i) {
+        worker_threads_.emplace_back(&KrpcProvider::WorkerLoop, this);
+    }
+
+    KrpcLogger::Info("worker pool started threads=" + std::to_string(worker_thread_count_) +
+                     " queue_capacity=" + std::to_string(task_queue_capacity_) +
+                     " warn_threshold=" + std::to_string(queue_warn_threshold_));
+}
+
+void KrpcProvider::StopWorkerPool() {
+    if (worker_threads_.empty()) {
+        return;
+    }
+
+    stop_workers_.store(true);
+    task_queue_cv_.notify_all();
+    for (auto &worker : worker_threads_) {
+        if (worker.joinable()) {
+            worker.join();
+        }
+    }
+    worker_threads_.clear();
+
+    std::lock_guard<std::mutex> lock(task_queue_mutex_);
+    while (!task_queue_.empty()) {
+        auto &task = task_queue_.front();
+        delete task.request;
+        delete task.response;
+        delete task.done;
+        task_queue_.pop_front();
+    }
+
+    if (worker_thread_count_ > 0) {
+        KrpcLogger::Info("worker pool stopped threads=" + std::to_string(worker_thread_count_) +
+                         " peak_queue=" + std::to_string(queue_high_watermark_));
+    }
+}
+
+bool KrpcProvider::EnqueueTask(RpcTask task) {
+    std::unique_lock<std::mutex> lock(task_queue_mutex_);
+    task_queue_cv_.wait(lock, [&] {
+        return stop_workers_.load() || task_queue_.size() < task_queue_capacity_;
+    });
+
+    if (stop_workers_.load()) {
+        return false;
+    }
+
+    task_queue_.emplace_back(std::move(task));
+    LogQueueMetricsLocked(task_queue_.size());
+    task_queue_cv_.notify_one();
+    return true;
+}
+
+void KrpcProvider::WorkerLoop() {
+    while (true) {
+        RpcTask task;
+        {
+            std::unique_lock<std::mutex> lock(task_queue_mutex_);
+            task_queue_cv_.wait(lock, [&] {
+                return stop_workers_.load() || !task_queue_.empty();
+            });
+
+            if (stop_workers_.load() && task_queue_.empty()) {
+                return;
+            }
+
+            task = std::move(task_queue_.front());
+            task_queue_.pop_front();
+            LogQueueMetricsLocked(task_queue_.size());
+            task_queue_cv_.notify_all();
+        }
+
+        std::unique_ptr<google::protobuf::Message> request_guard(task.request);
+        try {
+            task.service->CallMethod(task.method, nullptr, request_guard.get(), task.response, task.done);
+        } catch (const std::exception &ex) {
+            KrpcLogger::ERROR(std::string("CallMethod exception: ") + ex.what());
+            delete task.response;
+            delete task.done;
+        } catch (...) {
+            KrpcLogger::ERROR("CallMethod unknown exception");
+            delete task.response;
+            delete task.done;
+        }
+    }
+}
+
+void KrpcProvider::LogQueueMetricsLocked(size_t queue_size) {
+    if (queue_size > queue_high_watermark_) {
+        queue_high_watermark_ = queue_size;
+        KrpcLogger::Info("provider queue new high watermark=" + std::to_string(queue_high_watermark_) +
+                         "/" + std::to_string(task_queue_capacity_));
+    }
+
+    if (queue_warn_threshold_ == 0) {
+        return;
+    }
+
+    if (queue_size >= queue_warn_threshold_) {
+        if (!queue_warn_active_) {
+            queue_warn_active_ = true;
+            KrpcLogger::Warning("provider queue exceeds warn threshold: size=" + std::to_string(queue_size) +
+                                " capacity=" + std::to_string(task_queue_capacity_) +
+                                " workers=" + std::to_string(worker_thread_count_));
+        }
+        return;
+    }
+
+    const size_t recovery_threshold = queue_warn_threshold_ / 2;
+    if (queue_warn_active_ && queue_size <= recovery_threshold) {
+        queue_warn_active_ = false;
+        KrpcLogger::Info("provider queue recovered below threshold: size=" + std::to_string(queue_size));
+    }
+}
+
 // 析构函数，退出事件循环
 KrpcProvider::~KrpcProvider() {
     std::cout << "~KrpcProvider()" << std::endl;
+    StopWorkerPool();
     event_loop.quit();  // 退出事件循环
 }

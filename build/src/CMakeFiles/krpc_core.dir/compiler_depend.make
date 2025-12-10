@@ -300,6 +300,12 @@ src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o: ../src/Krpcapplication.cc \
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
   /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_queue.h \
   ../src/include/zookeeperutil.h \
   /usr/include/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
@@ -671,6 +677,12 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: ../src/Krpcchannel.cc \
   /usr/include/c++/11/bits/hashtable_policy.h \
   /usr/include/c++/11/bits/enable_special_members.h \
   /usr/include/c++/11/bits/unordered_map.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_queue.h \
   ../src/include/zookeeperutil.h \
   /usr/include/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
@@ -1961,6 +1973,12 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: ../src/Krpcprovider.cc \
   /usr/include/c++/11/bits/hashtable_policy.h \
   /usr/include/c++/11/bits/enable_special_members.h \
   /usr/include/c++/11/bits/unordered_map.h \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
   ../src/include/Krpcheader.pb.h \
   /usr/include/google/protobuf/io/coded_stream.h \
   /usr/include/c++/11/climits \
@@ -2005,11 +2023,10 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: ../src/Krpcprovider.cc \
   ../src/include/Krpcapplication.h \
   ../src/include/Krpcconfig.h \
   ../src/include/Krpcchannel.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h \
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/bits/stl_queue.h \
   ../src/include/Krpccontroller.h \
   ../src/Krpcheader.pb.h \
   ../src/include/KrpcLogger.h \
@@ -2348,6 +2365,12 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
   /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_queue.h \
   ../src/include/zookeeperutil.h \
   ../src/include/Krpcheader.pb.h \
   /usr/include/google/protobuf/io/coded_stream.h \
@@ -2457,8 +2480,6 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 /usr/include/boost/config/stdlib/libstdcpp3.hpp:
 
 /usr/include/c++/11/version:
-
-/usr/include/boost/config/compiler/gcc.hpp:
 
 /usr/include/boost/config/detail/select_compiler_config.hpp:
 
@@ -2592,6 +2613,12 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 
 ../src/include/zookeeperutil.h:
 
+/usr/include/c++/11/bits/deque.tcc:
+
+/usr/include/boost/config/compiler/gcc.hpp:
+
+/usr/include/c++/11/deque:
+
 /usr/include/boost/config/detail/posix_features.hpp:
 
 /usr/include/c++/11/mutex:
@@ -2637,6 +2664,8 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 /usr/include/c++/11/bits/atomic_lockfree_defines.h:
 
 /usr/include/c++/11/bits/atomic_base.h:
+
+/usr/include/c++/11/queue:
 
 /usr/include/c++/11/bits/shared_ptr_atomic.h:
 
@@ -2711,6 +2740,8 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 /usr/include/c++/11/bits/cxxabi_forced.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/c++/11/bits/stl_deque.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
@@ -2949,6 +2980,8 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc \
 /usr/include/c++/11/bits/shared_ptr.h:
 
 /usr/include/c++/11/bits/stl_construct.h:
+
+/usr/include/c++/11/bits/stl_queue.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 

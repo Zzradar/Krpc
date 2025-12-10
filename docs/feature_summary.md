@@ -62,3 +62,27 @@
 - **通俗说法**：相当于安排了一个专门的前台负责收快递，正常包裹和“我还活着”的心跳信号都它来拆，别的线程不用再手忙脚乱抢着读 socket。
 - **失败兜底**：`HandleHeartbeatFailure`、`RemovePendingCall`、`FailPendingCalls` 统一收口，出现发送异常、心跳超时或连接关闭时能及时关闭 fd、标记 Controller 出错并唤醒回调。
 - **通俗说法**：一旦线路掉线，这个“事故处理中心”会立刻通知所有等待的人“今天别等了”，同时把电话线重新插好，避免有人傻站着不走。
+
+## 9. 客户端异步 Phase 2（Callback + Timeout Manager）
+- **CallAsync 接口**：新增 `KrpcChannel::CallAsync(..., AsyncCallback cb)`，业务侧可直接传入 `std::function`（签名：`RpcController*, Message*`），无需再手动创建 `Closure`。原有 `CallMethod` 仍兼容同步/`done` 异步调用。
+- **通俗说法**：除了“打电话等结果”，现在还能留个号码就走，系统自己回拨，业务不用知道底下是 promise 还是 closure。
+- **SendQueue & SendLoop**：`CallFuture` 不再直接 `send()`，而是把序列化后的包入队，由独立 `SendLoop` 串行写 socket，保证业务线程立刻返回，同时与心跳写操作通过同一把锁协作。
+- **通俗说法**：所有包裹统一交给物流分拣中心发货，避免大家挤在快递窗口，自然也不会和心跳线程抢同一根网线。
+- **TimeoutManager**：后台线程每 50ms 扫描 `m_pending_calls`，超过 `timeout_ms` 的请求会立刻标记失败并触发 promise/回调，异步调用不再依赖业务线程轮询判定超时。
+- **通俗说法**：有个计时器专门盯着“谁已经等太久”，超点就发通知，不用业务写额外的 watchdog。
+- **统一完成路径**：所有成功/失败场景（正常响应、发送异常、心跳掉线、显式超时）都经 `CompletePending`，确保 `controller->Failed()`、`done->Run()`、`AsyncCallback` 只触发一次。
+- **通俗说法**：就像客服工单中心，任何结论都得通过同一个出口广播，避免一个问题被重复通知或完全遗忘。
+- **排队清理**：连接断开时会清空发送队列并逐个 `RemovePendingCall`，避免仍在排队的请求挂死；`HandleHeartbeatFailure` 也会唤醒发送/接收/心跳等待者。
+- **通俗说法**：一旦发现公交停运，会把站台上排队的人统统劝走重新安排，保证没有“排在队里却永远上不了车”的尴尬。
+- **验证方式**：重新 `cmake --build build && ./bin/server -i ./bin/test.conf` 后，在不同终端执行 `./bin/client -i ./bin/test.conf`（压力 + CallAsync stub）、`./bin/timeout_client -i ./bin/test.conf`（观察 TimeoutManager 回调）、`./bin/heartbeat_client -i ./bin/test.conf`（确保心跳丢包后请求被及时 fail），日志中可看到 send loop、timeout manager 的相关输出。
+
+## 10. 服务端异步 Phase 3（线程池调度 RPC）
+- **线程池调度**：`KrpcProvider` 在 `Run()` 时启动固定大小的 worker 组（默认取 `std::thread::hardware_concurrency()`，最少 4）。Muduo IO 线程仅负责解析帧并将 RPC 任务压入队列，`Service::CallMethod` 由 worker 顺序执行，避免耗时 handler 阻塞网络事件。
+- **通俗说法**：把“窗口收材料 + 后台审批”拆开，接待窗口只负责收单，真正审件的搬到后仓；窗口就算来了一堆慢单也不会被拖死。
+- **任务队列与背压**：借助 `std::deque` + `condition_variable` 实现阻塞队列，容量由 `provider_queue_capacity`（默认 1024）控制。队列满时生产者会等待，框架停机或超出限制时会回退为当前线程同步执行并打印告警，防止无限排队占满内存。
+- **通俗说法**：等于在前台放了一个限流取号机，号满了就让人临时原地办理或稍后再试，不会让大厅挤爆。
+- **资源/异常处理**：任务持有 request/response/`Closure` 指针，worker 通过 `unique_ptr` 自动释放 request，执行期间捕获异常并写入日志，必要时丢弃响应/回调，确保单个服务崩溃不会毒死整个池子。
+- **通俗说法**：审核员的桌子自带碎纸机，谁把材料弄坏了自己清理，别指望保洁；就算有人发脾气砸桌子，也只影响当前办件。
+- **心跳与连接管理**：`MSG_TYPE_PING/PONG` 仍在 IO 线程即时应答，不进入队列，`connection_states_` 能持续刷新，长时间运行不会误判为超时。
+- **通俗说法**：保安巡逻、心跳打卡仍在原班人马负责，后仓再忙也不耽误门卫登记。
+- **验证方式**：`cmake --build build && ./bin/server -i ./bin/test.conf` 后，同时运行 `./bin/client`、`./bin/heartbeat_client`、`./bin/timeout_client`，并在服务实现中注入 `sleep` 模拟慢调用，确认心跳/超时仍按预期触发且 server 日志无阻塞告警。

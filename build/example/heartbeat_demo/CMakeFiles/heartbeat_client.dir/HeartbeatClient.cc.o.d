@@ -241,7 +241,10 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: \
  /usr/include/c++/11/bits/unique_lock.h \
  /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
  /usr/include/c++/11/bits/atomic_futex.h \
- /usr/include/c++/11/bits/std_function.h \
+ /usr/include/c++/11/bits/std_function.h /usr/include/c++/11/functional \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_queue.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \

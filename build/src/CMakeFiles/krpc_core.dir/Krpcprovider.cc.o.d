@@ -322,7 +322,10 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
- /usr/include/c++/11/bits/unordered_map.h \
+ /usr/include/c++/11/bits/unordered_map.h /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
  /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
  /usr/include/c++/11/climits /usr/include/google/protobuf/stubs/logging.h \
@@ -363,10 +366,9 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /home/zzz/Krpc/src/include/Krpcprotocol.h \
  /home/zzz/Krpc/src/include/Krpcapplication.h \
  /home/zzz/Krpc/src/include/Krpcconfig.h \
- /home/zzz/Krpc/src/include/Krpcchannel.h /usr/include/c++/11/thread \
- /usr/include/c++/11/bits/std_thread.h \
- /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/future \
- /usr/include/c++/11/bits/atomic_futex.h \
+ /home/zzz/Krpc/src/include/Krpcchannel.h /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h /usr/include/c++/11/queue \
+ /usr/include/c++/11/bits/stl_queue.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
  /home/zzz/Krpc/src/Krpcheader.pb.h \
  /home/zzz/Krpc/src/include/KrpcLogger.h /usr/include/glog/logging.h \

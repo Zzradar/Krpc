@@ -346,6 +346,12 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: ../example/callee/Kserver.cc 
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
   /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_queue.h \
   ../src/include/zookeeperutil.h \
   /usr/include/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
@@ -400,7 +406,6 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: ../example/callee/Kserver.cc 
   /usr/include/boost/detail/workaround.hpp \
   /usr/include/boost/config/workaround.hpp \
   /usr/include/boost/core/addressof.hpp \
-  /usr/include/c++/11/functional \
   /usr/include/muduo/net/Buffer.h \
   /usr/include/muduo/net/Endian.h \
   /usr/include/muduo/net/InetAddress.h \
@@ -849,8 +854,6 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 
 /usr/include/c++/11/version:
 
-/usr/include/boost/config/compiler/gcc.hpp:
-
 /usr/include/boost/config/detail/select_compiler_config.hpp:
 
 /usr/include/boost/operators.hpp:
@@ -888,6 +891,12 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 /usr/include/x86_64-linux-gnu/bits/socket.h:
 
 ../src/include/zookeeperutil.h:
+
+/usr/include/c++/11/bits/deque.tcc:
+
+/usr/include/boost/config/compiler/gcc.hpp:
+
+/usr/include/c++/11/deque:
 
 ../src/include/Krpcchannel.h:
 
@@ -1007,6 +1016,8 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 
 /usr/include/c++/11/backward/auto_ptr.h:
 
+/usr/include/c++/11/queue:
+
 /usr/include/c++/11/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/11/ext/concurrence.h:
@@ -1038,6 +1049,8 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 /usr/include/google/protobuf/service.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/11/bits/stl_deque.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
@@ -1308,6 +1321,8 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 /usr/include/c++/11/bits/std_function.h:
 
 /usr/include/c++/11/bits/stl_tempbuf.h:
+
+/usr/include/c++/11/bits/stl_queue.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 

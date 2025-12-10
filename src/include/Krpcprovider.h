@@ -16,6 +16,10 @@
 #include <cstdint>
 #include <mutex>
 #include <vector>
+#include <condition_variable>
+#include <deque>
+#include <thread>
+#include <atomic>
 
 #include "Krpcheader.pb.h"
 #include "Krpcprotocol.h"
@@ -45,6 +49,25 @@ private:
     std::mutex connection_states_mutex_;
     muduo::net::TimerId idle_timer_id_;
     int idle_close_threshold_ms_;
+
+    struct RpcTask {
+        google::protobuf::Service *service{nullptr};
+        const google::protobuf::MethodDescriptor *method{nullptr};
+        google::protobuf::Message *request{nullptr};
+        google::protobuf::Message *response{nullptr};
+        google::protobuf::Closure *done{nullptr};
+    };
+
+    std::deque<RpcTask> task_queue_;
+    std::mutex task_queue_mutex_;
+    std::condition_variable task_queue_cv_;
+    std::vector<std::thread> worker_threads_;
+    std::atomic<bool> stop_workers_{false};
+    size_t task_queue_capacity_{1024};
+    size_t queue_warn_threshold_{0};
+    size_t queue_high_watermark_{0};
+    bool queue_warn_active_{false};
+    int worker_thread_count_{0};
     
     void OnConnection(const muduo::net::TcpConnectionPtr& conn);
     void OnMessage(const muduo::net::TcpConnectionPtr& conn, muduo::net::Buffer* buffer, muduo::Timestamp receive_time);
@@ -56,6 +79,11 @@ private:
     void RemoveConnection(const muduo::net::TcpConnectionPtr &conn);
     void ScheduleIdleScan();
     void OnIdleScan();
+    void StartWorkerPool();
+    void StopWorkerPool();
+    bool EnqueueTask(RpcTask task);
+    void WorkerLoop();
+    void LogQueueMetricsLocked(size_t queue_size);
 
     class SendResponseClosure : public google::protobuf::Closure {
     public:

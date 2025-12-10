@@ -261,7 +261,10 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/future \
  /usr/include/c++/11/bits/atomic_futex.h \
- /usr/include/c++/11/bits/std_function.h \
+ /usr/include/c++/11/bits/std_function.h /usr/include/c++/11/functional \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_queue.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h \
  /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \

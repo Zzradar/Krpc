@@ -18,6 +18,7 @@
 #include <poll.h>
 #include "KrpcLogger.h"
 #include <vector>
+#include <utility>
 
 std::mutex g_data_mutx;  // 全局互斥锁，用于保护共享数据的线程安全
 
@@ -57,7 +58,7 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
                              ::google::protobuf::Closure *done)
 {
     HeartbeatActivityNotifier heartbeat_notifier(m_heartbeat_cv);
-    auto pending = CallFuture(method, controller, request, response, done);
+    auto pending = CallFuture(method, controller, request, response, done, AsyncCallback{});
     if (!pending) {
         return;
     }
@@ -80,18 +81,32 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
     pending->completion_future.wait();
 }
 
+void KrpcChannel::CallAsync(const ::google::protobuf::MethodDescriptor *method,
+                            ::google::protobuf::RpcController *controller,
+                            const ::google::protobuf::Message *request,
+                            ::google::protobuf::Message *response,
+                            AsyncCallback callback) {
+    HeartbeatActivityNotifier heartbeat_notifier(m_heartbeat_cv);
+    (void)CallFuture(method, controller, request, response, nullptr, std::move(callback));
+}
+
 std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
         const ::google::protobuf::MethodDescriptor *method,
         ::google::protobuf::RpcController *controller,
         const ::google::protobuf::Message *request,
         ::google::protobuf::Message *response,
-        ::google::protobuf::Closure *done) {
+        ::google::protobuf::Closure *done,
+        AsyncCallback callback) {
+    AsyncCallback user_callback = std::move(callback);
     auto fail_immediately = [&](const std::string &reason) -> std::shared_ptr<PendingCall> {
         if (controller && !reason.empty()) {
             controller->SetFailed(reason);
         }
         if (done) {
             done->Run();
+        }
+        if (user_callback) {
+            user_callback(controller, response);
         }
         return nullptr;
     };
@@ -131,10 +146,10 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
     if (sd == nullptr) {
         return fail_immediately("service descriptor missing");
     }
-    service_name = sd->name();
-    method_name = method->name();
-    krpcheader.set_service_name(service_name);
-    krpcheader.set_method_name(method_name);
+    const std::string request_service_name = sd->name();
+    const std::string request_method_name = method->name();
+    krpcheader.set_service_name(request_service_name);
+    krpcheader.set_method_name(request_method_name);
 
     const uint64_t request_id = NextRequestId();
     pending->request_id = request_id;
@@ -163,12 +178,11 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
         std::lock_guard<std::mutex> lock(m_pending_mutex);
         m_pending_calls[pending->request_id] = pending;
     }
+    m_timeout_cv.notify_all();
 
-    std::string send_error;
-    if (!SendBuffer(send_rpc_str, &send_error)) {
-        const std::string reason = send_error.empty() ? "send failed" : send_error;
-        RemovePendingCall(pending->request_id, reason);
-    }
+    pending->async_callback = std::move(user_callback);
+
+    EnqueueSend(pending->request_id, std::move(send_rpc_str));
 
     return pending;
 }
@@ -254,8 +268,8 @@ bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *m
         return false;
     }
 
-    service_name = sd->name();
-    method_name = method->name();
+    const std::string service_name = sd->name();
+    const std::string method_name = method->name();
 
     std::unique_lock<std::mutex> socket_lock(m_socket_mutex);
     if (m_clientfd != -1) {
@@ -343,17 +357,26 @@ KrpcChannel::KrpcChannel(bool connectNow)
             m_recv_thread(),
             m_recv_running(false),
             m_recv_thread_started(false),
+        m_send_queue(),
+        m_send_thread(),
+        m_send_running(false),
+        m_send_thread_started(false),
             m_waiting_heartbeat(false),
             m_waiting_heartbeat_id(0),
-            m_waiting_heartbeat_result(false) {
+        m_waiting_heartbeat_result(false),
+        m_timeout_thread(),
+        m_timeout_running(false),
+        m_timeout_thread_started(false) {
 
     auto &config = KrpcApplication::GetInstance().GetConfig();
     m_request_timeout_ms = ParseConfigInt(config.Load("rpc_timeout_ms"), KrpcProtocol::kDefaultRequestTimeoutMs);
     m_heartbeat_interval_ms = ParseConfigInt(config.Load("heartbeat_interval_ms"), KrpcProtocol::kDefaultHeartbeatIntervalMs);
     m_heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"), KrpcProtocol::kDefaultHeartbeatMissLimit);
 
+    StartSendThread();
     StartRecvThread();
     StartHeartbeatThread();
+    StartTimeoutThread();
 
     if (!connectNow) {  // 如果不需要立即连接
         return;
@@ -369,6 +392,8 @@ KrpcChannel::KrpcChannel(bool connectNow)
 }
 
 KrpcChannel::~KrpcChannel() {
+    StopTimeoutThread();
+    StopSendThread();
     StopHeartbeatThread();
     StopRecvThread();
     std::lock_guard<std::mutex> lock(m_socket_mutex);
@@ -397,6 +422,27 @@ void KrpcChannel::StopHeartbeatThread() {
         m_heartbeat_thread.join();
     }
     m_heartbeat_thread_started = false;
+}
+
+void KrpcChannel::StartSendThread() {
+    if (m_send_thread_started) {
+        return;
+    }
+    m_send_running.store(true, std::memory_order_release);
+    m_send_thread = std::thread(&KrpcChannel::SendLoop, this);
+    m_send_thread_started = true;
+}
+
+void KrpcChannel::StopSendThread() {
+    if (!m_send_thread_started) {
+        return;
+    }
+    m_send_running.store(false, std::memory_order_release);
+    m_send_cv.notify_all();
+    if (m_send_thread.joinable()) {
+        m_send_thread.join();
+    }
+    m_send_thread_started = false;
 }
 
 void KrpcChannel::StartRecvThread() {
@@ -536,6 +582,17 @@ void KrpcChannel::HandleHeartbeatFailure(const std::string &reason) {
         std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
         CloseConnectionLocked();
     }
+    std::vector<uint64_t> queued_ids;
+    {
+        std::lock_guard<std::mutex> send_lock(m_send_mutex);
+        while (!m_send_queue.empty()) {
+            queued_ids.push_back(m_send_queue.front().request_id);
+            m_send_queue.pop();
+        }
+    }
+    for (auto request_id : queued_ids) {
+        RemovePendingCall(request_id, reason);
+    }
     KrpcLogger::ERROR(reason.c_str());
     FailPendingCalls(reason);
     {
@@ -548,6 +605,31 @@ void KrpcChannel::HandleHeartbeatFailure(const std::string &reason) {
     m_heartbeat_wait_cv.notify_all();
     m_heartbeat_cv.notify_all();
     m_recv_cv.notify_all();
+    m_send_cv.notify_all();
+}
+
+void KrpcChannel::SendLoop() {
+    while (true) {
+        SendTask task;
+        {
+            std::unique_lock<std::mutex> lock(m_send_mutex);
+            m_send_cv.wait(lock, [this] {
+                return !m_send_running.load(std::memory_order_acquire) || !m_send_queue.empty();
+            });
+            if (!m_send_running.load(std::memory_order_acquire) && m_send_queue.empty()) {
+                break;
+            }
+            task = std::move(m_send_queue.front());
+            m_send_queue.pop();
+        }
+
+        std::string send_error;
+        if (!SendBuffer(task.buffer, &send_error)) {
+            const std::string reason = send_error.empty() ? "send failed" : send_error;
+            RemovePendingCall(task.request_id, reason);
+            HandleHeartbeatFailure(reason);
+        }
+    }
 }
 
 void KrpcChannel::RecvLoop() {
@@ -663,6 +745,71 @@ void KrpcChannel::RecvLoop() {
     }
 }
 
+void KrpcChannel::StartTimeoutThread() {
+    if (m_timeout_thread_started) {
+        return;
+    }
+    m_timeout_running.store(true, std::memory_order_release);
+    m_timeout_thread = std::thread(&KrpcChannel::TimeoutLoop, this);
+    m_timeout_thread_started = true;
+}
+
+void KrpcChannel::StopTimeoutThread() {
+    if (!m_timeout_thread_started) {
+        return;
+    }
+    m_timeout_running.store(false, std::memory_order_release);
+    m_timeout_cv.notify_all();
+    if (m_timeout_thread.joinable()) {
+        m_timeout_thread.join();
+    }
+    m_timeout_thread_started = false;
+}
+
+void KrpcChannel::TimeoutLoop() {
+    const auto interval = std::chrono::milliseconds(50);
+    while (m_timeout_running.load(std::memory_order_acquire)) {
+        {
+            std::unique_lock<std::mutex> lock(m_timeout_mutex);
+            m_timeout_cv.wait_for(lock, interval);
+            if (!m_timeout_running.load(std::memory_order_acquire)) {
+                break;
+            }
+        }
+
+        const auto now = std::chrono::steady_clock::now();
+        std::vector<std::shared_ptr<PendingCall>> expired;
+        {
+            std::lock_guard<std::mutex> lock(m_pending_mutex);
+            for (auto it = m_pending_calls.begin(); it != m_pending_calls.end();) {
+                const auto &pending = it->second;
+                if (pending->timeout_ms > 0 &&
+                    now - pending->start_time >= std::chrono::milliseconds(pending->timeout_ms)) {
+                    expired.emplace_back(pending);
+                    it = m_pending_calls.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
+
+        for (auto &pending : expired) {
+            CompletePending(pending, "timeout", false);
+        }
+    }
+}
+
+void KrpcChannel::EnqueueSend(uint64_t request_id, std::string &&buffer) {
+    {
+        std::lock_guard<std::mutex> lock(m_send_mutex);
+        SendTask task;
+        task.request_id = request_id;
+        task.buffer = std::move(buffer);
+        m_send_queue.push(std::move(task));
+    }
+    m_send_cv.notify_one();
+}
+
 void KrpcChannel::ResolvePendingCall(const Krpc::RpcHeader &header, const std::string &payload) {
     std::shared_ptr<PendingCall> pending;
     {
@@ -677,20 +824,12 @@ void KrpcChannel::ResolvePendingCall(const Krpc::RpcHeader &header, const std::s
 
     if (pending->response != nullptr) {
         if (!pending->response->ParseFromString(payload)) {
-            if (pending->controller) {
-                pending->controller->SetFailed("parse response payload error");
-            }
+            CompletePending(pending, "parse response payload error", false);
+            return;
         }
     }
 
-    try {
-        pending->promise.set_value();
-    } catch (const std::future_error &) {
-    }
-
-    if (pending->done) {
-        pending->done->Run();
-    }
+    CompletePending(pending, std::string(), true);
 }
 
 void KrpcChannel::ResolveHeartbeat(const Krpc::RpcHeader &header) {
@@ -715,16 +854,7 @@ void KrpcChannel::RemovePendingCall(uint64_t request_id, const std::string &reas
         m_pending_calls.erase(it);
     }
 
-    if (pending->controller && !reason.empty()) {
-        pending->controller->SetFailed(reason);
-    }
-    try {
-        pending->promise.set_value();
-    } catch (const std::future_error &) {
-    }
-    if (pending->done) {
-        pending->done->Run();
-    }
+    CompletePending(pending, reason, false);
 }
 
 void KrpcChannel::FailPendingCalls(const std::string &reason) {
@@ -738,15 +868,25 @@ void KrpcChannel::FailPendingCalls(const std::string &reason) {
     }
 
     for (auto &pending : pendings) {
-        if (pending->controller && !reason.empty()) {
-            pending->controller->SetFailed(reason);
-        }
-        try {
-            pending->promise.set_value();
-        } catch (const std::future_error &) {
-        }
-        if (pending->done) {
-            pending->done->Run();
-        }
+        CompletePending(pending, reason, false);
+    }
+}
+
+void KrpcChannel::CompletePending(const std::shared_ptr<PendingCall> &pending, const std::string &reason, bool success) {
+    if (!pending) {
+        return;
+    }
+    if (!success && pending->controller && !reason.empty()) {
+        pending->controller->SetFailed(reason);
+    }
+    try {
+        pending->promise.set_value();
+    } catch (const std::future_error &) {
+    }
+    if (pending->done) {
+        pending->done->Run();
+    }
+    if (pending->async_callback) {
+        pending->async_callback(pending->controller, pending->response);
     }
 }

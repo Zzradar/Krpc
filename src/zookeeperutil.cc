@@ -48,20 +48,38 @@ void ZkClient::Start() {
 
 // 创建ZooKeeper节点
 void ZkClient::Create(const char *path, const char *data, int datalen, int state) {
-    char path_buffer[128];  // 用于存储创建的节点路径
+    char path_buffer[128];
     int bufferlen = sizeof(path_buffer);
 
-    // 检查节点是否已经存在
-    int flag = zoo_exists(m_zhandle, path, 0, nullptr);
-    if (flag == ZNONODE) {  // 如果节点不存在
-        // 创建指定的ZooKeeper节点
-        flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
-        if (flag == ZOK) {  // 创建成功
+    const int exists_flag = zoo_exists(m_zhandle, path, 0, nullptr);
+    if (exists_flag == ZNONODE) {
+        int create_flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
+        if (create_flag == ZOK) {
             LOG(INFO) << "znode create success... path:" << path;
-        } else {  // 创建失败
-            LOG(ERROR) << "znode create failed... path:" << path;
-            exit(EXIT_FAILURE);  // 退出程序
+            return;
         }
+        LOG(ERROR) << "znode create failed... path:" << path << ", err=" << create_flag;
+        exit(EXIT_FAILURE);
+    }
+
+    if (exists_flag == ZOK && state == ZOO_EPHEMERAL) {
+        int delete_flag = zoo_delete(m_zhandle, path, -1);
+        if (delete_flag != ZOK && delete_flag != ZNONODE) {
+            LOG(ERROR) << "znode delete failed before recreate... path:" << path << ", err=" << delete_flag;
+            exit(EXIT_FAILURE);
+        }
+        int create_flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
+        if (create_flag == ZOK) {
+            LOG(INFO) << "znode recreate success... path:" << path;
+            return;
+        }
+        LOG(ERROR) << "znode recreate failed... path:" << path << ", err=" << create_flag;
+        exit(EXIT_FAILURE);
+    }
+
+    if (exists_flag != ZOK) {
+        LOG(ERROR) << "znode check failed... path:" << path << ", err=" << exists_flag;
+        exit(EXIT_FAILURE);
     }
 }
 

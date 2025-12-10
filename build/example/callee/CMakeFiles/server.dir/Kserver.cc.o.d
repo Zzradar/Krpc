@@ -280,7 +280,10 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
  /usr/include/c++/11/bits/atomic_futex.h \
- /usr/include/c++/11/bits/std_function.h \
+ /usr/include/c++/11/bits/std_function.h /usr/include/c++/11/functional \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_queue.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \
@@ -326,11 +329,10 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /usr/include/boost/config/helper_macros.hpp \
  /usr/include/boost/detail/workaround.hpp \
  /usr/include/boost/config/workaround.hpp \
- /usr/include/boost/core/addressof.hpp /usr/include/c++/11/functional \
- /usr/include/muduo/net/Buffer.h /usr/include/muduo/net/Endian.h \
- /usr/include/muduo/net/InetAddress.h /usr/include/netinet/in.h \
- /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/boost/any.hpp \
- /usr/include/boost/type_index.hpp \
+ /usr/include/boost/core/addressof.hpp /usr/include/muduo/net/Buffer.h \
+ /usr/include/muduo/net/Endian.h /usr/include/muduo/net/InetAddress.h \
+ /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
+ /usr/include/boost/any.hpp /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/container_hash/hash_fwd.hpp \
