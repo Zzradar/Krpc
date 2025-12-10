@@ -14,3 +14,6 @@
 /home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/timeout_client.dir
 /home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/edit_cache.dir
 /home/zzz/Krpc/build/example/timeout_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
+/home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/rebuild_cache.dir

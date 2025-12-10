@@ -5,6 +5,22 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <iostream>
+#include <vector>
+
+namespace {
+
+int ParseConfigInt(const std::string &value, int default_value) {
+    if (value.empty()) {
+        return default_value;
+    }
+    try {
+        return std::stoi(value);
+    } catch (...) {
+        return default_value;
+    }
+}
+
+} // namespace
 
 KrpcProvider::SendResponseClosure::SendResponseClosure(KrpcProvider *provider,
                                                       muduo::net::TcpConnectionPtr conn,
@@ -97,16 +113,20 @@ void KrpcProvider::Run() {
     std::cout << "RpcProvider start service at ip:" << ip << " port:" << port << std::endl;
 
     // 启动网络服务
+    ScheduleIdleScan();
+
     server->start();
     event_loop.loop();  // 进入事件循环
 }
 
 // 连接回调函数，处理客户端连接事件
 void KrpcProvider::OnConnection(const muduo::net::TcpConnectionPtr &conn) {
-    if (!conn->connected()) {
-        // 如果连接关闭，则断开连接
-        conn->shutdown();
+    if (conn->connected()) {
+        RegisterConnection(conn);
+        return;
     }
+    RemoveConnection(conn);
+    conn->shutdown();
 }
 
 // 消息回调函数，处理客户端发送的RPC请求
@@ -152,11 +172,6 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
         return;
     }
 
-    if (rpc_header.msg_type() != Krpc::MSG_TYPE_REQUEST) {
-        KrpcLogger::ERROR("unsupported msg type");
-        return;
-    }
-
     const std::string service_name = rpc_header.service_name();
     const std::string method_name = rpc_header.method_name();
     const uint32_t body_size = rpc_header.body_size();
@@ -168,6 +183,18 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
             KrpcLogger::ERROR("read args error");
             return;
         }
+    }
+
+    TouchConnection(conn);
+
+    if (rpc_header.msg_type() == Krpc::MSG_TYPE_PING || rpc_header.msg_type() == Krpc::MSG_TYPE_PONG) {
+        HandleHeartbeatFrame(conn, rpc_header);
+        return;
+    }
+
+    if (rpc_header.msg_type() != Krpc::MSG_TYPE_REQUEST) {
+        KrpcLogger::ERROR("unsupported msg type");
+        return;
     }
 
     // 获取service对象和method对象
@@ -233,6 +260,101 @@ void KrpcProvider::SendRpcResponse(const muduo::net::TcpConnectionPtr &conn, uin
     send_buf += response_str;
     conn->send(send_buf);
     delete response;
+}
+
+void KrpcProvider::SendHeartbeatFrame(const muduo::net::TcpConnectionPtr &conn,
+                                      Krpc::MsgType type,
+                                      uint64_t request_id) {
+    Krpc::RpcHeader header;
+    header.set_magic(KrpcProtocol::kDefaultMagic);
+    header.set_version(KrpcProtocol::kDefaultVersion);
+    header.set_msg_type(type);
+    header.set_request_id(request_id);
+    header.set_body_size(0);
+    header.set_compress_type(Krpc::COMPRESS_NONE);
+
+    std::string header_str;
+    if (!header.SerializeToString(&header_str)) {
+        KrpcLogger::ERROR("serialize heartbeat header error");
+        return;
+    }
+
+    std::string send_buf;
+    {
+        google::protobuf::io::StringOutputStream string_output(&send_buf);
+        google::protobuf::io::CodedOutputStream coded_output(&string_output);
+        coded_output.WriteVarint32(static_cast<uint32_t>(header_str.size()));
+        coded_output.WriteString(header_str);
+    }
+
+    conn->send(send_buf);
+}
+
+void KrpcProvider::HandleHeartbeatFrame(const muduo::net::TcpConnectionPtr &conn, const Krpc::RpcHeader &header) {
+    if (header.msg_type() == Krpc::MSG_TYPE_PING) {
+        SendHeartbeatFrame(conn, Krpc::MSG_TYPE_PONG, header.request_id());
+        return;
+    }
+    // MSG_TYPE_PONG received from client — nothing to send back.
+}
+
+void KrpcProvider::TouchConnection(const muduo::net::TcpConnectionPtr &conn) {
+    std::lock_guard<std::mutex> lock(connection_states_mutex_);
+    auto it = connection_states_.find(conn.get());
+    if (it == connection_states_.end()) {
+        return;
+    }
+    it->second.last_activity = muduo::Timestamp::now();
+    it->second.missed_heartbeats = 0;
+}
+
+void KrpcProvider::RegisterConnection(const muduo::net::TcpConnectionPtr &conn) {
+    std::lock_guard<std::mutex> lock(connection_states_mutex_);
+    ConnectionState state;
+    state.last_activity = muduo::Timestamp::now();
+    state.missed_heartbeats = 0;
+    state.weak_conn = conn;
+    connection_states_[conn.get()] = state;
+}
+
+void KrpcProvider::RemoveConnection(const muduo::net::TcpConnectionPtr &conn) {
+    std::lock_guard<std::mutex> lock(connection_states_mutex_);
+    connection_states_.erase(conn.get());
+}
+
+void KrpcProvider::ScheduleIdleScan() {
+    auto &config = KrpcApplication::GetInstance().GetConfig();
+    const int heartbeat_interval_ms = ParseConfigInt(config.Load("heartbeat_interval_ms"),
+                                                     KrpcProtocol::kDefaultHeartbeatIntervalMs);
+    const int heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"),
+                                                    KrpcProtocol::kDefaultHeartbeatMissLimit);
+
+    idle_close_threshold_ms_ = heartbeat_interval_ms * (heartbeat_miss_limit + 1);
+    double interval_seconds = static_cast<double>(heartbeat_interval_ms) / 1000.0;
+    idle_timer_id_ = event_loop.runEvery(interval_seconds, std::bind(&KrpcProvider::OnIdleScan, this));
+}
+
+void KrpcProvider::OnIdleScan() {
+    std::vector<muduo::net::TcpConnectionPtr> to_close;
+    const muduo::Timestamp now = muduo::Timestamp::now();
+    {
+        std::lock_guard<std::mutex> lock(connection_states_mutex_);
+        for (auto &entry : connection_states_) {
+            const auto &state = entry.second;
+            const double idle_ms = muduo::timeDifference(now, state.last_activity) * 1000.0;
+            if (idle_ms >= static_cast<double>(idle_close_threshold_ms_)) {
+                auto conn = state.weak_conn.lock();
+                if (conn) {
+                    to_close.push_back(conn);
+                }
+            }
+        }
+    }
+
+    for (auto &conn : to_close) {
+        KrpcLogger::ERROR("closing idle connection");
+        conn->forceClose();
+    }
 }
 
 // 析构函数，退出事件循环

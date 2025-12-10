@@ -47,6 +47,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/zzz/Krpc/build/example/callee/cmake_install.cmake")
   include("/home/zzz/Krpc/build/example/caller/cmake_install.cmake")
   include("/home/zzz/Krpc/build/example/timeout_demo/cmake_install.cmake")
+  include("/home/zzz/Krpc/build/example/heartbeat_demo/cmake_install.cmake")
 
 endif()
 

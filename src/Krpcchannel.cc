@@ -14,6 +14,7 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <atomic>
+#include <chrono>
 #include <poll.h>
 #include "KrpcLogger.h"
 
@@ -25,6 +26,15 @@ std::atomic<uint64_t> g_request_id{1};
 uint64_t NextRequestId() {
     return g_request_id.fetch_add(1, std::memory_order_relaxed);
 }
+
+class HeartbeatActivityNotifier {
+public:
+    explicit HeartbeatActivityNotifier(std::condition_variable &cv) : cv_(cv) {}
+    ~HeartbeatActivityNotifier() { cv_.notify_all(); }
+
+private:
+    std::condition_variable &cv_;
+};
 
 int ParseConfigInt(const std::string &value, int default_value) {
     if (value.empty()) {
@@ -45,39 +55,11 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
                              ::google::protobuf::Message *response,
                              ::google::protobuf::Closure *done)
 {
-    if (-1 == m_clientfd) {  // 如果客户端socket未初始化
-        // 获取服务对象名和方法名
-        const google::protobuf::ServiceDescriptor *sd = method->service();
-        service_name = sd->name();  // 服务名
-        method_name = method->name();  // 方法名
+    HeartbeatActivityNotifier heartbeat_notifier(m_heartbeat_cv);
 
-        // 客户端需要查询ZooKeeper，找到提供该服务的服务器地址
-        ZkClient zkCli;
-        zkCli.Start();  // 连接ZooKeeper服务器
-        std::string host_data = QueryServiceHost(&zkCli, service_name, method_name, m_idx);  // 查询服务地址
-        if (host_data.empty()) {
-            if (controller) {
-                controller->SetFailed("service node not found: " + service_name + "/" + method_name);
-            }
-            return;
-        }
-        m_ip = host_data.substr(0, m_idx);  // 从查询结果中提取IP地址
-        std::cout << "ip: " << m_ip << std::endl;
-        m_port = atoi(host_data.substr(m_idx + 1, host_data.size() - m_idx).c_str());  // 从查询结果中提取端口号
-        std::cout << "port: " << m_port << std::endl;
-
-        // 尝试连接服务器
-        std::string connect_error;
-        auto rt = newConnect(m_ip.c_str(), m_port, &connect_error);
-        if (!rt) {
-            if (controller) {
-                controller->SetFailed(connect_error.empty() ? "connect server error" : connect_error);
-            }
-            return;
-        } else {
-            LOG(INFO) << "connect server success";  // 连接成功，记录日志
-        }
-    }  // endif
+    const google::protobuf::ServiceDescriptor *sd = method->service();
+    service_name = sd->name();
+    method_name = method->name();
 
     // 将请求参数序列化为字符串，并计算其长度
     uint32_t args_size{};
@@ -122,16 +104,6 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
     }
     send_rpc_str += args_str;  // 拼接请求参数
 
-    // 发送RPC请求到服务器
-    if (-1 == send(m_clientfd, send_rpc_str.c_str(), send_rpc_str.size(), 0)) {
-        close(m_clientfd);  // 发送失败，关闭socket
-        m_clientfd = -1;  // 重置socket文件描述符
-        char errtxt[512] = {};
-        std::cout << "send error: " << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
-        controller->SetFailed(errtxt);  // 设置错误信息
-        return;
-    }
-
     int timeout_ms = m_request_timeout_ms;
     if (controller) {
         if (auto *krpc_controller = dynamic_cast<Krpccontroller *>(controller)) {
@@ -139,6 +111,47 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
                 timeout_ms = krpc_controller->TimeoutMs();
             }
         }
+    }
+
+    std::unique_lock<std::mutex> socket_lock(m_socket_mutex);
+    if (m_clientfd == -1) {
+        socket_lock.unlock();
+        ZkClient zkCli;
+        zkCli.Start();
+        std::string host_data = QueryServiceHost(&zkCli, service_name, method_name, m_idx);
+        if (host_data.empty()) {
+            if (controller) {
+                controller->SetFailed("service node not found: " + service_name + "/" + method_name);
+            }
+            return;
+        }
+        std::string target_ip = host_data.substr(0, m_idx);
+        uint16_t target_port = static_cast<uint16_t>(atoi(host_data.substr(m_idx + 1).c_str()));
+        socket_lock.lock();
+        if (m_clientfd == -1) {
+            m_ip = target_ip;
+            m_port = target_port;
+            std::string connect_error;
+            if (!newConnect(m_ip.c_str(), m_port, &connect_error)) {
+                if (controller) {
+                    controller->SetFailed(connect_error.empty() ? "connect server error" : connect_error);
+                }
+                return;
+            }
+            LOG(INFO) << "connect server success";
+        }
+    }
+
+    // 发送RPC请求到服务器
+    if (-1 == send(m_clientfd, send_rpc_str.c_str(), send_rpc_str.size(), 0)) {
+        close(m_clientfd);  // 发送失败，关闭socket
+        m_clientfd = -1;  // 重置socket文件描述符
+        char errtxt[512] = {};
+        std::cout << "send error: " << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
+        if (controller) {
+            controller->SetFailed(errtxt);
+        }
+        return;
     }
 
     struct pollfd pfd;
@@ -177,7 +190,9 @@ void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
     if (-1 == (recv_size = recv(m_clientfd, recv_buf, sizeof(recv_buf), 0))) {
         char errtxt[512] = {};
         std::cout << "recv error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
-        controller->SetFailed(errtxt);  // 设置错误信息
+        if (controller) {
+            controller->SetFailed(errtxt);
+        }
         return;
     }
 
@@ -302,16 +317,23 @@ std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string servic
 
 // 构造函数，支持延迟连接
 KrpcChannel::KrpcChannel(bool connectNow)
-    : m_clientfd(-1),
-      m_idx(0),
-      m_request_timeout_ms(KrpcProtocol::kDefaultRequestTimeoutMs),
-      m_heartbeat_interval_ms(KrpcProtocol::kDefaultHeartbeatIntervalMs),
-      m_heartbeat_miss_limit(KrpcProtocol::kDefaultHeartbeatMissLimit) {
+        : m_clientfd(-1),
+            m_idx(0),
+            m_request_timeout_ms(KrpcProtocol::kDefaultRequestTimeoutMs),
+            m_heartbeat_interval_ms(KrpcProtocol::kDefaultHeartbeatIntervalMs),
+            m_heartbeat_miss_limit(KrpcProtocol::kDefaultHeartbeatMissLimit),
+            m_heartbeat_thread(),
+            m_heartbeat_running(false),
+            m_heartbeat_thread_started(false),
+            m_missed_heartbeat_count(0),
+            m_last_pong_time(std::chrono::steady_clock::now()) {
 
     auto &config = KrpcApplication::GetInstance().GetConfig();
     m_request_timeout_ms = ParseConfigInt(config.Load("rpc_timeout_ms"), KrpcProtocol::kDefaultRequestTimeoutMs);
     m_heartbeat_interval_ms = ParseConfigInt(config.Load("heartbeat_interval_ms"), KrpcProtocol::kDefaultHeartbeatIntervalMs);
     m_heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"), KrpcProtocol::kDefaultHeartbeatMissLimit);
+
+        StartHeartbeatThread();
 
     if (!connectNow) {  // 如果不需要立即连接
         return;
@@ -324,5 +346,172 @@ KrpcChannel::KrpcChannel(bool connectNow)
     while (!rt && count--) {
         rt = newConnect(m_ip.c_str(), m_port, &errtxt);
     }
+}
 
+KrpcChannel::~KrpcChannel() {
+    StopHeartbeatThread();
+    std::lock_guard<std::mutex> lock(m_socket_mutex);
+    if (m_clientfd != -1) {
+        close(m_clientfd);
+        m_clientfd = -1;
+    }
+}
+
+void KrpcChannel::StartHeartbeatThread() {
+    if (m_heartbeat_thread_started) {
+        return;
+    }
+    m_heartbeat_running.store(true, std::memory_order_release);
+    m_heartbeat_thread = std::thread(&KrpcChannel::HeartbeatLoop, this);
+    m_heartbeat_thread_started = true;
+}
+
+void KrpcChannel::StopHeartbeatThread() {
+    if (!m_heartbeat_thread_started) {
+        return;
+    }
+    m_heartbeat_running.store(false, std::memory_order_release);
+    m_heartbeat_cv.notify_all();
+    if (m_heartbeat_thread.joinable()) {
+        m_heartbeat_thread.join();
+    }
+    m_heartbeat_thread_started = false;
+}
+
+void KrpcChannel::HeartbeatLoop() {
+    std::unique_lock<std::mutex> heartbeat_lock(m_heartbeat_mutex);
+    while (m_heartbeat_running.load(std::memory_order_acquire)) {
+        m_heartbeat_cv.wait_for(heartbeat_lock, std::chrono::milliseconds(m_heartbeat_interval_ms));
+        if (!m_heartbeat_running.load(std::memory_order_acquire)) {
+            break;
+        }
+
+        bool has_connection = false;
+        {
+            std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
+            has_connection = (m_clientfd != -1);
+        }
+        if (!has_connection) {
+            m_missed_heartbeat_count = 0;
+            continue;
+        }
+
+        heartbeat_lock.unlock();
+        auto result = SendHeartbeatOnce();
+        heartbeat_lock.lock();
+
+        if (!m_heartbeat_running.load(std::memory_order_acquire)) {
+            break;
+        }
+
+        switch (result) {
+            case HeartbeatResult::kSuccess:
+                m_missed_heartbeat_count = 0;
+                m_last_pong_time = std::chrono::steady_clock::now();
+                break;
+            case HeartbeatResult::kTimeout:
+                ++m_missed_heartbeat_count;
+                if (m_missed_heartbeat_count >= m_heartbeat_miss_limit) {
+                    HandleHeartbeatFailure("heartbeat timeout");
+                    m_missed_heartbeat_count = 0;
+                }
+                break;
+            case HeartbeatResult::kFatal:
+                HandleHeartbeatFailure("heartbeat fatal error");
+                m_missed_heartbeat_count = 0;
+                break;
+        }
+    }
+}
+
+KrpcChannel::HeartbeatResult KrpcChannel::SendHeartbeatOnce() {
+    std::unique_lock<std::mutex> socket_lock(m_socket_mutex);
+    if (m_clientfd == -1) {
+        return HeartbeatResult::kSuccess;
+    }
+
+    const uint64_t request_id = NextRequestId();
+
+    Krpc::RpcHeader header;
+    header.set_magic(KrpcProtocol::kDefaultMagic);
+    header.set_version(KrpcProtocol::kDefaultVersion);
+    header.set_msg_type(Krpc::MSG_TYPE_PING);
+    header.set_request_id(request_id);
+    header.set_body_size(0);
+    header.set_compress_type(Krpc::COMPRESS_NONE);
+
+    std::string header_str;
+    if (!header.SerializeToString(&header_str)) {
+        return HeartbeatResult::kFatal;
+    }
+
+    std::string send_buf;
+    {
+        google::protobuf::io::StringOutputStream string_output(&send_buf);
+        google::protobuf::io::CodedOutputStream coded_output(&string_output);
+        coded_output.WriteVarint32(static_cast<uint32_t>(header_str.size()));
+        coded_output.WriteString(header_str);
+    }
+
+    if (-1 == send(m_clientfd, send_buf.c_str(), send_buf.size(), 0)) {
+        return HeartbeatResult::kFatal;
+    }
+
+    struct pollfd pfd;
+    pfd.fd = m_clientfd;
+    pfd.events = POLLIN;
+    pfd.revents = 0;
+    int poll_ret = poll(&pfd, 1, m_request_timeout_ms);
+    if (poll_ret == 0) {
+        return HeartbeatResult::kTimeout;
+    }
+    if (poll_ret < 0 || !(pfd.revents & POLLIN)) {
+        return HeartbeatResult::kFatal;
+    }
+
+    char recv_buf[512] = {0};
+    int recv_size = recv(m_clientfd, recv_buf, sizeof(recv_buf), 0);
+    if (recv_size <= 0) {
+        return HeartbeatResult::kFatal;
+    }
+
+    google::protobuf::io::ArrayInputStream resp_input(recv_buf, recv_size);
+    google::protobuf::io::CodedInputStream resp_coded(&resp_input);
+    uint32_t resp_header_size{};
+    if (!resp_coded.ReadVarint32(&resp_header_size)) {
+        return HeartbeatResult::kFatal;
+    }
+
+    std::string resp_header_str;
+    auto resp_limit = resp_coded.PushLimit(resp_header_size);
+    bool header_ok = resp_coded.ReadString(&resp_header_str, resp_header_size);
+    resp_coded.PopLimit(resp_limit);
+    if (!header_ok) {
+        return HeartbeatResult::kFatal;
+    }
+
+    Krpc::RpcHeader resp_header;
+    if (!resp_header.ParseFromString(resp_header_str)) {
+        return HeartbeatResult::kFatal;
+    }
+
+    if (resp_header.magic() != KrpcProtocol::kDefaultMagic ||
+        resp_header.msg_type() != Krpc::MSG_TYPE_PONG ||
+        resp_header.request_id() != request_id) {
+        return HeartbeatResult::kFatal;
+    }
+
+    return HeartbeatResult::kSuccess;
+}
+
+void KrpcChannel::HandleHeartbeatFailure(const std::string &reason) {
+    {
+        std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
+        if (m_clientfd != -1) {
+            close(m_clientfd);
+            m_clientfd = -1;
+        }
+    }
+    KrpcLogger::ERROR(reason.c_str());
+    m_heartbeat_cv.notify_all();
 }

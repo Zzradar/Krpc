@@ -257,7 +257,9 @@ src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: \
  /usr/include/c++/11/bits/stl_multiset.h /usr/include/c++/11/vector \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
- /usr/include/c++/11/bits/vector.tcc \
+ /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/atomic \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
  /home/zzz/Krpc/src/include/KrpcLogger.h /usr/include/glog/logging.h \

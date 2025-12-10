@@ -21,6 +21,7 @@ void send_request(int thread_id, std::atomic<int> &success_count, std::atomic<in
     Kuser::LoginResponse response;
     Krpccontroller controller;  // 创建控制器对象，用于处理 RPC 调用过程中的错误
     for (int i = 0; i < requests_per_thread; ++i) {
+        controller.Reset();
         // 调用远程的 Login 方法
         stub.Login(&controller, &request, &response, nullptr);
 

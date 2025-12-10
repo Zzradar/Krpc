@@ -14,6 +14,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../example/CMakeLists.txt"
   "../example/callee/CMakeLists.txt"
   "../example/caller/CMakeLists.txt"
+  "../example/heartbeat_demo/CMakeLists.txt"
   "../example/timeout_demo/CMakeLists.txt"
   "../src/CMakeLists.txt"
   "/usr/share/cmake-3.22/Modules/CMakeCInformation.cmake"
@@ -58,6 +59,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "example/callee/CMakeFiles/CMakeDirectoryInformation.cmake"
   "example/caller/CMakeFiles/CMakeDirectoryInformation.cmake"
   "example/timeout_demo/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "example/heartbeat_demo/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -66,4 +68,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "example/callee/CMakeFiles/server.dir/DependInfo.cmake"
   "example/caller/CMakeFiles/client.dir/DependInfo.cmake"
   "example/timeout_demo/CMakeFiles/timeout_client.dir/DependInfo.cmake"
+  "example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/DependInfo.cmake"
   )

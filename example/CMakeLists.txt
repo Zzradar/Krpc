@@ -1,3 +1,4 @@
 add_subdirectory(callee)
 add_subdirectory(caller)
 add_subdirectory(timeout_demo)
+add_subdirectory(heartbeat_demo)

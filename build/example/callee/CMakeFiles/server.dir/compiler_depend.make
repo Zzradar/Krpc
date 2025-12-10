@@ -339,6 +339,10 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: ../example/callee/Kserver.cc 
   ../src/include/Krpcapplication.h \
   ../src/include/Krpcconfig.h \
   ../src/include/Krpcchannel.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/condition_variable \
   ../src/include/zookeeperutil.h \
   /usr/include/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
@@ -365,7 +369,6 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: ../example/callee/Kserver.cc 
   /usr/include/zookeeper/zookeeper_version.h \
   /usr/include/zookeeper/recordio.h \
   /usr/include/zookeeper/zookeeper.jute.h \
-  /usr/include/c++/11/condition_variable \
   ../src/include/Krpccontroller.h \
   ../src/include/Krpcprovider.h \
   /usr/include/muduo/net/TcpServer.h \
@@ -440,10 +443,8 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: ../example/callee/Kserver.cc 
   /usr/include/muduo/base/Mutex.h \
   /usr/include/muduo/base/CurrentThread.h \
   /usr/include/muduo/net/TimerId.h \
-  ../src/include/Krpcprotocol.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h
+  ../src/include/Krpcheader.pb.h \
+  ../src/include/Krpcprotocol.h
 
 example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
   /usr/include/stdc-predef.h \
@@ -788,6 +789,8 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 
 ../src/include/Krpcprotocol.h:
 
+../src/include/Krpcheader.pb.h:
+
 /usr/include/muduo/base/CurrentThread.h:
 
 /usr/include/boost/utility/enable_if.hpp:
@@ -930,11 +933,11 @@ example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: ../example/user.pb.cc \
 
 /usr/include/c++/11/ctime:
 
-/usr/include/c++/11/thread:
-
 /usr/include/muduo/net/TcpServer.h:
 
 /usr/include/c++/11/condition_variable:
+
+/usr/include/c++/11/thread:
 
 /usr/include/c++/11/ratio:
 

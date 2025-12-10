@@ -168,6 +168,19 @@ timeout_client/fast:
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/build
 .PHONY : timeout_client/fast
 
+#=============================================================================
+# Target rules for targets named heartbeat_client
+
+# Build rule for target.
+heartbeat_client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 heartbeat_client
+.PHONY : heartbeat_client
+
+# fast build rule for target.
+heartbeat_client/fast:
+	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build
+.PHONY : heartbeat_client/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -177,6 +190,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... client"
+	@echo "... heartbeat_client"
 	@echo "... krpc_core"
 	@echo "... server"
 	@echo "... timeout_client"

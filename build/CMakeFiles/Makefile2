@@ -84,18 +84,21 @@ clean: example/clean
 example/all: example/callee/all
 example/all: example/caller/all
 example/all: example/timeout_demo/all
+example/all: example/heartbeat_demo/all
 .PHONY : example/all
 
 # Recursive "preinstall" directory target.
 example/preinstall: example/callee/preinstall
 example/preinstall: example/caller/preinstall
 example/preinstall: example/timeout_demo/preinstall
+example/preinstall: example/heartbeat_demo/preinstall
 .PHONY : example/preinstall
 
 # Recursive "clean" directory target.
 example/clean: example/callee/clean
 example/clean: example/caller/clean
 example/clean: example/timeout_demo/clean
+example/clean: example/heartbeat_demo/clean
 .PHONY : example/clean
 
 #=============================================================================
@@ -127,6 +130,21 @@ example/caller/preinstall:
 # Recursive "clean" directory target.
 example/caller/clean: example/caller/CMakeFiles/client.dir/clean
 .PHONY : example/caller/clean
+
+#=============================================================================
+# Directory level rules for directory example/heartbeat_demo
+
+# Recursive "all" directory target.
+example/heartbeat_demo/all: example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all
+.PHONY : example/heartbeat_demo/all
+
+# Recursive "preinstall" directory target.
+example/heartbeat_demo/preinstall:
+.PHONY : example/heartbeat_demo/preinstall
+
+# Recursive "clean" directory target.
+example/heartbeat_demo/clean: example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean
+.PHONY : example/heartbeat_demo/clean
 
 #=============================================================================
 # Directory level rules for directory example/timeout_demo
@@ -165,7 +183,7 @@ src/clean: src/CMakeFiles/krpc_core.dir/clean
 src/CMakeFiles/krpc_core.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=4,5,6,7,8,9,10,11 "Built target krpc_core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target krpc_core"
 .PHONY : src/CMakeFiles/krpc_core.dir/all
 
 # Build rule for subdir invocation for target.
@@ -191,7 +209,7 @@ src/CMakeFiles/krpc_core.dir/clean:
 example/callee/CMakeFiles/server.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/callee/CMakeFiles/server.dir/build.make example/callee/CMakeFiles/server.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/callee/CMakeFiles/server.dir/build.make example/callee/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=12,13,14 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=15,16,17 "Built target server"
 .PHONY : example/callee/CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -243,7 +261,7 @@ example/caller/CMakeFiles/client.dir/clean:
 example/timeout_demo/CMakeFiles/timeout_client.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=15,16,17 "Built target timeout_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=18,19,20 "Built target timeout_client"
 .PHONY : example/timeout_demo/CMakeFiles/timeout_client.dir/all
 
 # Build rule for subdir invocation for target.
@@ -261,6 +279,32 @@ timeout_client: example/timeout_demo/CMakeFiles/timeout_client.dir/rule
 example/timeout_demo/CMakeFiles/timeout_client.dir/clean:
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/clean
 .PHONY : example/timeout_demo/CMakeFiles/timeout_client.dir/clean
+
+#=============================================================================
+# Target rules for target example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
+
+# All Build rule for target.
+example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all: src/CMakeFiles/krpc_core.dir/all
+	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/depend
+	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=4,5,6 "Built target heartbeat_client"
+.PHONY : example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all
+
+# Build rule for subdir invocation for target.
+example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 11
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 0
+.PHONY : example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/rule
+
+# Convenience name for target.
+heartbeat_client: example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/rule
+.PHONY : heartbeat_client
+
+# clean rule for target.
+example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean
+.PHONY : example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

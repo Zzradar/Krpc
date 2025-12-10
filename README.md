@@ -114,3 +114,39 @@ C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛
 
 本文档仅为星球内部专享，大家可以加入[知识星球](https://programmercarl.com/other/kstar.html)里获取。
 
+## 心跳与空闲连接测试指引
+
+当前源码已经内置**心跳保活**和**服务端空闲踢除**机制，相关配置项位于 `bin/test.conf`：
+
+- `heartbeat_interval_ms`：客户端心跳发送周期（默认 5000ms）。
+- `heartbeat_miss_limit`：允许连续丢失的心跳次数（默认 3 次）。
+- `rpc_timeout_ms`：同步 RPC 的默认超时时间，心跳往返也沿用该超时。
+
+### 验证步骤
+
+1. **编译**
+	```bash
+	cmake --build build
+	```
+2. **启动服务端**（终端 A）
+	```bash
+	bin/server -i bin/test.conf
+	```
+3. **长时间心跳演示**（终端 B）
+	```bash
+	HEARTBEAT_IDLE_SECONDS=30 HEARTBEAT_IDLE_ROUNDS=2 bin/heartbeat_client -i bin/test.conf
+	```
+	- 每轮执行一次 `Login`，然后空闲 30s。期间客户端日志应持续成功，表明心跳在空闲时仍保持连接。
+4. **空闲踢除观察**
+	- 继续观察终端 A，约 `heartbeat_interval_ms × (heartbeat_miss_limit + 1)` 时间后，会看到 `closing idle connection` 与 Muduo 的 `removeConnectionInLoop` 日志，表示服务端检测到连接长时间未活动并主动关闭。
+5. **超时/重连示例**（终端 C）
+	```bash
+	bin/timeout_client -i bin/test.conf
+	```
+	- 正常请求会成功，`sleep` 用户名的请求因 1s 自定义超时被客户端关闭，对应服务端会打印 `Broken pipe`，验证 RPC 超时路径不会影响心跳。
+
+通过以上流程，可以分别验证：
+- 客户端在空闲阶段仍发送 PING/PONG，保持连接（步骤 3）。
+- 服务端基于 `connection_states_` 的 `last_activity` 自动剔除长期无活动的连接（步骤 4）。
+- 客户端超时后能自动重连继续访问（步骤 5）。
+

@@ -227,7 +227,14 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/c++/11/bits/stl_multiset.h /usr/include/c++/11/vector \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
- /usr/include/c++/11/bits/vector.tcc \
+ /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/atomic \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/chrono \
+ /usr/include/c++/11/ratio /usr/include/c++/11/limits \
+ /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
+ /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
+ /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/c++/11/condition_variable \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \
@@ -251,15 +258,10 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
- /usr/include/c++/11/condition_variable /usr/include/c++/11/chrono \
- /usr/include/c++/11/ratio /usr/include/c++/11/limits \
- /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
- /usr/include/c++/11/bits/std_mutex.h \
- /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/mutex \
  /home/zzz/Krpc/src/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
- /usr/include/c++/11/atomic /usr/include/c++/11/climits \
- /usr/include/c++/11/cstring /usr/include/google/protobuf/stubs/logging.h \
+ /usr/include/c++/11/climits /usr/include/c++/11/cstring \
+ /usr/include/google/protobuf/stubs/logging.h \
  /usr/include/google/protobuf/stubs/strutil.h \
  /usr/include/google/protobuf/stubs/stringpiece.h \
  /usr/include/google/protobuf/stubs/hash.h \
