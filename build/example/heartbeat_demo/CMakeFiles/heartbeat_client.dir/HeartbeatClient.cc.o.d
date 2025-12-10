@@ -239,7 +239,9 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /usr/include/c++/11/condition_variable \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h \
+ /usr/include/c++/11/bits/std_function.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \
@@ -263,10 +265,7 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
- /home/zzz/Krpc/src/include/Krpccontroller.h \
- /home/zzz/Krpc/src/include/Krpcchannel.h \
- /home/zzz/Krpc/src/include/Krpccontroller.h \
- /home/zzz/Krpc/example/heartbeat_demo/../user.pb.h \
+ /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
  /usr/include/c++/11/climits /usr/include/c++/11/cstring \
  /usr/include/google/protobuf/stubs/logging.h \
@@ -307,4 +306,8 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: \
  /usr/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
  /usr/include/google/protobuf/stubs/stl_util.h \
  /usr/include/google/protobuf/message.h \
- /usr/include/google/protobuf/extension_set.h /usr/include/c++/11/cassert
+ /usr/include/google/protobuf/extension_set.h /usr/include/c++/11/cassert \
+ /home/zzz/Krpc/src/include/Krpccontroller.h \
+ /home/zzz/Krpc/src/include/Krpcchannel.h \
+ /home/zzz/Krpc/src/include/Krpccontroller.h \
+ /home/zzz/Krpc/example/heartbeat_demo/../user.pb.h

@@ -365,7 +365,8 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: \
  /home/zzz/Krpc/src/include/Krpcconfig.h \
  /home/zzz/Krpc/src/include/Krpcchannel.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
- /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
  /home/zzz/Krpc/src/Krpcheader.pb.h \
  /home/zzz/Krpc/src/include/KrpcLogger.h /usr/include/glog/logging.h \

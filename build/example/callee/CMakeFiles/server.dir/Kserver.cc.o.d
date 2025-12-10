@@ -278,7 +278,9 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /home/zzz/Krpc/src/include/Krpcchannel.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /usr/include/c++/11/condition_variable \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h \
+ /usr/include/c++/11/bits/std_function.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \
@@ -302,6 +304,7 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
+ /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /home/zzz/Krpc/src/include/Krpccontroller.h \
  /home/zzz/Krpc/src/include/Krpcprovider.h \
  /usr/include/muduo/net/TcpServer.h /usr/include/muduo/base/Atomic.h \
@@ -324,10 +327,10 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /usr/include/boost/detail/workaround.hpp \
  /usr/include/boost/config/workaround.hpp \
  /usr/include/boost/core/addressof.hpp /usr/include/c++/11/functional \
- /usr/include/c++/11/bits/std_function.h /usr/include/muduo/net/Buffer.h \
- /usr/include/muduo/net/Endian.h /usr/include/muduo/net/InetAddress.h \
- /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
- /usr/include/boost/any.hpp /usr/include/boost/type_index.hpp \
+ /usr/include/muduo/net/Buffer.h /usr/include/muduo/net/Endian.h \
+ /usr/include/muduo/net/InetAddress.h /usr/include/netinet/in.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/boost/any.hpp \
+ /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/container_hash/hash_fwd.hpp \
@@ -362,5 +365,4 @@ example/callee/CMakeFiles/server.dir/Kserver.cc.o: \
  /usr/include/boost/type_traits/is_same.hpp \
  /usr/include/muduo/net/EventLoop.h /usr/include/muduo/base/Mutex.h \
  /usr/include/muduo/base/CurrentThread.h /usr/include/muduo/net/TimerId.h \
- /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /home/zzz/Krpc/src/include/Krpcprotocol.h

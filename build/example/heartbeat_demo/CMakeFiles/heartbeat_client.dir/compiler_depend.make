@@ -297,6 +297,9 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: ../
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
   /usr/include/c++/11/condition_variable \
+  /usr/include/c++/11/future \
+  /usr/include/c++/11/bits/atomic_futex.h \
+  /usr/include/c++/11/bits/std_function.h \
   ../src/include/zookeeperutil.h \
   /usr/include/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
@@ -323,10 +326,7 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: ../
   /usr/include/zookeeper/zookeeper_version.h \
   /usr/include/zookeeper/recordio.h \
   /usr/include/zookeeper/zookeeper.jute.h \
-  ../src/include/Krpccontroller.h \
-  ../src/include/Krpcchannel.h \
-  ../src/include/Krpccontroller.h \
-  ../example/user.pb.h \
+  ../src/include/Krpcheader.pb.h \
   /usr/include/google/protobuf/io/coded_stream.h \
   /usr/include/c++/11/climits \
   /usr/include/c++/11/cstring \
@@ -371,7 +371,11 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: ../
   /usr/include/google/protobuf/stubs/stl_util.h \
   /usr/include/google/protobuf/message.h \
   /usr/include/google/protobuf/extension_set.h \
-  /usr/include/c++/11/cassert
+  /usr/include/c++/11/cassert \
+  ../src/include/Krpccontroller.h \
+  ../src/include/Krpcchannel.h \
+  ../src/include/Krpccontroller.h \
+  ../example/user.pb.h
 
 example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../example/user.pb.cc \
   /usr/include/stdc-predef.h \
@@ -714,6 +718,10 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../examp
 
 /usr/include/google/protobuf/wire_format.h:
 
+../example/user.pb.h:
+
+../src/include/Krpccontroller.h:
+
 /usr/include/c++/11/cassert:
 
 /usr/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
@@ -766,9 +774,7 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../examp
 
 /usr/include/google/protobuf/stubs/logging.h:
 
-../example/user.pb.h:
-
-../src/include/Krpccontroller.h:
+../src/include/Krpcheader.pb.h:
 
 /usr/include/zookeeper/zookeeper_version.h:
 
@@ -953,6 +959,8 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../examp
 /usr/include/x86_64-linux-gnu/asm/sockios.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
+
+/usr/include/c++/11/bits/std_function.h:
 
 /usr/include/c++/11/bits/stl_tempbuf.h:
 
@@ -1242,6 +1250,8 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../examp
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h:
 
+/usr/include/c++/11/bits/atomic_futex.h:
+
 /usr/include/c++/11/ext/string_conversions.h:
 
 /usr/include/c++/11/bits/exception_ptr.h:
@@ -1249,6 +1259,8 @@ example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: ../examp
 /usr/include/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/include/c++/11/future:
 
 /usr/include/c++/11/ext/aligned_buffer.h:
 

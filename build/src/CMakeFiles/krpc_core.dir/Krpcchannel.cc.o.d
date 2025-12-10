@@ -234,7 +234,13 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /usr/include/c++/11/condition_variable \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h \
+ /usr/include/c++/11/bits/std_function.h \
+ /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
+ /usr/include/c++/11/bits/hashtable_policy.h \
+ /usr/include/c++/11/bits/enable_special_members.h \
+ /usr/include/c++/11/bits/unordered_map.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/zookeeper/zookeeper.h \
@@ -258,17 +264,13 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/zookeeper/zookeeper_version.h \
  /usr/include/zookeeper/recordio.h \
  /usr/include/zookeeper/zookeeper.jute.h \
- /home/zzz/Krpc/src/Krpcheader.pb.h \
+ /home/zzz/Krpc/src/include/Krpcheader.pb.h \
  /usr/include/google/protobuf/io/coded_stream.h \
  /usr/include/c++/11/climits /usr/include/c++/11/cstring \
  /usr/include/google/protobuf/stubs/logging.h \
  /usr/include/google/protobuf/stubs/strutil.h \
  /usr/include/google/protobuf/stubs/stringpiece.h \
  /usr/include/google/protobuf/stubs/hash.h \
- /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
- /usr/include/c++/11/bits/hashtable_policy.h \
- /usr/include/c++/11/bits/enable_special_members.h \
- /usr/include/c++/11/bits/unordered_map.h \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h \
  /usr/include/google/protobuf/port.h /usr/include/google/protobuf/arena.h \
@@ -304,6 +306,7 @@ src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: \
  /usr/include/google/protobuf/stubs/stl_util.h \
  /usr/include/google/protobuf/message.h \
  /usr/include/google/protobuf/extension_set.h /usr/include/c++/11/cassert \
+ /home/zzz/Krpc/src/Krpcheader.pb.h \
  /home/zzz/Krpc/src/include/zookeeperutil.h \
  /home/zzz/Krpc/src/include/Krpcapplication.h \
  /home/zzz/Krpc/src/include/Krpcconfig.h \

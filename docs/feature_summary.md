@@ -38,6 +38,7 @@
 - **压力客户端**（`example/caller/Kclient.cc`）：支持多线程循环请求，适配新的 `controller.Reset()`。
 - **heartbeat_demo**（`example/heartbeat_demo/HeartbeatClient.cc`）：通过环境变量配置空闲时间/轮数，用于观察心跳保活与服务器踢除行为。
 - **README 更新**：新增“心跳与空闲连接测试指引”章节，描述配置含义与完整验证步骤。
+- **运行验证**：`cmake --build build && ./bin/server -i ./bin/test.conf` 后，在单独终端执行 `./bin/client -i ./bin/test.conf`、`./bin/timeout_client -i ./bin/test.conf`、`./bin/heartbeat_client -i ./bin/test.conf`，覆盖正常压测、超时、心跳稳定性场景。
 
 ## 6. 配置项（`bin/test.conf`）
 - `rpcserverip` / `rpcserverport`：服务地址。
@@ -51,3 +52,13 @@
 - 在服务端补充监控指标（心跳 RTT、idle close 次数）。
 - 扩展 `msg_type`：如 ONEWAY 通知、服务端推送等。
 - 完善文档中对压测结果、性能指标的记录。
+
+## 8. 客户端异步调用 MVP（Phase 1）
+- **待处理映射**：`KrpcChannel` 新增 `PendingCall` 结构（响应指针、Controller、promise/future、回调与 request_id），所有在途请求集中放入 `m_pending_calls`，便于匹配响应与超时清理。
+- **通俗说法**：就像把所有挂号单放进取号柜，编号一一对应，服务窗口（服务器响应）一来就能找到原始请求，没人会排错队。
+- **CallFuture 流程**：`CallMethod` 退化为 thin wrapper，统一走 `CallFuture` 进行序列化、`EnsureConnection`、注册 pending，再交由 `SendBuffer` 写 socket。传入 `done` 时完全异步执行，不传时使用 `shared_future` 阻塞等待。
+- **通俗说法**：业务线程只负责填好表格塞进传送带，后面的流水线会自动连线、发包、等结果；要同步就原地等，要异步就登记一个回拨电话。
+- **RecvLoop + 心跳整合**：新增后台接收线程解析 length-prefix 帧、调用 `ResolvePendingCall` 或 `ResolveHeartbeat`。心跳发送端只负责编写 PING，由 recv loop 识别 PONG，避免与业务读抢占。
+- **通俗说法**：相当于安排了一个专门的前台负责收快递，正常包裹和“我还活着”的心跳信号都它来拆，别的线程不用再手忙脚乱抢着读 socket。
+- **失败兜底**：`HandleHeartbeatFailure`、`RemovePendingCall`、`FailPendingCalls` 统一收口，出现发送异常、心跳超时或连接关闭时能及时关闭 fd、标记 Controller 出错并唤醒回调。
+- **通俗说法**：一旦线路掉线，这个“事故处理中心”会立刻通知所有等待的人“今天别等了”，同时把电话线重新插好，避免有人傻站着不走。
