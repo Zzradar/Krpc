@@ -74,7 +74,8 @@
 - **通俗说法**：就像客服工单中心，任何结论都得通过同一个出口广播，避免一个问题被重复通知或完全遗忘。
 - **排队清理**：连接断开时会清空发送队列并逐个 `RemovePendingCall`，避免仍在排队的请求挂死；`HandleHeartbeatFailure` 也会唤醒发送/接收/心跳等待者。
 - **通俗说法**：一旦发现公交停运，会把站台上排队的人统统劝走重新安排，保证没有“排在队里却永远上不了车”的尴尬。
-- **验证方式**：重新 `cmake --build build && ./bin/server -i ./bin/test.conf` 后，在不同终端执行 `./bin/client -i ./bin/test.conf`（压力 + CallAsync stub）、`./bin/timeout_client -i ./bin/test.conf`（观察 TimeoutManager 回调）、`./bin/heartbeat_client -i ./bin/test.conf`（确保心跳丢包后请求被及时 fail），日志中可看到 send loop、timeout manager 的相关输出。
+- **验证方式**：重新 `cmake --build build && ./bin/server -i ./bin/test.conf` 后，在不同终端执行 `./bin/client -i ./bin/test.conf`（压力 + CallAsync stub）、`./bin/timeout_client -i ./bin/test.conf`（观察 TimeoutManager 回调）、`./bin/heartbeat_client -i ./bin/test.conf`（确保心跳丢包后请求被及时 fa123456
+il），日志中可看到 send loop、timeout manager 的相关输出。
 
 ## 10. 服务端异步 Phase 3（线程池调度 RPC）
 - **线程池调度**：`KrpcProvider` 在 `Run()` 时启动固定大小的 worker 组（默认取 `std::thread::hardware_concurrency()`，最少 4）。Muduo IO 线程仅负责解析帧并将 RPC 任务压入队列，`Service::CallMethod` 由 worker 顺序执行，避免耗时 handler 阻塞网络事件。
@@ -86,3 +87,30 @@
 - **心跳与连接管理**：`MSG_TYPE_PING/PONG` 仍在 IO 线程即时应答，不进入队列，`connection_states_` 能持续刷新，长时间运行不会误判为超时。
 - **通俗说法**：保安巡逻、心跳打卡仍在原班人马负责，后仓再忙也不耽误门卫登记。
 - **验证方式**：`cmake --build build && ./bin/server -i ./bin/test.conf` 后，同时运行 `./bin/client`、`./bin/heartbeat_client`、`./bin/timeout_client`，并在服务实现中注入 `sleep` 模拟慢调用，确认心跳/超时仍按预期触发且 server 日志无阻塞告警。
+
+## 12. 客户端连接池（ZK 缓存 + 复用）
+- **功能**：按端点缓存空闲连接，避免每次调用握手；ZK 查询结果做进程内缓存，减少重复读取。
+- **配置**（`bin/test.conf`）：`enable_connection_pool`（1 开、0 关，默认 1），`connection_pool_max_idle`（每端点最大空闲连接数，默认 4）。
+- **实现要点**：
+  - `Krpcchannel` 归还连接前做基础健康检查，超过池上限直接关闭；缓存服务地址（method_path -> ip:port）。
+  - 复用/新建日志：`reuse pooled connection` vs `connect server success`。
+  - `example/pool_demo` 支持 `POOL_DEMO_MODE=new_channel`，开池时首条握手后续复用，关池时每次握手。
+- **验证命令**：
+  ```bash
+  # 开池复用
+  enable_connection_pool=1  # 配置
+  POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
+  grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
+  # 关池对比
+  enable_connection_pool=0  # 配置
+  POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
+  grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
+  ```
+
+## 11. 异步示例 Phase 4（示例/验证）
+- **新增示例**：`example/async_demo/AsyncClient.cc`，通过 `KrpcChannel::CallAsync` 演示 future 等待与 callback 回调两种形态，支持并发、请求数、超时、自定义间隔（环境变量：`ASYNC_MODE`=`future|callback`、`ASYNC_CONCURRENCY`、`ASYNC_REQUESTS`、`ASYNC_TIMEOUT_MS`、`ASYNC_SLEEP_MS`）。
+- **构建**：`cmake --build build --target async_client`。
+- **运行**：
+  - future 模式：`./bin/async_client -i ./bin/test.conf`（默认 future，可用 `ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20` 调整）。
+  - callback 模式：`ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf`。
+- **输出**：打印总请求数、成功/失败、p50/p95/p99 延迟、总耗时，便于对比同步 vs 异步、future vs callback。

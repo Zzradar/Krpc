@@ -17,3 +17,9 @@
 /home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
 /home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/edit_cache.dir
 /home/zzz/Krpc/build/example/heartbeat_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/async_demo/CMakeFiles/async_client.dir
+/home/zzz/Krpc/build/example/async_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/async_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/pool_demo/CMakeFiles/pool_demo.dir
+/home/zzz/Krpc/build/example/pool_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/pool_demo/CMakeFiles/rebuild_cache.dir

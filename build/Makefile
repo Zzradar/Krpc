@@ -181,6 +181,32 @@ heartbeat_client/fast:
 	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build
 .PHONY : heartbeat_client/fast
 
+#=============================================================================
+# Target rules for targets named async_client
+
+# Build rule for target.
+async_client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 async_client
+.PHONY : async_client
+
+# fast build rule for target.
+async_client/fast:
+	$(MAKE) $(MAKESILENT) -f example/async_demo/CMakeFiles/async_client.dir/build.make example/async_demo/CMakeFiles/async_client.dir/build
+.PHONY : async_client/fast
+
+#=============================================================================
+# Target rules for targets named pool_demo
+
+# Build rule for target.
+pool_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pool_demo
+.PHONY : pool_demo
+
+# fast build rule for target.
+pool_demo/fast:
+	$(MAKE) $(MAKESILENT) -f example/pool_demo/CMakeFiles/pool_demo.dir/build.make example/pool_demo/CMakeFiles/pool_demo.dir/build
+.PHONY : pool_demo/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -189,9 +215,11 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... async_client"
 	@echo "... client"
 	@echo "... heartbeat_client"
 	@echo "... krpc_core"
+	@echo "... pool_demo"
 	@echo "... server"
 	@echo "... timeout_client"
 .PHONY : help

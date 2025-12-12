@@ -29,6 +29,61 @@ uint64_t NextRequestId() {
     return g_request_id.fetch_add(1, std::memory_order_relaxed);
 }
 
+class ConnectionPool {
+public:
+    static ConnectionPool &Instance() {
+        static ConnectionPool pool;
+        return pool;
+    }
+
+    int Acquire(const std::string &key, const std::string &ip, uint16_t port, std::string *err, bool *reused) {
+        if (reused) {
+            *reused = false;
+        }
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            auto it = pools_.find(key);
+            if (it != pools_.end() && !it->second.idle.empty()) {
+                int fd = it->second.idle.back();
+                it->second.idle.pop_back();
+                if (reused) {
+                    *reused = true;
+                }
+                return fd;
+            }
+        }
+        int fd = -1;
+        if (!KrpcChannel::CreateConnectionFd(ip, port, fd, err)) {
+            return -1;
+        }
+        return fd;
+    }
+
+    void Release(const std::string &key, int fd, size_t max_idle) {
+        if (fd == -1) {
+            return;
+        }
+        if (!KrpcChannel::IsConnectionHealthy(fd)) {
+            close(fd);
+            return;
+        }
+        std::lock_guard<std::mutex> lock(mutex_);
+        auto &entry = pools_[key];
+        if (entry.idle.size() >= max_idle) {
+            close(fd);
+            return;
+        }
+        entry.idle.push_back(fd);
+    }
+
+private:
+    struct PoolEntry {
+        std::deque<int> idle;
+    };
+    std::mutex mutex_;
+    std::unordered_map<std::string, PoolEntry> pools_;
+};
+
 class HeartbeatActivityNotifier {
 public:
     explicit HeartbeatActivityNotifier(std::condition_variable &cv) : cv_(cv) {}
@@ -48,6 +103,10 @@ int ParseConfigInt(const std::string &value, int default_value) {
         return default_value;
     }
 }
+
+// 简单的服务地址缓存，减少重复 ZK 查询
+std::mutex g_service_cache_mutex;
+std::unordered_map<std::string, std::string> g_service_cache;
 } // namespace
 
 // RPC调用的核心方法，负责将客户端的请求序列化并发送到服务端，同时接收服务端的响应
@@ -189,7 +248,16 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
 
 // 创建新的socket连接
 bool KrpcChannel::newConnect(const char *ip, uint16_t port, std::string *errMsg) {
-    // 创建socket
+    int fd = -1;
+    if (!CreateConnectionFd(ip, port, fd, errMsg)) {
+        return false;
+    }
+    m_clientfd = fd;  // 保存socket文件描述符
+    m_recv_cv.notify_all();
+    return true;
+}
+
+bool KrpcChannel::CreateConnectionFd(const std::string &ip, uint16_t port, int &out_fd, std::string *errMsg) {
     int clientfd = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == clientfd) {
         char errtxt[512] = {0};
@@ -201,15 +269,13 @@ bool KrpcChannel::newConnect(const char *ip, uint16_t port, std::string *errMsg)
         return false;
     }
 
-    // 设置服务器地址信息
     struct sockaddr_in server_addr;
-    server_addr.sin_family = AF_INET;  // IPv4地址族
-    server_addr.sin_port = htons(port);  // 端口号
-    server_addr.sin_addr.s_addr = inet_addr(ip);  // IP地址
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port);
+    server_addr.sin_addr.s_addr = inet_addr(ip.c_str());
 
-    // 尝试连接服务器
     if (-1 == connect(clientfd, (struct sockaddr *)&server_addr, sizeof(server_addr))) {
-        close(clientfd);  // 连接失败，关闭socket
+        close(clientfd);
         char errtxt[512] = {0};
         std::cout << "connect error" << strerror_r(errno, errtxt, sizeof(errtxt)) << std::endl;  // 打印错误信息
         LOG(ERROR) << "connect server error" << errtxt;  // 记录错误日志
@@ -219,9 +285,70 @@ bool KrpcChannel::newConnect(const char *ip, uint16_t port, std::string *errMsg)
         return false;
     }
 
-    m_clientfd = clientfd;  // 保存socket文件描述符
-    m_recv_cv.notify_all();
+    out_fd = clientfd;
     return true;
+}
+
+bool KrpcChannel::IsConnectionHealthy(int fd) {
+    if (fd == -1) {
+        return false;
+    }
+    struct pollfd pfd;
+    pfd.fd = fd;
+    pfd.events = POLLIN | POLLERR | POLLHUP;
+    pfd.revents = 0;
+    const int pr = poll(&pfd, 1, 0);
+    if (pr < 0) {
+        return false;
+    }
+    if (pfd.revents & (POLLERR | POLLHUP)) {
+        return false;
+    }
+    if (pfd.revents & POLLIN) {
+        char buf;
+        const ssize_t n = recv(fd, &buf, 1, MSG_PEEK);
+        if (n == 0) {
+            return false;
+        }
+        if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int KrpcChannel::AcquireConnection(const std::string &ip, uint16_t port, std::string *errMsg, bool *from_pool) {
+    if (from_pool) {
+        *from_pool = false;
+    }
+    if (!m_use_pool) {
+        int fd = -1;
+        if (!CreateConnectionFd(ip, port, fd, errMsg)) {
+            return -1;
+        }
+        return fd;
+    }
+    const std::string key = ip + ":" + std::to_string(port);
+    return ConnectionPool::Instance().Acquire(key, ip, port, errMsg, from_pool);
+}
+
+void KrpcChannel::ReleaseConnection(bool healthy) {
+    if (m_clientfd == -1) {
+        return;
+    }
+    int fd = m_clientfd;
+    m_clientfd = -1;
+    m_recv_buffer.clear();
+    if (!healthy) {
+        close(fd);
+        return;
+    }
+    if (!m_use_pool) {
+        close(fd);
+        return;
+    }
+    // 连接池健康检查：当前阶段先信任活跃连接，后续可启用更严格检测
+    ConnectionPool::Instance().Release(m_endpoint_key, fd, static_cast<size_t>(m_pool_max_idle));
 }
 
 void KrpcChannel::CloseConnectionLocked() {
@@ -236,6 +363,17 @@ std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string servic
     std::string method_path = "/" + service_name + "/" + method_name;  // 构造ZooKeeper路径
     std::cout << "method_path: " << method_path << std::endl;
 
+    {
+        std::lock_guard<std::mutex> cache_lock(g_service_cache_mutex);
+        auto it = g_service_cache.find(method_path);
+        if (it != g_service_cache.end()) {
+            idx = static_cast<int>(it->second.find(":"));
+            if (idx != -1) {
+                return it->second;
+            }
+        }
+    }
+
     std::unique_lock<std::mutex> lock(g_data_mutx);  // 加锁，保证线程安全
     std::string host_data_1 = zkclient->GetData(method_path.c_str());  // 从ZooKeeper获取数据
     lock.unlock();  // 解锁
@@ -249,6 +387,11 @@ std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string servic
     if (idx == -1) {  // 如果分隔符不存在
         LOG(ERROR) << method_path + " address is invalid!";  // 记录错误日志
         return "";
+    }
+
+    {
+        std::lock_guard<std::mutex> cache_lock(g_service_cache_mutex);
+        g_service_cache[method_path] = host_data_1;
     }
 
     return host_data_1;  // 返回服务地址
@@ -298,18 +441,25 @@ bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *m
     if (m_clientfd == -1) {
         m_ip = target_ip;
         m_port = target_port;
+        m_endpoint_key = m_ip + ":" + std::to_string(m_port);
         std::string connect_error;
-        if (!newConnect(m_ip.c_str(), m_port, &connect_error)) {
+        bool from_pool = false;
+        int fd = AcquireConnection(m_ip, m_port, &connect_error, &from_pool);
+        if (fd == -1) {
             if (controller) {
                 controller->SetFailed(connect_error.empty() ? "connect server error" : connect_error);
             }
             if (error_text) {
                 *error_text = connect_error.empty() ? "connect server error" : connect_error;
             }
-            CloseConnectionLocked();
             return false;
         }
-        LOG(INFO) << "connect server success";
+        m_clientfd = fd;
+        if (from_pool) {
+            LOG(INFO) << "reuse pooled connection";
+        } else {
+            LOG(INFO) << "connect server success";
+        }
     }
     return true;
 }
@@ -372,6 +522,11 @@ KrpcChannel::KrpcChannel(bool connectNow)
     m_request_timeout_ms = ParseConfigInt(config.Load("rpc_timeout_ms"), KrpcProtocol::kDefaultRequestTimeoutMs);
     m_heartbeat_interval_ms = ParseConfigInt(config.Load("heartbeat_interval_ms"), KrpcProtocol::kDefaultHeartbeatIntervalMs);
     m_heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"), KrpcProtocol::kDefaultHeartbeatMissLimit);
+    m_pool_max_idle = ParseConfigInt(config.Load("connection_pool_max_idle"), 4);
+    m_use_pool = ParseConfigInt(config.Load("enable_connection_pool"), 1) != 0;
+    if (m_pool_max_idle < 1) {
+        m_pool_max_idle = 1;
+    }
 
     StartSendThread();
     StartRecvThread();
@@ -384,10 +539,22 @@ KrpcChannel::KrpcChannel(bool connectNow)
 
     // 尝试连接服务器，最多重试3次
     std::string errtxt;
-    auto rt = newConnect(m_ip.c_str(), m_port, &errtxt);
+    m_endpoint_key = m_ip + ":" + std::to_string(m_port);
+    bool from_pool = false;
+    auto fd = AcquireConnection(m_ip, m_port, &errtxt, &from_pool);
+    bool rt = (fd != -1);
     int count = 3;  // 重试次数
     while (!rt && count--) {
-        rt = newConnect(m_ip.c_str(), m_port, &errtxt);
+        fd = AcquireConnection(m_ip, m_port, &errtxt, &from_pool);
+        rt = (fd != -1);
+    }
+    if (rt) {
+        m_clientfd = fd;
+        if (from_pool) {
+            LOG(INFO) << "reuse pooled connection";
+        } else {
+            LOG(INFO) << "connect server success";
+        }
     }
 }
 
@@ -398,8 +565,7 @@ KrpcChannel::~KrpcChannel() {
     StopRecvThread();
     std::lock_guard<std::mutex> lock(m_socket_mutex);
     if (m_clientfd != -1) {
-        close(m_clientfd);
-        m_clientfd = -1;
+        ReleaseConnection(true);
     }
 }
 
@@ -460,12 +626,6 @@ void KrpcChannel::StopRecvThread() {
     }
     m_recv_running.store(false, std::memory_order_release);
     m_recv_cv.notify_all();
-    {
-        std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
-        if (m_clientfd != -1) {
-            shutdown(m_clientfd, SHUT_RDWR);
-        }
-    }
     if (m_recv_thread.joinable()) {
         m_recv_thread.join();
     }

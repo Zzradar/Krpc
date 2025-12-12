@@ -14,6 +14,7 @@
 #include <memory>
 #include <functional>
 #include <queue>
+#include <deque>
 #include "zookeeperutil.h"
 #include "Krpcheader.pb.h"
 class KrpcChannel : public google::protobuf::RpcChannel
@@ -21,6 +22,8 @@ class KrpcChannel : public google::protobuf::RpcChannel
 public:
     KrpcChannel(bool connectNow);
     virtual ~KrpcChannel();
+    static bool CreateConnectionFd(const std::string &ip, uint16_t port, int &out_fd, std::string *errMsg);
+    static bool IsConnectionHealthy(int fd);
     void CallMethod(const ::google::protobuf::MethodDescriptor *method,
                     ::google::protobuf::RpcController *controller,
                     const ::google::protobuf::Message *request,
@@ -40,6 +43,7 @@ private:
     int m_request_timeout_ms;
     int m_heartbeat_interval_ms;
     int m_heartbeat_miss_limit;
+    int m_pool_max_idle;
     std::thread m_heartbeat_thread;
     std::atomic<bool> m_heartbeat_running;
     bool m_heartbeat_thread_started;
@@ -48,6 +52,8 @@ private:
     std::mutex m_socket_mutex;
     int m_missed_heartbeat_count;
     std::chrono::steady_clock::time_point m_last_pong_time;
+    std::string m_endpoint_key;
+    bool m_use_pool{true};
     struct PendingCall {
         google::protobuf::Message *response{nullptr};
         ::google::protobuf::RpcController *controller{nullptr};
@@ -87,6 +93,8 @@ private:
     bool m_timeout_thread_started;
     std::condition_variable m_timeout_cv;
     std::mutex m_timeout_mutex;
+    int AcquireConnection(const std::string &ip, uint16_t port, std::string *errMsg, bool *from_pool = nullptr);
+    void ReleaseConnection(bool healthy);
     bool newConnect(const char *ip, uint16_t port, std::string *errMsg = nullptr);
     std::string QueryServiceHost(ZkClient *zkclient, std::string service_name, std::string method_name, int &idx);
     void StartHeartbeatThread();

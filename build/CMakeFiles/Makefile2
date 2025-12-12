@@ -85,6 +85,8 @@ example/all: example/callee/all
 example/all: example/caller/all
 example/all: example/timeout_demo/all
 example/all: example/heartbeat_demo/all
+example/all: example/async_demo/all
+example/all: example/pool_demo/all
 .PHONY : example/all
 
 # Recursive "preinstall" directory target.
@@ -92,6 +94,8 @@ example/preinstall: example/callee/preinstall
 example/preinstall: example/caller/preinstall
 example/preinstall: example/timeout_demo/preinstall
 example/preinstall: example/heartbeat_demo/preinstall
+example/preinstall: example/async_demo/preinstall
+example/preinstall: example/pool_demo/preinstall
 .PHONY : example/preinstall
 
 # Recursive "clean" directory target.
@@ -99,7 +103,24 @@ example/clean: example/callee/clean
 example/clean: example/caller/clean
 example/clean: example/timeout_demo/clean
 example/clean: example/heartbeat_demo/clean
+example/clean: example/async_demo/clean
+example/clean: example/pool_demo/clean
 .PHONY : example/clean
+
+#=============================================================================
+# Directory level rules for directory example/async_demo
+
+# Recursive "all" directory target.
+example/async_demo/all: example/async_demo/CMakeFiles/async_client.dir/all
+.PHONY : example/async_demo/all
+
+# Recursive "preinstall" directory target.
+example/async_demo/preinstall:
+.PHONY : example/async_demo/preinstall
+
+# Recursive "clean" directory target.
+example/async_demo/clean: example/async_demo/CMakeFiles/async_client.dir/clean
+.PHONY : example/async_demo/clean
 
 #=============================================================================
 # Directory level rules for directory example/callee
@@ -147,6 +168,21 @@ example/heartbeat_demo/clean: example/heartbeat_demo/CMakeFiles/heartbeat_client
 .PHONY : example/heartbeat_demo/clean
 
 #=============================================================================
+# Directory level rules for directory example/pool_demo
+
+# Recursive "all" directory target.
+example/pool_demo/all: example/pool_demo/CMakeFiles/pool_demo.dir/all
+.PHONY : example/pool_demo/all
+
+# Recursive "preinstall" directory target.
+example/pool_demo/preinstall:
+.PHONY : example/pool_demo/preinstall
+
+# Recursive "clean" directory target.
+example/pool_demo/clean: example/pool_demo/CMakeFiles/pool_demo.dir/clean
+.PHONY : example/pool_demo/clean
+
+#=============================================================================
 # Directory level rules for directory example/timeout_demo
 
 # Recursive "all" directory target.
@@ -183,7 +219,7 @@ src/clean: src/CMakeFiles/krpc_core.dir/clean
 src/CMakeFiles/krpc_core.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target krpc_core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=10,11,12,13,14,15,16,17 "Built target krpc_core"
 .PHONY : src/CMakeFiles/krpc_core.dir/all
 
 # Build rule for subdir invocation for target.
@@ -209,7 +245,7 @@ src/CMakeFiles/krpc_core.dir/clean:
 example/callee/CMakeFiles/server.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/callee/CMakeFiles/server.dir/build.make example/callee/CMakeFiles/server.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/callee/CMakeFiles/server.dir/build.make example/callee/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=15,16,17 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=21,22,23 "Built target server"
 .PHONY : example/callee/CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -235,7 +271,7 @@ example/callee/CMakeFiles/server.dir/clean:
 example/caller/CMakeFiles/client.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/caller/CMakeFiles/client.dir/build.make example/caller/CMakeFiles/client.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/caller/CMakeFiles/client.dir/build.make example/caller/CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=1,2,3 "Built target client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=4,5,6 "Built target client"
 .PHONY : example/caller/CMakeFiles/client.dir/all
 
 # Build rule for subdir invocation for target.
@@ -261,7 +297,7 @@ example/caller/CMakeFiles/client.dir/clean:
 example/timeout_demo/CMakeFiles/timeout_client.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/timeout_demo/CMakeFiles/timeout_client.dir/build.make example/timeout_demo/CMakeFiles/timeout_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=18,19,20 "Built target timeout_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=24,25,26 "Built target timeout_client"
 .PHONY : example/timeout_demo/CMakeFiles/timeout_client.dir/all
 
 # Build rule for subdir invocation for target.
@@ -287,7 +323,7 @@ example/timeout_demo/CMakeFiles/timeout_client.dir/clean:
 example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all: src/CMakeFiles/krpc_core.dir/all
 	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=4,5,6 "Built target heartbeat_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=7,8,9 "Built target heartbeat_client"
 .PHONY : example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/all
 
 # Build rule for subdir invocation for target.
@@ -305,6 +341,58 @@ heartbeat_client: example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/rule
 example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean:
 	$(MAKE) $(MAKESILENT) -f example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/build.make example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean
 .PHONY : example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/clean
+
+#=============================================================================
+# Target rules for target example/async_demo/CMakeFiles/async_client.dir
+
+# All Build rule for target.
+example/async_demo/CMakeFiles/async_client.dir/all: src/CMakeFiles/krpc_core.dir/all
+	$(MAKE) $(MAKESILENT) -f example/async_demo/CMakeFiles/async_client.dir/build.make example/async_demo/CMakeFiles/async_client.dir/depend
+	$(MAKE) $(MAKESILENT) -f example/async_demo/CMakeFiles/async_client.dir/build.make example/async_demo/CMakeFiles/async_client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=1,2,3 "Built target async_client"
+.PHONY : example/async_demo/CMakeFiles/async_client.dir/all
+
+# Build rule for subdir invocation for target.
+example/async_demo/CMakeFiles/async_client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 11
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/async_demo/CMakeFiles/async_client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 0
+.PHONY : example/async_demo/CMakeFiles/async_client.dir/rule
+
+# Convenience name for target.
+async_client: example/async_demo/CMakeFiles/async_client.dir/rule
+.PHONY : async_client
+
+# clean rule for target.
+example/async_demo/CMakeFiles/async_client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f example/async_demo/CMakeFiles/async_client.dir/build.make example/async_demo/CMakeFiles/async_client.dir/clean
+.PHONY : example/async_demo/CMakeFiles/async_client.dir/clean
+
+#=============================================================================
+# Target rules for target example/pool_demo/CMakeFiles/pool_demo.dir
+
+# All Build rule for target.
+example/pool_demo/CMakeFiles/pool_demo.dir/all: src/CMakeFiles/krpc_core.dir/all
+	$(MAKE) $(MAKESILENT) -f example/pool_demo/CMakeFiles/pool_demo.dir/build.make example/pool_demo/CMakeFiles/pool_demo.dir/depend
+	$(MAKE) $(MAKESILENT) -f example/pool_demo/CMakeFiles/pool_demo.dir/build.make example/pool_demo/CMakeFiles/pool_demo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=18,19,20 "Built target pool_demo"
+.PHONY : example/pool_demo/CMakeFiles/pool_demo.dir/all
+
+# Build rule for subdir invocation for target.
+example/pool_demo/CMakeFiles/pool_demo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 11
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/pool_demo/CMakeFiles/pool_demo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zzz/Krpc/build/CMakeFiles 0
+.PHONY : example/pool_demo/CMakeFiles/pool_demo.dir/rule
+
+# Convenience name for target.
+pool_demo: example/pool_demo/CMakeFiles/pool_demo.dir/rule
+.PHONY : pool_demo
+
+# clean rule for target.
+example/pool_demo/CMakeFiles/pool_demo.dir/clean:
+	$(MAKE) $(MAKESILENT) -f example/pool_demo/CMakeFiles/pool_demo.dir/build.make example/pool_demo/CMakeFiles/pool_demo.dir/clean
+.PHONY : example/pool_demo/CMakeFiles/pool_demo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

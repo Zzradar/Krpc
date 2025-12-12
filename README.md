@@ -150,3 +150,30 @@ C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛
 - 服务端基于 `connection_states_` 的 `last_activity` 自动剔除长期无活动的连接（步骤 4）。
 - 客户端超时后能自动重连继续访问（步骤 5）。
 
+## 连接池与验证
+
+- 配置项（`bin/test.conf`）：
+  - `enable_connection_pool`：1 开启、0 关闭（默认 1）。
+  - `connection_pool_max_idle`：单端点最大空闲连接数（默认 4）。
+- 示例验证（需要先启动 server）：  
+  - 开池复用：`enable_connection_pool=1`  
+    ```bash
+    POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
+    grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
+    ```  
+    预期：首条握手，后续多数为 `reuse pooled connection`。
+  - 关池对比：`enable_connection_pool=0`，同样命令，预期每次都是 `connect server success`。
+
+## 异步模式示例
+
+- **编译**：`cmake --build build --target async_client`
+- **future 模式（默认）**：
+	```bash
+	ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf
+	```
+- **callback 模式**：
+	```bash
+	ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf
+	```
+- **可调参数**（环境变量）：`ASYNC_CONCURRENCY` 并发线程，`ASYNC_REQUESTS` 请求总数，`ASYNC_TIMEOUT_MS` 单次超时，`ASYNC_SLEEP_MS` 请求间隔毫秒。
+- **输出**：展示成功/失败数、p50/p95/p99 延迟与总耗时，便于对比同步 vs 异步、future vs callback。
