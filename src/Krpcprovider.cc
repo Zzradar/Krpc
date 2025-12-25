@@ -105,10 +105,13 @@ void KrpcProvider::Run() {
         zkclient.Create(service_path.c_str(), nullptr, 0);  // 创建服务节点
         for (auto &mp : sp.second.method_map) {
             std::string method_path = service_path + "/" + mp.first;
+            zkclient.Create(method_path.c_str(), nullptr, 0); // 持久化方法节点
             char method_path_data[128] = {0};
             sprintf(method_path_data, "%s:%d", ip.c_str(), port);  // 将IP和端口信息存入节点数据
-            // ZOO_EPHEMERAL表示这个节点是临时节点，在客户端断开连接后，ZooKeeper会自动删除这个节点
-            zkclient.Create(method_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
+            // 为每个实例注册独立子节点，便于客户端获取多副本列表
+            std::string child_path = method_path + "/" + method_path_data;
+            zkclient.Create(child_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
+            LOG(INFO) << "zk register ok " << child_path;
         }
     }
 

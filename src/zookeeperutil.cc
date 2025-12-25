@@ -46,12 +46,13 @@ void ZkClient::Start() {
     LOG(INFO) << "zookeeper_init success";  // 记录日志，表示连接成功
 }
 
-// 创建ZooKeeper节点
+// 创建ZooKeeper节点（若存在且类型不符则删除后重建；类型一致则可更新数据）
 void ZkClient::Create(const char *path, const char *data, int datalen, int state) {
-    char path_buffer[128];
+    char path_buffer[256] = {0};
     int bufferlen = sizeof(path_buffer);
 
-    const int exists_flag = zoo_exists(m_zhandle, path, 0, nullptr);
+    struct Stat stat {};
+    const int exists_flag = zoo_exists(m_zhandle, path, 0, &stat);
     if (exists_flag == ZNONODE) {
         int create_flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
         if (create_flag == ZOK) {
@@ -62,25 +63,37 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
         exit(EXIT_FAILURE);
     }
 
-    if (exists_flag == ZOK && state == ZOO_EPHEMERAL) {
-        int delete_flag = zoo_delete(m_zhandle, path, -1);
-        if (delete_flag != ZOK && delete_flag != ZNONODE) {
-            LOG(ERROR) << "znode delete failed before recreate... path:" << path << ", err=" << delete_flag;
+    if (exists_flag == ZOK) {
+        const bool is_ephemeral = (stat.ephemeralOwner != 0);
+        const bool want_ephemeral = (state == ZOO_EPHEMERAL);
+        if (is_ephemeral != want_ephemeral) {
+            int delete_flag = zoo_delete(m_zhandle, path, -1);
+            if (delete_flag != ZOK && delete_flag != ZNONODE) {
+                LOG(ERROR) << "znode delete failed before recreate... path:" << path << ", err=" << delete_flag;
+                exit(EXIT_FAILURE);
+            }
+            int create_flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
+            if (create_flag == ZOK) {
+                LOG(INFO) << "znode recreate success... path:" << path;
+                return;
+            }
+            LOG(ERROR) << "znode recreate failed... path:" << path << ", err=" << create_flag;
             exit(EXIT_FAILURE);
-        }
-        int create_flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
-        if (create_flag == ZOK) {
-            LOG(INFO) << "znode recreate success... path:" << path;
+        } else {
+            // 类型相同，如有数据则更新
+            if (data != nullptr && datalen > 0) {
+                const int set_flag = zoo_set(m_zhandle, path, data, datalen, -1);
+                if (set_flag != ZOK) {
+                    LOG(ERROR) << "znode set data failed... path:" << path << ", err=" << set_flag;
+                    exit(EXIT_FAILURE);
+                }
+            }
             return;
         }
-        LOG(ERROR) << "znode recreate failed... path:" << path << ", err=" << create_flag;
-        exit(EXIT_FAILURE);
     }
 
-    if (exists_flag != ZOK) {
-        LOG(ERROR) << "znode check failed... path:" << path << ", err=" << exists_flag;
-        exit(EXIT_FAILURE);
-    }
+    LOG(ERROR) << "znode check failed... path:" << path << ", err=" << exists_flag;
+    exit(EXIT_FAILURE);
 }
 
 // 获取ZooKeeper节点的数据
@@ -112,4 +125,19 @@ void ZkClient::NotifyConnected() {
         m_connected = true;
     }
     m_cv.notify_all();
+}
+
+std::vector<std::string> ZkClient::GetChildren(const char *path) {
+    struct String_vector children;
+    std::vector<std::string> result;
+    int flag = zoo_get_children(m_zhandle, path, 0, &children);
+    if (flag != ZOK) {
+        LOG(ERROR) << "zoo_get_children error";
+        return result;
+    }
+    for (int i = 0; i < children.count; ++i) {
+        result.emplace_back(children.data[i]);
+    }
+    deallocate_String_vector(&children);
+    return result;
 }

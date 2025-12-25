@@ -177,3 +177,9 @@ C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛
 	```
 - **可调参数**（环境变量）：`ASYNC_CONCURRENCY` 并发线程，`ASYNC_REQUESTS` 请求总数，`ASYNC_TIMEOUT_MS` 单次超时，`ASYNC_SLEEP_MS` 请求间隔毫秒。
 - **输出**：展示成功/失败数、p50/p95/p99 延迟与总耗时，便于对比同步 vs 异步、future vs callback。
+
+## 负载均衡（Round Robin）
+
+- 服务端注册：同一 service/method 可在 ZK 下注册多个端点，路径形如 `/Service/Method/<ip:port>`（临时节点）。
+- 客户端发现：`KrpcChannel` 读取子节点列表，默认使用轮询策略选择节点。
+- 配合连接池：选中的端点会从连接池取/还连接，切换节点时重新建连；日志区分新建/复用。

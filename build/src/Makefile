@@ -274,6 +274,30 @@ Krpcprovider.cc.s:
 	cd /home/zzz/Krpc/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.s
 .PHONY : Krpcprovider.cc.s
 
+load_balancer.o: load_balancer.cc.o
+.PHONY : load_balancer.o
+
+# target to build an object file
+load_balancer.cc.o:
+	cd /home/zzz/Krpc/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/load_balancer.cc.o
+.PHONY : load_balancer.cc.o
+
+load_balancer.i: load_balancer.cc.i
+.PHONY : load_balancer.i
+
+# target to preprocess a source file
+load_balancer.cc.i:
+	cd /home/zzz/Krpc/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/load_balancer.cc.i
+.PHONY : load_balancer.cc.i
+
+load_balancer.s: load_balancer.cc.s
+.PHONY : load_balancer.s
+
+# target to generate assembly for a file
+load_balancer.cc.s:
+	cd /home/zzz/Krpc/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/krpc_core.dir/build.make src/CMakeFiles/krpc_core.dir/load_balancer.cc.s
+.PHONY : load_balancer.cc.s
+
 zookeeperutil.o: zookeeperutil.cc.o
 .PHONY : zookeeperutil.o
 
@@ -325,6 +349,9 @@ help:
 	@echo "... Krpcprovider.o"
 	@echo "... Krpcprovider.i"
 	@echo "... Krpcprovider.s"
+	@echo "... load_balancer.o"
+	@echo "... load_balancer.i"
+	@echo "... load_balancer.s"
 	@echo "... zookeeperutil.o"
 	@echo "... zookeeperutil.i"
 	@echo "... zookeeperutil.s"

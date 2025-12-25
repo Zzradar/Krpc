@@ -379,6 +379,7 @@ example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o
  /usr/include/google/protobuf/message.h
  /usr/include/google/protobuf/extension_set.h
  /usr/include/c++/11/cassert
+ /home/zzz/Krpc/src/include/load_balancer.h
  /home/zzz/Krpc/src/include/Krpccontroller.h
  /home/zzz/Krpc/src/include/Krpcchannel.h
  /home/zzz/Krpc/src/include/Krpccontroller.h

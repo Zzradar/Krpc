@@ -1,0 +1,267 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Release-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src",
+					"jsonFile" : "directory-src-Release-b6cf2213fc5053b67c22.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "example",
+					"childIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					],
+					"jsonFile" : "directory-example-Release-b6fca4a6d0a37c6ae6b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "example"
+				},
+				{
+					"build" : "example/callee",
+					"jsonFile" : "directory-example.callee-Release-1eaa0cd6ad8e395f31c5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/callee",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "example/caller",
+					"jsonFile" : "directory-example.caller-Release-f9d6ea7088e14e8f00d6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/caller",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "example/timeout_demo",
+					"jsonFile" : "directory-example.timeout_demo-Release-7c9ec90e640e89b04f26.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/timeout_demo",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "example/heartbeat_demo",
+					"jsonFile" : "directory-example.heartbeat_demo-Release-9bf8996d362bb74d4f14.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/heartbeat_demo",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "example/async_demo",
+					"jsonFile" : "directory-example.async_demo-Release-90cdb55e9a6977e10047.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/async_demo",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "example/pool_demo",
+					"jsonFile" : "directory-example.pool_demo-Release-e1453e54d4a33667952f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/pool_demo",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "example/bench_demo",
+					"jsonFile" : "directory-example.bench_demo-Release-147a0dc05105c6b5ec5e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "example/bench_demo",
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					],
+					"name" : "Krpc",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 7,
+					"id" : "async_client::@783c8c331be21e4afa73",
+					"jsonFile" : "target-async_client-Release-df7830ea37933c63cee2.json",
+					"name" : "async_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "bench_demo::@697bd3260732af2559b7",
+					"jsonFile" : "target-bench_demo-Release-5230b589db420de87b01.json",
+					"name" : "bench_demo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "client::@c2a3416f73e845390d82",
+					"jsonFile" : "target-client-Release-ea9e4e56ffad89cca342.json",
+					"name" : "client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "heartbeat_client::@80957fa8166d4c084462",
+					"jsonFile" : "target-heartbeat_client-Release-a6a235d9776da67642c0.json",
+					"name" : "heartbeat_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "krpc_core::@145eef247bfb46b6828c",
+					"jsonFile" : "target-krpc_core-Release-f3afaad229ee6605e345.json",
+					"name" : "krpc_core",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "pool_demo::@43fde722562e7d262bd8",
+					"jsonFile" : "target-pool_demo-Release-11631e0762fe380a3cdd.json",
+					"name" : "pool_demo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "server::@493cd8b262c97a98b12b",
+					"jsonFile" : "target-server-Release-c500ac0ef2565202e471.json",
+					"name" : "server",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "timeout_client::@f05eea563a758a598d30",
+					"jsonFile" : "target-timeout_client-Release-6e6d7a8a269d34236f05.json",
+					"name" : "timeout_client",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/zzz/Krpc/build",
+		"source" : "/home/zzz/Krpc"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

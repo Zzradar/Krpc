@@ -17,7 +17,9 @@
 #include <deque>
 #include "zookeeperutil.h"
 #include "Krpcheader.pb.h"
-class KrpcChannel : public google::protobuf::RpcChannel
+#include "load_balancer.h"
+class KrpcChannel : public google::protobuf::RpcChannel,
+                    public std::enable_shared_from_this<KrpcChannel>
 {
 public:
     KrpcChannel(bool connectNow);
@@ -54,6 +56,14 @@ private:
     std::chrono::steady_clock::time_point m_last_pong_time;
     std::string m_endpoint_key;
     bool m_use_pool{true};
+    std::unique_ptr<ILoadBalancer> m_lb;
+    struct EndpointFailState {
+        std::chrono::steady_clock::time_point retry_at;
+    };
+    std::mutex m_fail_mutex;
+    std::unordered_map<std::string, EndpointFailState> m_fail_states;
+    std::string m_last_service;
+    std::string m_last_method;
     struct PendingCall {
         google::protobuf::Message *response{nullptr};
         ::google::protobuf::RpcController *controller{nullptr};
@@ -64,6 +74,9 @@ private:
         uint64_t request_id{0};
         ::google::protobuf::Closure *done{nullptr};
         AsyncCallback async_callback;
+        std::string service_name;
+        std::string method_name;
+        std::string peer;
     };
     std::mutex m_pending_mutex;
     std::unordered_map<uint64_t, std::shared_ptr<PendingCall>> m_pending_calls;
@@ -96,7 +109,7 @@ private:
     int AcquireConnection(const std::string &ip, uint16_t port, std::string *errMsg, bool *from_pool = nullptr);
     void ReleaseConnection(bool healthy);
     bool newConnect(const char *ip, uint16_t port, std::string *errMsg = nullptr);
-    std::string QueryServiceHost(ZkClient *zkclient, std::string service_name, std::string method_name, int &idx);
+    std::vector<Endpoint> QueryServiceNodes(ZkClient *zkclient, const std::string &service_name, const std::string &method_name);
     void StartHeartbeatThread();
     void StopHeartbeatThread();
     void HeartbeatLoop();
@@ -130,6 +143,9 @@ private:
                           ::google::protobuf::RpcController *controller,
                           std::string *error_text);
     bool SendBuffer(const std::string &buffer, std::string *error_text);
+    bool EndpointAvailable(const Endpoint &ep, std::chrono::steady_clock::time_point now, std::chrono::steady_clock::time_point &next_retry);
+    void MarkEndpointFailure(const Endpoint &ep);
+    void ClearEndpointFailure(const Endpoint &ep);
     void CloseConnectionLocked();
     void EnqueueSend(uint64_t request_id, std::string &&buffer);
     void CompletePending(const std::shared_ptr<PendingCall> &pending, const std::string &reason, bool success);

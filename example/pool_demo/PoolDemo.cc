@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include <string>
+#include <thread>
 
 namespace {
 
@@ -14,6 +15,18 @@ std::string ReadEnvString(const char *key, const std::string &fallback) {
         return fallback;
     }
     return std::string(val);
+}
+
+int ReadEnvInt(const char *key, int fallback) {
+    const char *val = std::getenv(key);
+    if (!val) {
+        return fallback;
+    }
+    try {
+        return std::stoi(val);
+    } catch (...) {
+        return fallback;
+    }
 }
 
 }
@@ -32,14 +45,24 @@ int main(int argc, char **argv) {
 
     // 运行模式：single（单 Channel 复用）/ new_channel（每次新建 Channel）
     const std::string mode = ReadEnvString("POOL_DEMO_MODE", "single");
+    const int iterations = ReadEnvInt("POOL_DEMO_ITERATIONS", 10);
+    const int sleep_ms = ReadEnvInt("POOL_DEMO_SLEEP_MS", 0); // 每次调用间隔
+    const int idle_ms = ReadEnvInt("POOL_DEMO_IDLE_MS", 0);   // 中途空闲等待，用于触发服务端踢除或测试出池校验
+    int idle_at = ReadEnvInt("POOL_DEMO_IDLE_AT", iterations / 2); // 在第 idle_at 次调用后空闲
+    if (idle_at < 0) idle_at = 0;
+    if (idle_at > iterations) idle_at = iterations;
     std::cout << "pool demo mode=" << mode << std::endl;
+    std::cout << "iterations=" << iterations
+              << " sleep_ms=" << sleep_ms
+              << " idle_ms=" << idle_ms
+              << " idle_at=" << idle_at << std::endl;
 
     std::shared_ptr<Kuser::UserServiceRpc_Stub> shared_stub;
     if (mode == "single") {
         shared_stub.reset(new Kuser::UserServiceRpc_Stub(new KrpcChannel(false)));
     }
 
-    const int iterations = 10; // 调用次数
+    int ok = 0, fail = 0;
     for (int i = 0; i < iterations; ++i) {
         // 每次新建 Channel 的模式用于观察连接池复用：开启池时第二次起应看到“reuse pooled connection”
         // 注意 stub 默认不拥有 Channel，需要手动释放
@@ -63,12 +86,23 @@ int main(int argc, char **argv) {
 
         if (controller.Failed()) {
             std::cout << "[" << i << "] call failed: " << controller.ErrorText() << std::endl;
+            ++fail;
         } else {
             std::cout << "[" << i << "] call ok, success=" << std::boolalpha << response.success()
                       << " cost_ms=" << cost_ms << std::endl;
+            ++ok;
         }
         // new_channel 模式下手动销毁 Channel，确保连接归还到池
         owned_channel.reset();
+
+        if (idle_ms > 0 && i + 1 == idle_at) {
+            std::cout << "idle pause " << idle_ms << " ms to test pooled fd health..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(idle_ms));
+        }
+        if (sleep_ms > 0 && i + 1 < iterations) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+        }
     }
+    std::cout << "summary: ok=" << ok << " fail=" << fail << std::endl;
     return 0;
 }

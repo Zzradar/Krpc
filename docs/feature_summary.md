@@ -46,6 +46,7 @@
 - `heartbeat_interval_ms`：心跳周期（默认 5000）。
 - `heartbeat_miss_limit`：允许的连续心跳丢失次数（默认 3）。
 - `rpc_timeout_ms`：RPC 默认超时（默认 3000）。
+- `lb_fail_cooldown_ms`：负载均衡端点失败冷却时间（默认 3000）。
 
 ## 7. 后续可扩展点
 - 引入真正的心跳 failover（重连后自动重新注册订阅）。
@@ -92,7 +93,7 @@ il），日志中可看到 send loop、timeout manager 的相关输出。
 - **功能**：按端点缓存空闲连接，避免每次调用握手；ZK 查询结果做进程内缓存，减少重复读取。
 - **配置**（`bin/test.conf`）：`enable_connection_pool`（1 开、0 关，默认 1），`connection_pool_max_idle`（每端点最大空闲连接数，默认 4）。
 - **实现要点**：
-  - `Krpcchannel` 归还连接前做基础健康检查，超过池上限直接关闭；缓存服务地址（method_path -> ip:port）。
+  - `Krpcchannel` 归还连接前做基础健康检查，超过池上限直接关闭；出池会再校验 fd 健康，失效则丢弃并重建；缓存服务地址（method_path -> ip:port）。
   - 复用/新建日志：`reuse pooled connection` vs `connect server success`。
   - `example/pool_demo` 支持 `POOL_DEMO_MODE=new_channel`，开池时首条握手后续复用，关池时每次握手。
 - **验证命令**：
@@ -105,7 +106,39 @@ il），日志中可看到 send loop、timeout manager 的相关输出。
   enable_connection_pool=0  # 配置
   POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
   grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
+  # 触发服务端闲置踢除，验证出池校验与自动重建
+  POOL_DEMO_MODE=new_channel POOL_DEMO_IDLE_MS=30000 POOL_DEMO_IDLE_AT=1 ./bin/pool_demo -i ./bin/test.conf
+  # 每次调用间隔，可观察池内复用统计
+  POOL_DEMO_SLEEP_MS=500 POOL_DEMO_ITERATIONS=5 ./bin/pool_demo -i ./bin/test.conf
   ```
+- **验证结论**：首条握手、后续复用；空闲 30s 后出池重建坏 FD；双实例轮询时各端点首条握手、后续各自复用。
+- **通俗说法**：像在车站存了几串备用钥匙，用之前都会先确认钥匙没坏，坏了立刻配新钥匙；换站台（切换端点）时用对应那串钥匙，回来还能继续用老钥匙。
+
+## 13. 负载均衡基础（Round Robin + 多节点注册）
+- **节点注册**：服务端在 `/service/method` 下创建持久节点，并为每个实例创建子节点 `/service/method/<ip:port>`（ZK 临时节点），支持同一方法多副本并存。
+- **客户端发现**：`KrpcChannel` 通过 `GetChildren` 拉取子节点列表，缓存 method_path -> [ip:port]，兼容旧格式（节点数据直接存 ip:port）；端点列表进程内 5s TTL 缓存，减少频繁 ZK 连接；`LB_STATIC_ENDPOINTS` 仅解析一次并走静态列表，不再反复打印。
+- **策略**：内置 `RoundRobinLoadBalancer`（原子轮询），每次调用按节点列表选一个端点；连接失败会顺次尝试其他节点兜底，失败端点进入冷却窗口（`lb_fail_cooldown_ms`，默认 3s），无节点时返回错误。
+- **连接复用**：选择节点后结合连接池按端点取/还连接，若切换节点会关闭旧连接并建立新连接。
+- **验证方式**：
+  - 静态端点覆盖（无需 ZK）：`LB_STATIC_ENDPOINTS=127.0.0.1:8000,127.0.0.1:8001,127.0.0.1:8002 POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1`，日志中 `lb selected endpoint` 轮询 8000/8001/8002，首次握手后显示 `reuse pooled connection`。
+  - ZK 模式：确保 `/UserServiceRpc/Login/<ip:port>` 子节点存在（多实例注册后），运行 `pool_demo`，观察 `zk children ...` 数量与 `selected endpoint` 轮换。
+- **验证结论**：双实例轮询分发正常；宕掉的端点（连接拒绝）会被记录并自动回退到存活端点，整体成功率保持 100%。
+- **通俗说法**：就像两辆班车轮流来，坏掉的那班车到站后直接被跳过，乘客自动换乘另一班，不耽误大家上路。
+
+## 14. 压测对比 Demo（同步 vs 异步，长连接 vs 短连接）
+- **新增示例**：`example/bench_demo/BenchClient.cc`，支持同步/异步调用、长连接/短连接切换，统计成功/失败、QPS 与延迟分位（p50/p95/p99/max），定期输出 `[metrics]`。
+- **运行方式**：
+  ```bash
+  # 同步 + 长连接（默认）
+  BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
+  # 异步 + 长连接
+  BENCH_MODE=async BENCH_CONN=keepalive BENCH_CONCURRENCY=8 BENCH_REQUESTS=500 ./bin/bench_demo -i ./bin/test.conf
+  # 同步 + 短连接
+  BENCH_MODE=sync BENCH_CONN=short BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
+  ```
+  可选：`BENCH_SLEEP_MS` 控制请求间隔毫秒。
+- **输出**：实时统一调用日志；每 10s 自动汇总窗口 QPS/成功/失败/失败率及 p50/p95/p99/max；结束时打印总览。
+- **通俗说法**：像用同一条电话线连续拨号（长连接）和每次挂断重拨（短连接）对比；还能切换“边说边等”（同步）和“说完就挂等回拨”（异步），看哪种拨号方式更快。
 
 ## 11. 异步示例 Phase 4（示例/验证）
 - **新增示例**：`example/async_demo/AsyncClient.cc`，通过 `KrpcChannel::CallAsync` 演示 future 等待与 callback 回调两种形态，支持并发、请求数、超时、自定义间隔（环境变量：`ASYNC_MODE`=`future|callback`、`ASYNC_CONCURRENCY`、`ASYNC_REQUESTS`、`ASYNC_TIMEOUT_MS`、`ASYNC_SLEEP_MS`）。

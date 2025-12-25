@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o.d"
   "CMakeFiles/krpc_core.dir/Krpcprovider.cc.o"
   "CMakeFiles/krpc_core.dir/Krpcprovider.cc.o.d"
+  "CMakeFiles/krpc_core.dir/load_balancer.cc.o"
+  "CMakeFiles/krpc_core.dir/load_balancer.cc.o.d"
   "CMakeFiles/krpc_core.dir/zookeeperutil.cc.o"
   "CMakeFiles/krpc_core.dir/zookeeperutil.cc.o.d"
   "libkrpc_core.a"

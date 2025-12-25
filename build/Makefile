@@ -207,6 +207,19 @@ pool_demo/fast:
 	$(MAKE) $(MAKESILENT) -f example/pool_demo/CMakeFiles/pool_demo.dir/build.make example/pool_demo/CMakeFiles/pool_demo.dir/build
 .PHONY : pool_demo/fast
 
+#=============================================================================
+# Target rules for targets named bench_demo
+
+# Build rule for target.
+bench_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bench_demo
+.PHONY : bench_demo
+
+# fast build rule for target.
+bench_demo/fast:
+	$(MAKE) $(MAKESILENT) -f example/bench_demo/CMakeFiles/bench_demo.dir/build.make example/bench_demo/CMakeFiles/bench_demo.dir/build
+.PHONY : bench_demo/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -216,6 +229,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... async_client"
+	@echo "... bench_demo"
 	@echo "... client"
 	@echo "... heartbeat_client"
 	@echo "... krpc_core"

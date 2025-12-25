@@ -153,10 +153,24 @@ src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/krpc_core.dir/Krpcprovider.cc.s"
 	cd /home/zzz/Krpc/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zzz/Krpc/src/Krpcprovider.cc -o CMakeFiles/krpc_core.dir/Krpcprovider.cc.s
 
+src/CMakeFiles/krpc_core.dir/load_balancer.cc.o: src/CMakeFiles/krpc_core.dir/flags.make
+src/CMakeFiles/krpc_core.dir/load_balancer.cc.o: ../src/load_balancer.cc
+src/CMakeFiles/krpc_core.dir/load_balancer.cc.o: src/CMakeFiles/krpc_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/krpc_core.dir/load_balancer.cc.o"
+	cd /home/zzz/Krpc/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/krpc_core.dir/load_balancer.cc.o -MF CMakeFiles/krpc_core.dir/load_balancer.cc.o.d -o CMakeFiles/krpc_core.dir/load_balancer.cc.o -c /home/zzz/Krpc/src/load_balancer.cc
+
+src/CMakeFiles/krpc_core.dir/load_balancer.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/krpc_core.dir/load_balancer.cc.i"
+	cd /home/zzz/Krpc/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zzz/Krpc/src/load_balancer.cc > CMakeFiles/krpc_core.dir/load_balancer.cc.i
+
+src/CMakeFiles/krpc_core.dir/load_balancer.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/krpc_core.dir/load_balancer.cc.s"
+	cd /home/zzz/Krpc/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zzz/Krpc/src/load_balancer.cc -o CMakeFiles/krpc_core.dir/load_balancer.cc.s
+
 src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: src/CMakeFiles/krpc_core.dir/flags.make
 src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: ../src/zookeeperutil.cc
 src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: src/CMakeFiles/krpc_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o"
 	cd /home/zzz/Krpc/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o -MF CMakeFiles/krpc_core.dir/zookeeperutil.cc.o.d -o CMakeFiles/krpc_core.dir/zookeeperutil.cc.o -c /home/zzz/Krpc/src/zookeeperutil.cc
 
 src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.i: cmake_force
@@ -175,6 +189,7 @@ krpc_core_OBJECTS = \
 "CMakeFiles/krpc_core.dir/Krpccontroller.cc.o" \
 "CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o" \
 "CMakeFiles/krpc_core.dir/Krpcprovider.cc.o" \
+"CMakeFiles/krpc_core.dir/load_balancer.cc.o" \
 "CMakeFiles/krpc_core.dir/zookeeperutil.cc.o"
 
 # External object files for target krpc_core
@@ -186,10 +201,11 @@ src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o
+src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/load_balancer.cc.o
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/build.make
 src/libkrpc_core.a: src/CMakeFiles/krpc_core.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libkrpc_core.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zzz/Krpc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX static library libkrpc_core.a"
 	cd /home/zzz/Krpc/build/src && $(CMAKE_COMMAND) -P CMakeFiles/krpc_core.dir/cmake_clean_target.cmake
 	cd /home/zzz/Krpc/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/krpc_core.dir/link.txt --verbose=$(VERBOSE)
 

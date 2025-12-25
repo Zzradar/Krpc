@@ -19,6 +19,7 @@
 #include "KrpcLogger.h"
 #include <vector>
 #include <utility>
+#include <algorithm>
 
 std::mutex g_data_mutx;  // 全局互斥锁，用于保护共享数据的线程安全
 
@@ -27,6 +28,43 @@ std::atomic<uint64_t> g_request_id{1};
 
 uint64_t NextRequestId() {
     return g_request_id.fetch_add(1, std::memory_order_relaxed);
+}
+
+using Clock = std::chrono::steady_clock;
+struct EndpointCacheEntry {
+    std::vector<Endpoint> endpoints;
+    Clock::time_point expire_at;
+};
+
+const auto kEndpointCacheTtl = std::chrono::milliseconds(5000);
+std::atomic<int> g_endpoint_fail_cooldown_ms{3000};
+std::mutex g_endpoint_cache_mutex;
+std::unordered_map<std::string, EndpointCacheEntry> g_endpoint_cache;
+
+bool TryGetCachedEndpoints(const std::string &key, std::vector<Endpoint> &out) {
+    const auto now = Clock::now();
+    std::lock_guard<std::mutex> lock(g_endpoint_cache_mutex);
+    auto it = g_endpoint_cache.find(key);
+    if (it == g_endpoint_cache.end()) {
+        return false;
+    }
+    if (now >= it->second.expire_at) {
+        g_endpoint_cache.erase(it);
+        return false;
+    }
+    out = it->second.endpoints;
+    return true;
+}
+
+void StoreCachedEndpoints(const std::string &key, const std::vector<Endpoint> &endpoints) {
+    if (endpoints.empty()) {
+        return; // 不缓存空列表，避免挡住后续注册
+    }
+    EndpointCacheEntry entry;
+    entry.endpoints = endpoints;
+    entry.expire_at = Clock::now() + kEndpointCacheTtl;
+    std::lock_guard<std::mutex> lock(g_endpoint_cache_mutex);
+    g_endpoint_cache[key] = std::move(entry);
 }
 
 class ConnectionPool {
@@ -43,13 +81,18 @@ public:
         {
             std::lock_guard<std::mutex> lock(mutex_);
             auto it = pools_.find(key);
-            if (it != pools_.end() && !it->second.idle.empty()) {
-                int fd = it->second.idle.back();
-                it->second.idle.pop_back();
-                if (reused) {
-                    *reused = true;
+            if (it != pools_.end()) {
+                while (!it->second.idle.empty()) {
+                    int fd = it->second.idle.back();
+                    it->second.idle.pop_back();
+                    if (KrpcChannel::IsConnectionHealthy(fd)) {
+                        if (reused) {
+                            *reused = true;
+                        }
+                        return fd;
+                    }
+                    close(fd);
                 }
-                return fd;
             }
         }
         int fd = -1;
@@ -104,9 +147,112 @@ int ParseConfigInt(const std::string &value, int default_value) {
     }
 }
 
-// 简单的服务地址缓存，减少重复 ZK 查询
-std::mutex g_service_cache_mutex;
-std::unordered_map<std::string, std::string> g_service_cache;
+bool ParseEndpoint(const std::string &addr, Endpoint &out) {
+    const auto pos = addr.find(':');
+    if (pos == std::string::npos) {
+        return false;
+    }
+    out.host = addr.substr(0, pos);
+    try {
+        out.port = static_cast<uint16_t>(std::stoi(addr.substr(pos + 1)));
+    } catch (...) {
+        return false;
+    }
+    if (out.port == 0) {
+        return false;
+    }
+    return true;
+}
+
+std::once_flag g_static_ep_once;
+std::vector<Endpoint> g_static_endpoints;
+
+void InitStaticEndpoints() {
+    const char *env_list = std::getenv("LB_STATIC_ENDPOINTS");
+    if (env_list == nullptr) {
+        return;
+    }
+    std::string list = env_list;
+    size_t start = 0;
+    while (start < list.size()) {
+        auto comma = list.find(',', start);
+        const std::string token = list.substr(start, comma == std::string::npos ? std::string::npos : comma - start);
+        Endpoint ep;
+        if (ParseEndpoint(token, ep)) {
+            g_static_endpoints.push_back(ep);
+        }
+        if (comma == std::string::npos) {
+            break;
+        }
+        start = comma + 1;
+    }
+    LOG(INFO) << "LB_STATIC_ENDPOINTS parsed once, count=" << g_static_endpoints.size();
+}
+
+std::vector<Endpoint> GetStaticEndpoints() {
+    std::call_once(g_static_ep_once, InitStaticEndpoints);
+    return g_static_endpoints;
+}
+
+class MetricsAggregator {
+public:
+    void AddSample(bool success, int64_t cost_ms) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (success) {
+            ++success_;
+        } else {
+            ++fail_;
+        }
+        samples_.push_back(cost_ms);
+        const auto now = Clock::now();
+        if (now - last_flush_ >= flush_interval_) {
+            FlushLocked(now);
+        }
+    }
+
+private:
+    void FlushLocked(const Clock::time_point &now) {
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_flush_).count();
+        if (elapsed <= 0) {
+            return;
+        }
+        const int total = success_ + fail_;
+        if (total == 0) {
+            last_flush_ = now;
+            return;
+        }
+        std::sort(samples_.begin(), samples_.end());
+        auto perc = [&](double p) -> int64_t {
+            if (samples_.empty()) return 0;
+            const size_t idx = static_cast<size_t>((p / 100.0) * samples_.size() + 0.5) - 1;
+            return samples_[std::min(idx, samples_.size() - 1)];
+        };
+        const double qps = (static_cast<double>(total) * 1000.0) / static_cast<double>(elapsed);
+        const double fail_rate = total > 0 ? (static_cast<double>(fail_) / total) * 100.0 : 0.0;
+        LOG(INFO) << "[metrics] window_ms=" << elapsed
+                  << " qps=" << qps
+                  << " success=" << success_
+                  << " fail=" << fail_
+                  << " fail_rate=" << fail_rate << "%"
+                  << " p50=" << perc(50)
+                  << " p95=" << perc(95)
+                  << " p99=" << perc(99)
+                  << " max=" << (samples_.empty() ? 0 : samples_.back());
+        success_ = fail_ = 0;
+        samples_.clear();
+        last_flush_ = now;
+    }
+
+    std::mutex mutex_;
+    int success_{0};
+    int fail_{0};
+    std::vector<int64_t> samples_;
+    Clock::time_point last_flush_{Clock::now()};
+    const std::chrono::milliseconds flush_interval_{std::chrono::milliseconds(10000)};
+};
+
+MetricsAggregator g_metrics;
+
 } // namespace
 
 // RPC调用的核心方法，负责将客户端的请求序列化并发送到服务端，同时接收服务端的响应
@@ -207,6 +353,8 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
     }
     const std::string request_service_name = sd->name();
     const std::string request_method_name = method->name();
+    pending->service_name = request_service_name;
+    pending->method_name = request_method_name;
     krpcheader.set_service_name(request_service_name);
     krpcheader.set_method_name(request_method_name);
 
@@ -232,6 +380,7 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
     if (!EnsureConnection(method, controller, &ensure_error)) {
         return fail_immediately(ensure_error);
     }
+    pending->peer = m_endpoint_key;
 
     {
         std::lock_guard<std::mutex> lock(m_pending_mutex);
@@ -358,48 +507,53 @@ void KrpcChannel::CloseConnectionLocked() {
     }
 }
 
-// 从ZooKeeper查询服务地址
-std::string KrpcChannel::QueryServiceHost(ZkClient *zkclient, std::string service_name, std::string method_name, int &idx) {
-    std::string method_path = "/" + service_name + "/" + method_name;  // 构造ZooKeeper路径
+// 从ZooKeeper查询服务地址列表
+std::vector<Endpoint> KrpcChannel::QueryServiceNodes(ZkClient *zkclient, const std::string &service_name, const std::string &method_name) {
+    std::vector<Endpoint> endpoints;
+    std::string method_path = "/" + service_name + "/" + method_name;
     std::cout << "method_path: " << method_path << std::endl;
 
+    std::vector<std::string> children;
     {
-        std::lock_guard<std::mutex> cache_lock(g_service_cache_mutex);
-        auto it = g_service_cache.find(method_path);
-        if (it != g_service_cache.end()) {
-            idx = static_cast<int>(it->second.find(":"));
-            if (idx != -1) {
-                return it->second;
-            }
+        std::unique_lock<std::mutex> lock(g_data_mutx);
+        children = zkclient->GetChildren(method_path.c_str());
+    }
+    if (!children.empty()) {
+        LOG(INFO) << "zk children under " << method_path << ": " << children.size();
+    } else {
+        LOG(WARNING) << "zk children empty under " << method_path;
+    }
+    for (const auto &child : children) {
+        LOG(INFO) << "child node: " << child;
+        Endpoint ep;
+        if (ParseEndpoint(child, ep)) {
+            endpoints.push_back(ep);
         }
     }
 
-    std::unique_lock<std::mutex> lock(g_data_mutx);  // 加锁，保证线程安全
-    std::string host_data_1 = zkclient->GetData(method_path.c_str());  // 从ZooKeeper获取数据
-    lock.unlock();  // 解锁
-
-    if (host_data_1 == "") {  // 如果未找到服务地址
-        LOG(ERROR) << method_path + " is not exist!";  // 记录错误日志
-        return "";
+    // 兼容旧格式：直接在方法节点数据存放 "ip:port"
+    if (endpoints.empty()) {
+        std::unique_lock<std::mutex> lock(g_data_mutx);
+        std::string host_data = zkclient->GetData(method_path.c_str());
+        lock.unlock();
+        Endpoint ep;
+        if (ParseEndpoint(host_data, ep)) {
+            LOG(INFO) << "fallback to method data: " << host_data;
+            endpoints.push_back(ep);
+        } else {
+            LOG(ERROR) << method_path + " is not exist or invalid!";
+        }
     }
 
-    idx = host_data_1.find(":");  // 查找IP和端口的分隔符
-    if (idx == -1) {  // 如果分隔符不存在
-        LOG(ERROR) << method_path + " address is invalid!";  // 记录错误日志
-        return "";
-    }
-
-    {
-        std::lock_guard<std::mutex> cache_lock(g_service_cache_mutex);
-        g_service_cache[method_path] = host_data_1;
-    }
-
-    return host_data_1;  // 返回服务地址
+    return endpoints;
 }
 
 bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *method,
                                    ::google::protobuf::RpcController *controller,
                                    std::string *error_text) {
+    auto &config = KrpcApplication::GetInstance().GetConfig();
+    const int discovery_retry = ParseConfigInt(config.Load("discovery_retry"), 3);
+    const int discovery_retry_interval_ms = ParseConfigInt(config.Load("discovery_retry_interval_ms"), 200);
     const google::protobuf::ServiceDescriptor *sd = method->service();
     if (sd == nullptr) {
         if (controller) {
@@ -413,17 +567,38 @@ bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *m
 
     const std::string service_name = sd->name();
     const std::string method_name = method->name();
+    const std::string cache_key = service_name + "/" + method_name;
 
     std::unique_lock<std::mutex> socket_lock(m_socket_mutex);
-    if (m_clientfd != -1) {
-        return true;
-    }
     socket_lock.unlock();
 
-    ZkClient zkCli;
-    zkCli.Start();
-    std::string host_data = QueryServiceHost(&zkCli, service_name, method_name, m_idx);
-    if (host_data.empty()) {
+    std::vector<Endpoint> endpoints = GetStaticEndpoints();
+    std::unique_ptr<ZkClient> zkCli;
+    if (endpoints.empty()) {
+        if (!TryGetCachedEndpoints(cache_key, endpoints)) {
+            zkCli.reset(new ZkClient());
+            zkCli->Start();
+            endpoints = QueryServiceNodes(zkCli.get(), service_name, method_name);
+            StoreCachedEndpoints(cache_key, endpoints);
+        } else {
+            LOG(INFO) << "use cached endpoints for " << cache_key << ", count=" << endpoints.size();
+        }
+    } else {
+        LOG(INFO) << "use static endpoints from env, count=" << endpoints.size();
+    }
+
+    for (int attempt = 1; endpoints.empty() && attempt <= discovery_retry; ++attempt) {
+        LOG(WARNING) << "service node not found, retry discovery attempt " << attempt << "/" << discovery_retry;
+        std::this_thread::sleep_for(std::chrono::milliseconds(discovery_retry_interval_ms));
+        if (!zkCli) {
+            zkCli.reset(new ZkClient());
+            zkCli->Start();
+        }
+        endpoints = QueryServiceNodes(zkCli.get(), service_name, method_name);
+        StoreCachedEndpoints(cache_key, endpoints);
+    }
+
+    if (endpoints.empty()) {
         const std::string reason = "service node not found: " + service_name + "/" + method_name;
         if (controller) {
             controller->SetFailed(reason);
@@ -434,34 +609,119 @@ bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *m
         return false;
     }
 
-    std::string target_ip = host_data.substr(0, m_idx);
-    uint16_t target_port = static_cast<uint16_t>(atoi(host_data.substr(m_idx + 1).c_str()));
+    if (m_lb) {
+        m_lb->UpdateNodes(endpoints);
+    }
+    LOG(INFO) << "lb endpoints count=" << endpoints.size();
+    Endpoint selected;
+    if (!m_lb || !m_lb->Select(method_name, selected)) {
+        selected = endpoints.front();
+    }
+    LOG(INFO) << "lb selected endpoint=" << selected.host << ":" << selected.port;
 
-    socket_lock.lock();
-    if (m_clientfd == -1) {
-        m_ip = target_ip;
-        m_port = target_port;
+    size_t start_index = 0;
+    for (size_t i = 0; i < endpoints.size(); ++i) {
+        if (endpoints[i].host == selected.host && endpoints[i].port == selected.port) {
+            start_index = i;
+            break;
+        }
+    }
+
+    std::string last_error;
+    Clock::time_point earliest_retry = Clock::time_point::max();
+    size_t earliest_index = start_index;
+    const auto now = Clock::now();
+
+    for (size_t i = 0; i < endpoints.size(); ++i) {
+        const size_t idx = (start_index + i) % endpoints.size();
+        const auto &candidate = endpoints[idx];
+
+        Clock::time_point retry_at{};
+        if (!EndpointAvailable(candidate, now, retry_at)) {
+            if (retry_at < earliest_retry) {
+                earliest_retry = retry_at;
+                earliest_index = idx;
+            }
+            continue;
+        }
+
+        socket_lock.lock();
+        const bool already_ok = (m_clientfd != -1 && candidate.host == m_ip && candidate.port == m_port);
+        if (already_ok) {
+            socket_lock.unlock();
+            return true;
+        }
+        if (m_clientfd != -1) {
+            ReleaseConnection(true);
+        }
+        m_ip = candidate.host;
+        m_port = candidate.port;
         m_endpoint_key = m_ip + ":" + std::to_string(m_port);
+        socket_lock.unlock();
+
         std::string connect_error;
         bool from_pool = false;
         int fd = AcquireConnection(m_ip, m_port, &connect_error, &from_pool);
-        if (fd == -1) {
-            if (controller) {
-                controller->SetFailed(connect_error.empty() ? "connect server error" : connect_error);
+        if (fd != -1) {
+            socket_lock.lock();
+            m_clientfd = fd;
+            socket_lock.unlock();
+            ClearEndpointFailure(candidate);
+            if (from_pool) {
+                LOG(INFO) << "reuse pooled connection to " << m_ip << ":" << m_port;
+            } else {
+                LOG(INFO) << "connect server success to " << m_ip << ":" << m_port;
             }
-            if (error_text) {
-                *error_text = connect_error.empty() ? "connect server error" : connect_error;
-            }
-            return false;
+            return true;
         }
-        m_clientfd = fd;
-        if (from_pool) {
-            LOG(INFO) << "reuse pooled connection";
-        } else {
-            LOG(INFO) << "connect server success";
-        }
+
+        last_error = connect_error.empty() ? "connect server error" : connect_error;
+        MarkEndpointFailure(candidate);
+        LOG(WARNING) << "endpoint " << candidate.host << ":" << candidate.port << " unavailable: " << last_error;
     }
-    return true;
+
+    // 全部处于冷却时，尝试最早可重试的端点（或默认起点）
+    const auto &fallback = endpoints[earliest_index];
+    socket_lock.lock();
+    const bool already_ok = (m_clientfd != -1 && fallback.host == m_ip && fallback.port == m_port);
+    if (already_ok) {
+        socket_lock.unlock();
+        return true;
+    }
+    if (m_clientfd != -1) {
+        ReleaseConnection(true);
+    }
+    m_ip = fallback.host;
+    m_port = fallback.port;
+    m_endpoint_key = m_ip + ":" + std::to_string(m_port);
+    socket_lock.unlock();
+
+    std::string connect_error;
+    bool from_pool = false;
+    int fd = AcquireConnection(m_ip, m_port, &connect_error, &from_pool);
+    if (fd != -1) {
+        socket_lock.lock();
+        m_clientfd = fd;
+        socket_lock.unlock();
+        ClearEndpointFailure(fallback);
+        if (from_pool) {
+            LOG(INFO) << "reuse pooled connection to " << m_ip << ":" << m_port;
+        } else {
+            LOG(INFO) << "connect server success to " << m_ip << ":" << m_port;
+        }
+        return true;
+    }
+
+    last_error = connect_error.empty() ? "connect server error" : connect_error;
+    MarkEndpointFailure(fallback);
+
+    if (controller) {
+        controller->SetFailed(last_error.empty() ? "connect server error" : last_error);
+    }
+    if (error_text) {
+        *error_text = last_error.empty() ? "connect server error" : last_error;
+    }
+    return false;
 }
 
 bool KrpcChannel::SendBuffer(const std::string &buffer, std::string *error_text) {
@@ -480,7 +740,8 @@ bool KrpcChannel::SendBuffer(const std::string &buffer, std::string *error_text)
                 continue;
             }
             char errtxt[512] = {};
-            strerror_r(errno, errtxt, sizeof(errtxt));
+            auto rc = strerror_r(errno, errtxt, sizeof(errtxt));
+            (void)rc;
             if (error_text) {
                 *error_text = errtxt;
             }
@@ -499,6 +760,7 @@ KrpcChannel::KrpcChannel(bool connectNow)
             m_request_timeout_ms(KrpcProtocol::kDefaultRequestTimeoutMs),
             m_heartbeat_interval_ms(KrpcProtocol::kDefaultHeartbeatIntervalMs),
             m_heartbeat_miss_limit(KrpcProtocol::kDefaultHeartbeatMissLimit),
+            m_pool_max_idle(4),
             m_heartbeat_thread(),
             m_heartbeat_running(false),
             m_heartbeat_thread_started(false),
@@ -524,9 +786,15 @@ KrpcChannel::KrpcChannel(bool connectNow)
     m_heartbeat_miss_limit = ParseConfigInt(config.Load("heartbeat_miss_limit"), KrpcProtocol::kDefaultHeartbeatMissLimit);
     m_pool_max_idle = ParseConfigInt(config.Load("connection_pool_max_idle"), 4);
     m_use_pool = ParseConfigInt(config.Load("enable_connection_pool"), 1) != 0;
+    int lb_fail_cool_ms = ParseConfigInt(config.Load("lb_fail_cooldown_ms"), 3000);
+    if (lb_fail_cool_ms < 0) {
+        lb_fail_cool_ms = 0;
+    }
+    g_endpoint_fail_cooldown_ms.store(lb_fail_cool_ms, std::memory_order_release);
     if (m_pool_max_idle < 1) {
         m_pool_max_idle = 1;
     }
+    m_lb = std::unique_ptr<ILoadBalancer>(new RoundRobinLoadBalancer());
 
     StartSendThread();
     StartRecvThread();
@@ -627,7 +895,12 @@ void KrpcChannel::StopRecvThread() {
     m_recv_running.store(false, std::memory_order_release);
     m_recv_cv.notify_all();
     if (m_recv_thread.joinable()) {
-        m_recv_thread.join();
+        if (m_recv_thread.get_id() == std::this_thread::get_id()) {
+            // 避免在线程自身上调用 join 导致的 deadlock 异常
+            m_recv_thread.detach();
+        } else {
+            m_recv_thread.join();
+        }
     }
     m_recv_thread_started = false;
 }
@@ -793,6 +1066,16 @@ void KrpcChannel::SendLoop() {
 }
 
 void KrpcChannel::RecvLoop() {
+    // 确保异步场景下 RecvLoop 运行期间对象不会在回调里被销毁
+    std::shared_ptr<KrpcChannel> self_guard;
+    for (int i = 0; i < 3 && !self_guard; ++i) {
+        try {
+            self_guard = shared_from_this();
+        } catch (const std::bad_weak_ptr &) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     while (m_recv_running.load(std::memory_order_acquire)) {
         int current_fd = -1;
         {
@@ -1036,9 +1319,28 @@ void KrpcChannel::CompletePending(const std::shared_ptr<PendingCall> &pending, c
     if (!pending) {
         return;
     }
+    const auto end_time = std::chrono::steady_clock::now();
+    const auto cost_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - pending->start_time).count();
+
     if (!success && pending->controller && !reason.empty()) {
         pending->controller->SetFailed(reason);
     }
+    const std::string peer = pending->peer.empty() ? m_endpoint_key : pending->peer;
+    if (success) {
+        LOG(INFO) << "[req " << pending->request_id << "] "
+                  << pending->service_name << "." << pending->method_name
+                  << " cost=" << cost_ms << "ms "
+                  << "peer=" << peer
+                  << " status=OK";
+    } else {
+        LOG(WARNING) << "[req " << pending->request_id << "] "
+                     << pending->service_name << "." << pending->method_name
+                     << " cost=" << cost_ms << "ms "
+                     << "peer=" << peer
+                     << " status=FAIL err=" << reason;
+    }
+    g_metrics.AddSample(success, cost_ms);
+
     try {
         pending->promise.set_value();
     } catch (const std::future_error &) {
@@ -1049,4 +1351,28 @@ void KrpcChannel::CompletePending(const std::shared_ptr<PendingCall> &pending, c
     if (pending->async_callback) {
         pending->async_callback(pending->controller, pending->response);
     }
+}
+
+bool KrpcChannel::EndpointAvailable(const Endpoint &ep, std::chrono::steady_clock::time_point now, std::chrono::steady_clock::time_point &next_retry) {
+    std::lock_guard<std::mutex> lock(m_fail_mutex);
+    const std::string key = ep.host + ":" + std::to_string(ep.port);
+    auto it = m_fail_states.find(key);
+    if (it == m_fail_states.end()) {
+        return true;
+    }
+    next_retry = it->second.retry_at;
+    return now >= it->second.retry_at;
+}
+
+void KrpcChannel::MarkEndpointFailure(const Endpoint &ep) {
+    std::lock_guard<std::mutex> lock(m_fail_mutex);
+    const std::string key = ep.host + ":" + std::to_string(ep.port);
+    const auto cooldown = std::chrono::milliseconds(g_endpoint_fail_cooldown_ms.load(std::memory_order_acquire));
+    m_fail_states[key].retry_at = Clock::now() + cooldown;
+}
+
+void KrpcChannel::ClearEndpointFailure(const Endpoint &ep) {
+    std::lock_guard<std::mutex> lock(m_fail_mutex);
+    const std::string key = ep.host + ":" + std::to_string(ep.port);
+    m_fail_states.erase(key);
 }

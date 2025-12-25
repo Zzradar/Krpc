@@ -23,3 +23,6 @@
 /home/zzz/Krpc/build/example/pool_demo/CMakeFiles/pool_demo.dir
 /home/zzz/Krpc/build/example/pool_demo/CMakeFiles/edit_cache.dir
 /home/zzz/Krpc/build/example/pool_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/bench_demo/CMakeFiles/bench_demo.dir
+/home/zzz/Krpc/build/example/bench_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/bench_demo/CMakeFiles/rebuild_cache.dir
