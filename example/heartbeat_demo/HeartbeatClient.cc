@@ -1,10 +1,14 @@
 #include "Krpcapplication.h"
 #include "Krpcchannel.h"
 #include "Krpccontroller.h"
+#include "Krpcmsgpack_channel.h"
 #include "../user.pb.h"
+#include "../common/codec_util.h"
+#include "../common/user_types.h"
 
 #include <chrono>
 #include <cstdlib>
+#include <exception>
 #include <iostream>
 #include <thread>
 
@@ -40,6 +44,20 @@ bool InvokeLogin(Kuser::UserServiceRpc_Stub &stub, const std::string &name) {
     return true;
 }
 
+bool InvokeLoginMsgpack(KrpcMsgpackChannel &channel, const std::string &name) {
+    try {
+        auto result = channel.Call<MsgpackUserResult>("UserServiceRpc", "Login",
+                                                      name, std::string("123456"));
+        std::cout << "login request (name=" << name << ") success="
+                  << std::boolalpha << result.success << std::endl;
+        return result.success;
+    } catch (const std::exception &e) {
+        std::cout << "login request (name=" << name << ") failed: "
+                  << e.what() << std::endl;
+        return false;
+    }
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
@@ -51,14 +69,20 @@ int main(int argc, char **argv) {
     std::cout << "Heartbeat demo using idle_seconds=" << idle_seconds
               << ", rounds=" << rounds << std::endl;
 
+    const bool use_msgpack = KrpcUseMsgpack();
     Kuser::UserServiceRpc_Stub stub(new KrpcChannel(false));
+    KrpcMsgpackChannel msgpack_channel;
 
     for (int round = 0; round < rounds; ++round) {
         std::cout << "[round " << (round + 1) << "/" << rounds
                   << "] invoking Login" << std::endl;
-        if (!InvokeLogin(stub, "zhangsan")) {
-            return EXIT_FAILURE;
+        bool ok = false;
+        if (use_msgpack) {
+            ok = InvokeLoginMsgpack(msgpack_channel, "zhangsan");
+        } else {
+            ok = InvokeLogin(stub, "zhangsan");
         }
+        if (!ok) return EXIT_FAILURE;
 
         if (round == rounds - 1) {
             break;

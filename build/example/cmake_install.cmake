@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -51,6 +51,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/zzz/Krpc/build/example/async_demo/cmake_install.cmake")
   include("/home/zzz/Krpc/build/example/pool_demo/cmake_install.cmake")
   include("/home/zzz/Krpc/build/example/bench_demo/cmake_install.cmake")
+  include("/home/zzz/Krpc/build/example/msgpack_demo/cmake_install.cmake")
+  include("/home/zzz/Krpc/build/example/switch_demo/cmake_install.cmake")
 
 endif()
 

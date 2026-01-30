@@ -1,16 +1,22 @@
 #include "Krpcapplication.h"
-#include "../user.pb.h"
+#include "Krpcchannel.h"
 #include "Krpccontroller.h"
-#include <iostream>
-#include <atomic>
-#include <thread>
-#include <chrono>
+#include "Krpcmsgpack_channel.h"
 #include "KrpcLogger.h"
+#include "../user.pb.h"
+#include "../common/codec_util.h"
+#include "../common/user_types.h"
+
+#include <atomic>
+#include <chrono>
+#include <exception>
+#include <iostream>
 #include <map>
 #include <mutex>
+#include <thread>
 
 // 发送 RPC 请求的函数，模拟客户端调用远程服务
-void send_request(int thread_id,
+void send_request_protobuf(int thread_id,
                   std::atomic<int> &success_count,
                   std::atomic<int> &fail_count,
                   int requests_per_thread,
@@ -53,6 +59,38 @@ void send_request(int thread_id,
     }
 }
 
+void send_request_msgpack(int thread_id,
+                  std::atomic<int> &success_count,
+                  std::atomic<int> &fail_count,
+                  int requests_per_thread,
+                  std::map<std::string, int> &error_stats,
+                  std::mutex &error_mutex) {
+    (void)thread_id;
+    KrpcMsgpackChannel channel;
+    for (int i = 0; i < requests_per_thread; ++i) {
+        try {
+            auto result = channel.Call<MsgpackUserResult>("UserServiceRpc", "Login",
+                                                          std::string("zhangsan"),
+                                                          std::string("123456"));
+            if (result.errcode == 0) {
+                success_count++;
+            } else {
+                {
+                    std::lock_guard<std::mutex> lock(error_mutex);
+                    ++error_stats[result.errmsg];
+                }
+                fail_count++;
+            }
+        } catch (const std::exception &e) {
+            {
+                std::lock_guard<std::mutex> lock(error_mutex);
+                ++error_stats[e.what()];
+            }
+            fail_count++;
+        }
+    }
+}
+
 int main(int argc, char **argv) {
     // 初始化 RPC 框架，解析命令行参数并加载配置文件
     KrpcApplication::Init(argc, argv);
@@ -71,10 +109,18 @@ int main(int argc, char **argv) {
 
     auto start_time = std::chrono::high_resolution_clock::now();  // 记录测试开始时间
 
+    const bool use_msgpack = KrpcUseMsgpack();
+
     // 启动多线程进行并发测试
     for (int i = 0; i < thread_count; i++) {
-        threads.emplace_back([argc, argv, i, &success_count, &fail_count, requests_per_thread, &error_stats, &error_mutex]() {
-            send_request(i, success_count, fail_count, requests_per_thread, error_stats, error_mutex);
+        threads.emplace_back([argc, argv, i, use_msgpack, &success_count, &fail_count, requests_per_thread, &error_stats, &error_mutex]() {
+            (void)argc;
+            (void)argv;
+            if (use_msgpack) {
+                send_request_msgpack(i, success_count, fail_count, requests_per_thread, error_stats, error_mutex);
+            } else {
+                send_request_protobuf(i, success_count, fail_count, requests_per_thread, error_stats, error_mutex);
+            }
         });
     }
 

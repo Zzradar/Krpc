@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <atomic>
@@ -20,6 +21,9 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <sstream>
+#include <sys/uio.h>
+#include "metrics_export.h"
 
 std::mutex g_data_mutx;  // 全局互斥锁，用于保护共享数据的线程安全
 
@@ -196,6 +200,14 @@ std::vector<Endpoint> GetStaticEndpoints() {
 
 class MetricsAggregator {
 public:
+    void SetWindowMs(int ms) {
+        if (ms < 100) {
+            ms = 100;
+        }
+        std::lock_guard<std::mutex> lock(mutex_);
+        flush_interval_ = std::chrono::milliseconds(ms);
+    }
+
     void AddSample(bool success, int64_t cost_ms) {
         std::lock_guard<std::mutex> lock(mutex_);
         if (success) {
@@ -210,7 +222,49 @@ public:
         }
     }
 
+    bool Snapshot(MetricsSnapshot &out, bool reset) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        const auto now = Clock::now();
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_flush_).count();
+        const int total = success_ + fail_;
+        if (total == 0 || elapsed <= 0) {
+            return false;
+        }
+        PrepareStatsUnlocked(out, elapsed);
+        if (reset) {
+            success_ = fail_ = 0;
+            samples_.clear();
+            last_flush_ = now;
+        }
+        return true;
+    }
+
 private:
+    void PrepareStatsUnlocked(MetricsSnapshot &out, int64_t elapsed_ms) {
+        std::sort(samples_.begin(), samples_.end());
+        int64_t sum = 0;
+        for (auto v : samples_) {
+            sum += v;
+        }
+        auto perc = [&](double p) -> int64_t {
+            if (samples_.empty()) return 0;
+            const size_t idx = static_cast<size_t>((p / 100.0) * samples_.size() + 0.5) - 1;
+            return samples_[std::min(idx, samples_.size() - 1)];
+        };
+        const int total = success_ + fail_;
+        out.window_ms = elapsed_ms;
+        out.qps = (static_cast<double>(total) * 1000.0) / static_cast<double>(elapsed_ms);
+        out.success = success_;
+        out.fail = fail_;
+        out.fail_rate = total > 0 ? (static_cast<double>(fail_) / total) * 100.0 : 0.0;
+        out.p50 = perc(50);
+        out.p95 = perc(95);
+        out.p99 = perc(99);
+        out.min = samples_.empty() ? 0 : samples_.front();
+        out.max = samples_.empty() ? 0 : samples_.back();
+        out.avg = samples_.empty() ? 0.0 : static_cast<double>(sum) / samples_.size();
+    }
+
     void FlushLocked(const Clock::time_point &now) {
         const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_flush_).count();
         if (elapsed <= 0) {
@@ -221,23 +275,19 @@ private:
             last_flush_ = now;
             return;
         }
-        std::sort(samples_.begin(), samples_.end());
-        auto perc = [&](double p) -> int64_t {
-            if (samples_.empty()) return 0;
-            const size_t idx = static_cast<size_t>((p / 100.0) * samples_.size() + 0.5) - 1;
-            return samples_[std::min(idx, samples_.size() - 1)];
-        };
-        const double qps = (static_cast<double>(total) * 1000.0) / static_cast<double>(elapsed);
-        const double fail_rate = total > 0 ? (static_cast<double>(fail_) / total) * 100.0 : 0.0;
-        LOG(INFO) << "[metrics] window_ms=" << elapsed
-                  << " qps=" << qps
-                  << " success=" << success_
-                  << " fail=" << fail_
-                  << " fail_rate=" << fail_rate << "%"
-                  << " p50=" << perc(50)
-                  << " p95=" << perc(95)
-                  << " p99=" << perc(99)
-                  << " max=" << (samples_.empty() ? 0 : samples_.back());
+        MetricsSnapshot snapshot;
+        PrepareStatsUnlocked(snapshot, elapsed);
+        LOG(INFO) << "[metrics] window_ms=" << snapshot.window_ms
+                  << " qps=" << snapshot.qps
+                  << " success=" << snapshot.success
+                  << " fail=" << snapshot.fail
+                  << " fail_rate=" << snapshot.fail_rate << "%"
+                  << " p50=" << snapshot.p50
+                  << " p95=" << snapshot.p95
+                  << " p99=" << snapshot.p99
+                  << " min=" << snapshot.min
+                  << " max=" << snapshot.max
+                  << " avg=" << snapshot.avg;
         success_ = fail_ = 0;
         samples_.clear();
         last_flush_ = now;
@@ -248,12 +298,118 @@ private:
     int fail_{0};
     std::vector<int64_t> samples_;
     Clock::time_point last_flush_{Clock::now()};
-    const std::chrono::milliseconds flush_interval_{std::chrono::milliseconds(10000)};
+    std::chrono::milliseconds flush_interval_{std::chrono::milliseconds(10000)};
 };
 
-MetricsAggregator g_metrics;
+class LabeledMetrics {
+public:
+    void AddSample(const std::string &label, bool success, int64_t cost_ms) {
+        if (label.empty()) {
+            return;
+        }
+        std::lock_guard<std::mutex> lock(mutex_);
+        auto &entry = by_label_[label];
+        if (!entry) {
+            entry = std::unique_ptr<MetricsAggregator>(new MetricsAggregator());
+        }
+        entry->AddSample(success, cost_ms);
+    }
+
+    void SnapshotAll(std::vector<std::pair<std::string, MetricsSnapshot>> &out) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        for (auto &kv : by_label_) {
+            MetricsSnapshot snap;
+            if (kv.second->Snapshot(snap, false)) {
+                out.emplace_back(kv.first, snap);
+            }
+        }
+    }
+
+private:
+    std::mutex mutex_;
+    std::unordered_map<std::string, std::unique_ptr<MetricsAggregator>> by_label_;
+};
 
 } // namespace
+
+static MetricsAggregator g_metrics;
+static LabeledMetrics g_labeled_metrics;
+
+bool GetMetricsSnapshot(MetricsSnapshot &out, bool reset) {
+    return g_metrics.Snapshot(out, reset);
+}
+
+std::string RenderMetricsPrometheus() {
+    MetricsSnapshot snap;
+    if (!GetMetricsSnapshot(snap, false)) {
+        return {};
+    }
+    std::ostringstream ss;
+    ss << "# TYPE krpc_requests_total counter\n";
+    ss << "krpc_requests_total{status=\"success\"} " << snap.success << "\n";
+    ss << "krpc_requests_total{status=\"fail\"} " << snap.fail << "\n";
+    ss << "# TYPE krpc_qps gauge\n";
+    ss << "krpc_qps " << snap.qps << "\n";
+    ss << "# TYPE krpc_latency_ms summary\n";
+    ss << "krpc_latency_ms{quantile=\"0.5\"} " << snap.p50 << "\n";
+    ss << "krpc_latency_ms{quantile=\"0.95\"} " << snap.p95 << "\n";
+    ss << "krpc_latency_ms{quantile=\"0.99\"} " << snap.p99 << "\n";
+    const int total = snap.success + snap.fail;
+    ss << "krpc_latency_ms_sum " << (snap.avg * total) << "\n";
+    ss << "krpc_latency_ms_count " << total << "\n";
+    ss << "krpc_latency_ms_min " << snap.min << "\n";
+    ss << "krpc_latency_ms_max " << snap.max << "\n";
+    ss << "# TYPE krpc_fail_rate gauge\n";
+    ss << "krpc_fail_rate " << snap.fail_rate << "\n";
+
+    std::vector<std::pair<std::string, MetricsSnapshot>> labeled;
+    g_labeled_metrics.SnapshotAll(labeled);
+    if (!labeled.empty()) {
+        std::sort(labeled.begin(), labeled.end(),
+                  [](const std::pair<std::string, MetricsSnapshot> &a,
+                     const std::pair<std::string, MetricsSnapshot> &b) {
+                      return a.first < b.first;
+                  });
+        auto escape_label = [](const std::string &value) -> std::string {
+            std::string out;
+            out.reserve(value.size());
+            for (char c : value) {
+                if (c == '\\' || c == '"') {
+                    out.push_back('\\');
+                }
+                out.push_back(c);
+            }
+            return out;
+        };
+        for (const auto &entry : labeled) {
+            const auto &label = entry.first;
+            const auto &lsnap = entry.second;
+            const std::string label_escaped = escape_label(label);
+            const int total = lsnap.success + lsnap.fail;
+            ss << "krpc_requests_total{status=\"success\",method=\"" << label_escaped << "\"} " << lsnap.success << "\n";
+            ss << "krpc_requests_total{status=\"fail\",method=\"" << label_escaped << "\"} " << lsnap.fail << "\n";
+            ss << "krpc_qps{method=\"" << label_escaped << "\"} " << lsnap.qps << "\n";
+            ss << "krpc_latency_ms{quantile=\"0.5\",method=\"" << label_escaped << "\"} " << lsnap.p50 << "\n";
+            ss << "krpc_latency_ms{quantile=\"0.95\",method=\"" << label_escaped << "\"} " << lsnap.p95 << "\n";
+            ss << "krpc_latency_ms{quantile=\"0.99\",method=\"" << label_escaped << "\"} " << lsnap.p99 << "\n";
+            ss << "krpc_latency_ms_sum{method=\"" << label_escaped << "\"} " << (lsnap.avg * total) << "\n";
+            ss << "krpc_latency_ms_count{method=\"" << label_escaped << "\"} " << total << "\n";
+            ss << "krpc_latency_ms_min{method=\"" << label_escaped << "\"} " << lsnap.min << "\n";
+            ss << "krpc_latency_ms_max{method=\"" << label_escaped << "\"} " << lsnap.max << "\n";
+            ss << "krpc_fail_rate{method=\"" << label_escaped << "\"} " << lsnap.fail_rate << "\n";
+        }
+    }
+    return ss.str();
+}
+
+void RecordMetricsSample(bool success, int64_t cost_ms) {
+    g_metrics.AddSample(success, cost_ms);
+}
+
+void RecordMetricsSampleWithLabel(const std::string &label, bool success, int64_t cost_ms) {
+    g_metrics.AddSample(success, cost_ms);
+    g_labeled_metrics.AddSample(label, success, cost_ms);
+}
 
 // RPC调用的核心方法，负责将客户端的请求序列化并发送到服务端，同时接收服务端的响应
 void KrpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method,
@@ -293,6 +449,19 @@ void KrpcChannel::CallAsync(const ::google::protobuf::MethodDescriptor *method,
                             AsyncCallback callback) {
     HeartbeatActivityNotifier heartbeat_notifier(m_heartbeat_cv);
     (void)CallFuture(method, controller, request, response, nullptr, std::move(callback));
+}
+
+std::shared_future<void> KrpcChannel::CallAsyncFuture(
+        const ::google::protobuf::MethodDescriptor *method,
+        ::google::protobuf::RpcController *controller,
+        const ::google::protobuf::Message *request,
+        ::google::protobuf::Message *response) {
+    HeartbeatActivityNotifier heartbeat_notifier(m_heartbeat_cv);
+    auto pending = CallFuture(method, controller, request, response, nullptr, AsyncCallback{});
+    if (!pending) {
+        return std::shared_future<void>();
+    }
+    return pending->completion_future;
 }
 
 std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
@@ -367,14 +536,12 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
         return fail_immediately("serialize rpc header error");
     }
 
-    std::string send_rpc_str;
+    std::string header_varint;
     {
-        google::protobuf::io::StringOutputStream string_output(&send_rpc_str);
+        google::protobuf::io::StringOutputStream string_output(&header_varint);
         google::protobuf::io::CodedOutputStream coded_output(&string_output);
         coded_output.WriteVarint32(static_cast<uint32_t>(rpc_header_str.size()));
-        coded_output.WriteString(rpc_header_str);
     }
-    send_rpc_str += args_str;
 
     std::string ensure_error;
     if (!EnsureConnection(method, controller, &ensure_error)) {
@@ -390,7 +557,7 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
 
     pending->async_callback = std::move(user_callback);
 
-    EnqueueSend(pending->request_id, std::move(send_rpc_str));
+    EnqueueSend(pending->request_id, std::move(header_varint), std::move(rpc_header_str), std::move(args_str));
 
     return pending;
 }
@@ -433,6 +600,10 @@ bool KrpcChannel::CreateConnectionFd(const std::string &ip, uint16_t port, int &
         }
         return false;
     }
+
+    // 低延迟场景关闭 Nagle
+    int flag = 1;
+    setsockopt(clientfd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
 
     out_fd = clientfd;
     return true;
@@ -724,35 +895,6 @@ bool KrpcChannel::EnsureConnection(const ::google::protobuf::MethodDescriptor *m
     return false;
 }
 
-bool KrpcChannel::SendBuffer(const std::string &buffer, std::string *error_text) {
-    std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
-    size_t total_sent = 0;
-    while (total_sent < buffer.size()) {
-        if (m_clientfd == -1) {
-            if (error_text) {
-                *error_text = "connection not established";
-            }
-            return false;
-        }
-        ssize_t n = send(m_clientfd, buffer.data() + total_sent, buffer.size() - total_sent, 0);
-        if (n <= 0) {
-            if (errno == EINTR) {
-                continue;
-            }
-            char errtxt[512] = {};
-            auto rc = strerror_r(errno, errtxt, sizeof(errtxt));
-            (void)rc;
-            if (error_text) {
-                *error_text = errtxt;
-            }
-            CloseConnectionLocked();
-            return false;
-        }
-        total_sent += static_cast<size_t>(n);
-    }
-    return true;
-}
-
 // 构造函数，支持延迟连接
 KrpcChannel::KrpcChannel(bool connectNow)
         : m_clientfd(-1),
@@ -791,6 +933,8 @@ KrpcChannel::KrpcChannel(bool connectNow)
         lb_fail_cool_ms = 0;
     }
     g_endpoint_fail_cooldown_ms.store(lb_fail_cool_ms, std::memory_order_release);
+    const int metrics_window_ms = ParseConfigInt(config.Load("metrics_window_ms"), 10000);
+    g_metrics.SetWindowMs(metrics_window_ms);
     if (m_pool_max_idle < 1) {
         m_pool_max_idle = 1;
     }
@@ -1057,7 +1201,78 @@ void KrpcChannel::SendLoop() {
         }
 
         std::string send_error;
-        if (!SendBuffer(task.buffer, &send_error)) {
+        {
+            std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
+            if (m_clientfd == -1) {
+                send_error = "connection not established";
+            } else {
+                const char *h0 = task.header_varint.data();
+                size_t h0_len = task.header_varint.size();
+                const char *h1 = task.header.data();
+                size_t h1_len = task.header.size();
+                const char *b = task.body.data();
+                size_t b_len = task.body.size();
+                size_t idx = 0;
+                size_t offset = 0;
+                while (idx < 3) {
+                    struct iovec iov[3];
+                    int iovcnt = 0;
+                    if (idx == 0) {
+                        iov[iovcnt].iov_base = const_cast<char *>(h0 + offset);
+                        iov[iovcnt].iov_len = h0_len - offset;
+                        ++iovcnt;
+                        iov[iovcnt].iov_base = const_cast<char *>(h1);
+                        iov[iovcnt].iov_len = h1_len;
+                        ++iovcnt;
+                        iov[iovcnt].iov_base = const_cast<char *>(b);
+                        iov[iovcnt].iov_len = b_len;
+                        ++iovcnt;
+                    } else if (idx == 1) {
+                        iov[iovcnt].iov_base = const_cast<char *>(h1 + offset);
+                        iov[iovcnt].iov_len = h1_len - offset;
+                        ++iovcnt;
+                        iov[iovcnt].iov_base = const_cast<char *>(b);
+                        iov[iovcnt].iov_len = b_len;
+                        ++iovcnt;
+                    } else {
+                        iov[iovcnt].iov_base = const_cast<char *>(b + offset);
+                        iov[iovcnt].iov_len = b_len - offset;
+                        ++iovcnt;
+                    }
+                    ssize_t n = writev(m_clientfd, iov, iovcnt);
+                    if (n < 0) {
+                        if (errno == EINTR) {
+                            continue;
+                        }
+                        char errtxt[512] = {};
+                        auto rc = strerror_r(errno, errtxt, sizeof(errtxt));
+                        (void)rc;
+                        send_error = errtxt;
+                        CloseConnectionLocked();
+                        break;
+                    }
+                    if (n == 0) {
+                        send_error = "connection closed";
+                        CloseConnectionLocked();
+                        break;
+                    }
+                    size_t sent = static_cast<size_t>(n);
+                    while (sent > 0 && idx < 3) {
+                        size_t seg_len = (idx == 0) ? h0_len : (idx == 1 ? h1_len : b_len);
+                        size_t remaining = seg_len - offset;
+                        if (sent < remaining) {
+                            offset += sent;
+                            sent = 0;
+                        } else {
+                            sent -= remaining;
+                            ++idx;
+                            offset = 0;
+                        }
+                    }
+                }
+            }
+        }
+        if (!send_error.empty()) {
             const std::string reason = send_error.empty() ? "send failed" : send_error;
             RemovePendingCall(task.request_id, reason);
             HandleHeartbeatFailure(reason);
@@ -1242,12 +1457,14 @@ void KrpcChannel::TimeoutLoop() {
     }
 }
 
-void KrpcChannel::EnqueueSend(uint64_t request_id, std::string &&buffer) {
+void KrpcChannel::EnqueueSend(uint64_t request_id, std::string &&header_varint, std::string &&header, std::string &&body) {
     {
         std::lock_guard<std::mutex> lock(m_send_mutex);
         SendTask task;
         task.request_id = request_id;
-        task.buffer = std::move(buffer);
+        task.header_varint = std::move(header_varint);
+        task.header = std::move(header);
+        task.body = std::move(body);
         m_send_queue.push(std::move(task));
     }
     m_send_cv.notify_one();
@@ -1321,23 +1538,30 @@ void KrpcChannel::CompletePending(const std::shared_ptr<PendingCall> &pending, c
     }
     const auto end_time = std::chrono::steady_clock::now();
     const auto cost_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - pending->start_time).count();
+    const char *trace_id = "-";
 
     if (!success && pending->controller && !reason.empty()) {
         pending->controller->SetFailed(reason);
     }
     const std::string peer = pending->peer.empty() ? m_endpoint_key : pending->peer;
     if (success) {
-        LOG(INFO) << "[req " << pending->request_id << "] "
-                  << pending->service_name << "." << pending->method_name
-                  << " cost=" << cost_ms << "ms "
-                  << "peer=" << peer
-                  << " status=OK";
+        LOG(INFO) << "trace_id=" << trace_id
+                  << " req_id=" << pending->request_id
+                  << " service=" << pending->service_name
+                  << " method=" << pending->method_name
+                  << " peer=" << peer
+                  << " status=OK"
+                  << " latency_ms=" << cost_ms
+                  << " error=";
     } else {
-        LOG(WARNING) << "[req " << pending->request_id << "] "
-                     << pending->service_name << "." << pending->method_name
-                     << " cost=" << cost_ms << "ms "
-                     << "peer=" << peer
-                     << " status=FAIL err=" << reason;
+        LOG(WARNING) << "trace_id=" << trace_id
+                     << " req_id=" << pending->request_id
+                     << " service=" << pending->service_name
+                     << " method=" << pending->method_name
+                     << " peer=" << peer
+                     << " status=FAIL"
+                     << " latency_ms=" << cost_ms
+                     << " error=" << reason;
     }
     g_metrics.AddSample(success, cost_ms);
 

@@ -19,6 +19,7 @@ target_link_libraries(krpc_core PUBLIC protobuf)
 
 #设置头文件的路径
 target_include_directories(krpc_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(krpc_core PUBLIC ${CMAKE_SOURCE_DIR}/third_party)
 
 # 添加编译选项
 target_compile_options(krpc_core PRIVATE -std=c++11 -Wall)

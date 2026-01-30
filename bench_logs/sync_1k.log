@@ -1,0 +1,874 @@
+bench mode=sync conn=keepalive concurrency=4 total_requests=200 sleep_ms=0 payload_kb=1
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@753: Client environment:zookeeper.version=zookeeper C client 3.4.13
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@757: Client environment:host.name=zzz-virtual-machine
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@764: Client environment:os.name=Linux
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@765: Client environment:os.arch=6.8.0-87-generic
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@766: Client environment:os.version=#88~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Oct 14 14:03:14 UTC 2
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@753: Client environment:zookeeper.version=zookeeper C client 3.4.13
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@757: Client environment:host.name=zzz-virtual-machine
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@764: Client environment:os.name=Linux
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@765: Client environment:os.arch=6.8.0-87-generic
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@766: Client environment:os.version=#88~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Oct 14 14:03:14 UTC 2
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@753: Client environment:zookeeper.version=zookeeper C client 3.4.13
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@757: Client environment:host.name=zzz-virtual-machine
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@764: Client environment:os.name=Linux
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@765: Client environment:os.arch=6.8.0-87-generic
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@766: Client environment:os.version=#88~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Oct 14 14:03:14 UTC 2
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@774: Client environment:user.name=zzz
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@774: Client environment:user.name=zzz
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@782: Client environment:user.home=/home/zzz
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@782: Client environment:user.home=/home/zzz
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@log_env@794: Client environment:user.dir=/home/zzz/Krpc
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@log_env@794: Client environment:user.dir=/home/zzz/Krpc
+2025-12-29 11:39:20,848:352738(0x700ecffff640):ZOO_INFO@zookeeper_init@818: Initiating client connection, host=127.0.0.1:2181 sessionTimeout=6000 watcher=0x59ff57393cbe sessionId=0 sessionPasswd=<null> context=0x700ec00033d0 flags=0
+2025-12-29 11:39:20,848:352738(0x700ed89fe640):ZOO_INFO@zookeeper_init@818: Initiating client connection, host=127.0.0.1:2181 sessionTimeout=6000 watcher=0x59ff57393cbe sessionId=0 sessionPasswd=<null> context=0x700ec8002720 flags=0
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@774: Client environment:user.name=zzz
+2025-12-29 11:39:20,848:352738(0x700ed79fc640):ZOO_INFO@log_env@753: Client environment:zookeeper.version=zookeeper C client 3.4.13
+2025-12-29 11:39:20,848:352738(0x700ed79fc640):ZOO_INFO@log_env@757: Client environment:host.name=zzz-virtual-machine
+2025-12-29 11:39:20,848:352738(0x700ed79fc640):ZOO_INFO@log_env@764: Client environment:os.name=Linux
+2025-12-29 11:39:20,848:352738(0x700ed91ff640):ZOO_INFO@log_env@782: Client environment:user.home=/home/zzz
+2025-12-29 11:39:20,848:352738(0x700ed79fc640):ZOO_INFO@log_env@765: Client environment:os.arch=6.8.0-87-generic
+2025-12-29 11:39:20,849:352738(0x700ed79fc640):ZOO_INFO@log_env@766: Client environment:os.version=#88~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Oct 14 14:03:14 UTC 2
+2025-12-29 11:39:20,849:352738(0x700ed91ff640):ZOO_INFO@log_env@794: Client environment:user.dir=/home/zzz/Krpc
+2025-12-29 11:39:20,849:352738(0x700ed91ff640):ZOO_INFO@zookeeper_init@818: Initiating client connection, host=127.0.0.1:2181 sessionTimeout=6000 watcher=0x59ff57393cbe sessionId=0 sessionPasswd=<null> context=0x700ed0002740 flags=0
+2025-12-29 11:39:20,849:352738(0x700ed79fc640):ZOO_INFO@log_env@774: Client environment:user.name=zzz
+2025-12-29 11:39:20,849:352738(0x700ed79fc640):ZOO_INFO@log_env@782: Client environment:user.home=/home/zzz
+2025-12-29 11:39:20,849:352738(0x700ed79fc640):ZOO_INFO@log_env@794: Client environment:user.dir=/home/zzz/Krpc
+2025-12-29 11:39:20,849:352738(0x700ed79fc640):ZOO_INFO@zookeeper_init@818: Initiating client connection, host=127.0.0.1:2181 sessionTimeout=6000 watcher=0x59ff57393cbe sessionId=0 sessionPasswd=<null> context=0x700ec4002720 flags=0
+2025-12-29 11:39:20,849:352738(0x700eb5ffb640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2025-12-29 11:39:20,849:352738(0x700eb67fc640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2025-12-29 11:39:20,849:352738(0x700eabfff640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2025-12-29 11:39:20,849:352738(0x700eab7fe640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2025-12-29 11:39:20,850:352738(0x700eb5ffb640):ZOO_INFO@check_events@1809: session establishment complete on server [127.0.0.1:2181], sessionId=0x10000002c87144a, negotiated timeout=6000
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I1229 11:39:20.850657 352740 zookeeperutil.cc:46] zookeeper_init success
+method_path: /UserServiceRpc/Login
+2025-12-29 11:39:20,851:352738(0x700eb67fc640):ZOO_INFO@check_events@1809: session establishment complete on server [127.0.0.1:2181], sessionId=0x10000002c87144b, negotiated timeout=6000
+2025-12-29 11:39:20,851:352738(0x700eab7fe640):ZOO_INFO@check_events@1809: session establishment complete on server [127.0.0.1:2181], sessionId=0x10000002c87144d, negotiated timeout=6000
+2025-12-29 11:39:20,851:352738(0x700eabfff640):ZOO_INFO@check_events@1809: session establishment complete on server [127.0.0.1:2181], sessionId=0x10000002c87144c, negotiated timeout=6000
+I1229 11:39:20.851174 352741 zookeeperutil.cc:46] zookeeper_init success
+method_path: /UserServiceRpc/Login
+I1229 11:39:20.851224 352743 zookeeperutil.cc:46] zookeeper_init success
+method_path: /UserServiceRpc/Login
+I1229 11:39:20.851326 352739 zookeeperutil.cc:46] zookeeper_init success
+method_path: /UserServiceRpc/Login
+I1229 11:39:20.851402 352740 Krpcchannel.cc:620] zk children under /UserServiceRpc/Login: 1
+I1229 11:39:20.851409 352740 Krpcchannel.cc:625] child node: 127.0.0.1:8000
+I1229 11:39:20.851418 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.851420 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.851464 352740 Krpcchannel.cc:771] connect server success to 127.0.0.1:8000
+2025-12-29 11:39:20,851:352738(0x700ed89fe640):ZOO_INFO@zookeeper_close@2563: Closing zookeeper sessionId=0x10000002c87144a to [127.0.0.1:2181]
+
+I1229 11:39:20.851599 352741 Krpcchannel.cc:620] zk children under /UserServiceRpc/Login: 1
+I1229 11:39:20.851671 352741 Krpcchannel.cc:625] child node: 127.0.0.1:8000
+I1229 11:39:20.851697 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.851711 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.851697 352743 Krpcchannel.cc:620] zk children under /UserServiceRpc/Login: 1
+I1229 11:39:20.851730 352743 Krpcchannel.cc:625] child node: 127.0.0.1:8000
+I1229 11:39:20.851737 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.851740 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.851770 352743 Krpcchannel.cc:771] connect server success to 127.0.0.1:8000
+I1229 11:39:20.851789 352741 Krpcchannel.cc:771] connect server success to 127.0.0.1:8000
+I1229 11:39:20.852242 352748 Krpcchannel.cc:1475] trace_id=- req_id=2 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=3 error=
+2025-12-29 11:39:20,852:352738(0x700ed79fc640):ZOO_INFO@zookeeper_close@2563: Closing zookeeper sessionId=0x10000002c87144d to [127.0.0.1:2181]
+
+I1229 11:39:20.852376 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.852458 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.852473 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+2025-12-29 11:39:20,852:352738(0x700ecffff640):ZOO_INFO@zookeeper_close@2563: Closing zookeeper sessionId=0x10000002c87144b to [127.0.0.1:2181]
+
+I1229 11:39:20.852555 352739 Krpcchannel.cc:620] zk children under /UserServiceRpc/Login: 1
+I1229 11:39:20.852564 352739 Krpcchannel.cc:625] child node: 127.0.0.1:8000
+I1229 11:39:20.852572 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.852574 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.852586 352748 Krpcchannel.cc:1475] trace_id=- req_id=5 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.852604 352739 Krpcchannel.cc:771] connect server success to 127.0.0.1:8000
+I1229 11:39:20.852661 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.852847 352751 Krpcchannel.cc:1475] trace_id=- req_id=4 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=3 error=
+I1229 11:39:20.852998 352740 Krpcchannel.cc:713] lb endpoints count=1
+2025-12-29 11:39:20,852:352738(0x700ed91ff640):ZOO_INFO@zookeeper_close@2563: Closing zookeeper sessionId=0x10000002c87144c to [127.0.0.1:2181]
+
+I1229 11:39:20.853008 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853085 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853091 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853094 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853018 352747 Krpcchannel.cc:1475] trace_id=- req_id=1 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=4 error=
+I1229 11:39:20.853222 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853229 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853232 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853478 352748 Krpcchannel.cc:1475] trace_id=- req_id=7 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.853510 352747 Krpcchannel.cc:1475] trace_id=- req_id=10 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.853616 352751 Krpcchannel.cc:1475] trace_id=- req_id=9 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.853644 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853649 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853653 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853678 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853686 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853688 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853749 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853766 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853770 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853904 352747 Krpcchannel.cc:1475] trace_id=- req_id=13 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.853916 352748 Krpcchannel.cc:1475] trace_id=- req_id=14 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.853976 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853974 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.853989 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.853998 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.853981 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854090 352751 Krpcchannel.cc:1475] trace_id=- req_id=17 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854063 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854180 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854198 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854202 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854239 352747 Krpcchannel.cc:1475] trace_id=- req_id=18 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854270 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854277 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854279 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854337 352748 Krpcchannel.cc:1475] trace_id=- req_id=20 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854367 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854370 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854372 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854449 352747 Krpcchannel.cc:1475] trace_id=- req_id=24 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854466 352751 Krpcchannel.cc:1475] trace_id=- req_id=22 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854497 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854503 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854506 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854529 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854539 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854542 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854624 352748 Krpcchannel.cc:1475] trace_id=- req_id=26 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854651 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854657 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854660 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854839 352751 Krpcchannel.cc:1475] trace_id=- req_id=30 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854844 352748 Krpcchannel.cc:1475] trace_id=- req_id=32 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854862 352747 Krpcchannel.cc:1475] trace_id=- req_id=28 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.854876 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854880 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854882 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854893 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854898 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854902 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854920 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.854924 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.854926 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.854991 352748 Krpcchannel.cc:1475] trace_id=- req_id=34 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855019 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855024 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855026 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855058 352751 Krpcchannel.cc:1475] trace_id=- req_id=35 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855109 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855116 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855119 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855203 352747 Krpcchannel.cc:1475] trace_id=- req_id=36 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855341 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855348 352751 Krpcchannel.cc:1475] trace_id=- req_id=41 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855350 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855398 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855432 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855449 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855454 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855559 352748 Krpcchannel.cc:1475] trace_id=- req_id=40 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855587 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855592 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855594 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855584 352751 Krpcchannel.cc:1475] trace_id=- req_id=46 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855652 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855664 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855671 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855662 352747 Krpcchannel.cc:1475] trace_id=- req_id=44 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855715 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855722 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855726 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855799 352748 Krpcchannel.cc:1475] trace_id=- req_id=47 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855830 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855836 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855839 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855857 352751 Krpcchannel.cc:1475] trace_id=- req_id=49 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855881 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855885 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855887 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.855950 352747 Krpcchannel.cc:1475] trace_id=- req_id=51 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.855988 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.855993 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.855994 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856092 352748 Krpcchannel.cc:1475] trace_id=- req_id=53 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856138 352751 Krpcchannel.cc:1475] trace_id=- req_id=55 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856185 352747 Krpcchannel.cc:1475] trace_id=- req_id=56 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856194 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856199 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856201 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856189 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856212 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856215 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856220 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856225 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856227 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856343 352748 Krpcchannel.cc:1475] trace_id=- req_id=60 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856369 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856371 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856374 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856453 352751 Krpcchannel.cc:1475] trace_id=- req_id=61 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856526 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856535 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856539 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856612 352748 Krpcchannel.cc:1475] trace_id=- req_id=65 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856707 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856714 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856716 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856777 352751 Krpcchannel.cc:1475] trace_id=- req_id=67 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856781 352747 Krpcchannel.cc:1475] trace_id=- req_id=63 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.856850 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856865 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856868 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.856894 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.856901 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.856904 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857074 352751 Krpcchannel.cc:1475] trace_id=- req_id=71 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857098 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857101 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857103 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857122 352747 Krpcchannel.cc:1475] trace_id=- req_id=74 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857179 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857189 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857191 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857285 352748 Krpcchannel.cc:1475] trace_id=- req_id=69 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857352 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857359 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857362 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857388 352747 Krpcchannel.cc:1475] trace_id=- req_id=77 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857419 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857422 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857424 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857533 352751 Krpcchannel.cc:1475] trace_id=- req_id=75 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857591 352748 Krpcchannel.cc:1475] trace_id=- req_id=79 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857641 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857666 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.857676 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857681 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857666 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.857689 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.857838 352751 Krpcchannel.cc:1475] trace_id=- req_id=83 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.857990 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858035 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858044 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858017 352747 Krpcchannel.cc:1475] trace_id=- req_id=80 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858119 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858131 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858135 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858207 352748 Krpcchannel.cc:1475] trace_id=- req_id=85 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858264 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858271 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858273 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858567 352747 Krpcchannel.cc:1475] trace_id=- req_id=89 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858637 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858644 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858646 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858680 352751 Krpcchannel.cc:1475] trace_id=- req_id=88 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858717 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858738 352748 Krpcchannel.cc:1475] trace_id=- req_id=91 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858744 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858753 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858783 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858784 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858786 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.858896 352747 Krpcchannel.cc:1475] trace_id=- req_id=93 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.858932 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.858937 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.858939 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859054 352751 Krpcchannel.cc:1475] trace_id=- req_id=95 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859102 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859113 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859117 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859233 352747 Krpcchannel.cc:1475] trace_id=- req_id=98 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859270 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859275 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859337 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859396 352748 Krpcchannel.cc:1475] trace_id=- req_id=96 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859436 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859443 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859445 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859475 352751 Krpcchannel.cc:1475] trace_id=- req_id=100 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859516 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859521 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859524 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859632 352748 Krpcchannel.cc:1475] trace_id=- req_id=104 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859714 352747 Krpcchannel.cc:1475] trace_id=- req_id=102 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859722 352751 Krpcchannel.cc:1475] trace_id=- req_id=106 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.859745 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859747 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859750 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859717 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859771 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859773 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859784 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.859797 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.859799 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.859933 352751 Krpcchannel.cc:1475] trace_id=- req_id=110 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860030 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860038 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860041 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.860338 352747 Krpcchannel.cc:1475] trace_id=- req_id=111 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860386 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860395 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860405 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.860433 352748 Krpcchannel.cc:1475] trace_id=- req_id=108 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860534 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860545 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860548 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.860652 352747 Krpcchannel.cc:1475] trace_id=- req_id=115 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860658 352751 Krpcchannel.cc:1475] trace_id=- req_id=114 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860682 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860684 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860687 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.860692 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860702 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860704 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.860854 352748 Krpcchannel.cc:1475] trace_id=- req_id=117 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.860883 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.860888 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.860889 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.861274 352748 Krpcchannel.cc:1475] trace_id=- req_id=123 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.861342 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.861352 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.861356 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.862207 352751 Krpcchannel.cc:1475] trace_id=- req_id=119 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=1 error=
+I1229 11:39:20.862308 352747 Krpcchannel.cc:1475] trace_id=- req_id=120 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=1 error=
+I1229 11:39:20.862329 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.862344 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.862346 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.862454 352748 Krpcchannel.cc:1475] trace_id=- req_id=125 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=1 error=
+I1229 11:39:20.862493 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.862497 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.862499 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.862639 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.862651 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.862653 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.863391 352751 Krpcchannel.cc:1475] trace_id=- req_id=127 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=1 error=
+I1229 11:39:20.863435 352748 Krpcchannel.cc:1475] trace_id=- req_id=129 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.863440 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.863476 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.863478 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.863479 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.863494 352747 Krpcchannel.cc:1475] trace_id=- req_id=131 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.863484 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.863545 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.863767 352748 Krpcchannel.cc:1475] trace_id=- req_id=135 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.863806 352751 Krpcchannel.cc:1475] trace_id=- req_id=133 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.863858 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.863870 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.863874 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864027 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864037 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864040 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864071 352751 Krpcchannel.cc:1475] trace_id=- req_id=138 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.864097 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864104 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864105 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864298 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864311 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864315 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864387 352747 Krpcchannel.cc:1475] trace_id=- req_id=140 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.864487 352751 Krpcchannel.cc:1475] trace_id=- req_id=141 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.864528 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864534 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864537 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864598 352748 Krpcchannel.cc:1475] trace_id=- req_id=143 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.864701 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864717 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864719 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864876 352751 Krpcchannel.cc:1475] trace_id=- req_id=145 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.864912 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.864917 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.864920 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.864939 352748 Krpcchannel.cc:1475] trace_id=- req_id=148 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865022 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865033 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865036 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865024 352751 Krpcchannel.cc:1475] trace_id=- req_id=149 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865072 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865082 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865083 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865255 352748 Krpcchannel.cc:1475] trace_id=- req_id=151 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865301 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865311 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865314 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865396 352751 Krpcchannel.cc:1475] trace_id=- req_id=153 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865450 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865463 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865465 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865587 352748 Krpcchannel.cc:1475] trace_id=- req_id=154 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865619 352751 Krpcchannel.cc:1475] trace_id=- req_id=156 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865643 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865648 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865641 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865657 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865659 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865664 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865650 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865697 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865701 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865808 352748 Krpcchannel.cc:1475] trace_id=- req_id=162 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865808 352751 Krpcchannel.cc:1475] trace_id=- req_id=159 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865844 352747 Krpcchannel.cc:1475] trace_id=- req_id=158 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.865886 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865891 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865893 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.865908 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.865912 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.865914 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866000 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866008 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866010 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866089 352748 Krpcchannel.cc:1475] trace_id=- req_id=166 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866103 352751 Krpcchannel.cc:1475] trace_id=- req_id=165 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866138 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866160 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866163 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866173 352747 Krpcchannel.cc:1475] trace_id=- req_id=168 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866197 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866201 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866209 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866237 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866243 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866246 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866330 352748 Krpcchannel.cc:1475] trace_id=- req_id=170 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866359 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866365 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866369 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866437 352747 Krpcchannel.cc:1475] trace_id=- req_id=172 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866505 352751 Krpcchannel.cc:1475] trace_id=- req_id=174 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866534 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866539 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866542 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866565 352748 Krpcchannel.cc:1475] trace_id=- req_id=176 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866616 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866623 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866626 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866729 352751 Krpcchannel.cc:1475] trace_id=- req_id=178 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866760 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866765 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866766 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866847 352748 Krpcchannel.cc:1475] trace_id=- req_id=180 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866880 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866886 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866888 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.866909 352751 Krpcchannel.cc:1475] trace_id=- req_id=182 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.866932 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.866938 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.866940 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867102 352748 Krpcchannel.cc:1475] trace_id=- req_id=184 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867161 352751 Krpcchannel.cc:1475] trace_id=- req_id=186 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867185 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867194 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867197 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867221 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867234 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867237 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867260 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867264 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867266 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867395 352748 Krpcchannel.cc:1475] trace_id=- req_id=190 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867434 352747 Krpcchannel.cc:1475] trace_id=- req_id=188 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867481 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867489 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867491 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867527 352751 Krpcchannel.cc:1475] trace_id=- req_id=191 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867583 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867589 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867591 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867616 352748 Krpcchannel.cc:1475] trace_id=- req_id=194 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867664 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867671 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867674 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867795 352751 Krpcchannel.cc:1475] trace_id=- req_id=197 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867833 352748 Krpcchannel.cc:1475] trace_id=- req_id=199 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867836 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867844 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867847 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867853 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.867856 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.867858 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.867977 352748 Krpcchannel.cc:1475] trace_id=- req_id=202 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.867990 352751 Krpcchannel.cc:1475] trace_id=- req_id=201 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.868014 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868017 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868019 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868028 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868033 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868036 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868381 352751 Krpcchannel.cc:1475] trace_id=- req_id=206 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.868459 352748 Krpcchannel.cc:1475] trace_id=- req_id=205 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.868489 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868498 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868501 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868512 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868522 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868525 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868546 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868549 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868556 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868791 352751 Krpcchannel.cc:1475] trace_id=- req_id=210 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.868842 352747 Krpcchannel.cc:1475] trace_id=- req_id=209 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=1 error=
+I1229 11:39:20.868844 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868870 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868871 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.868935 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.868947 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.868949 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.869000 352751 Krpcchannel.cc:1475] trace_id=- req_id=214 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869029 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.869035 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.869036 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.869112 352748 Krpcchannel.cc:1475] trace_id=- req_id=212 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869217 352751 Krpcchannel.cc:1475] trace_id=- req_id=218 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869230 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.869331 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.869273 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.869345 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.869349 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.869298 352747 Krpcchannel.cc:1475] trace_id=- req_id=217 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869334 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.869547 352751 Krpcchannel.cc:1475] trace_id=- req_id=221 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869577 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.869581 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.869583 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.869611 352748 Krpcchannel.cc:1475] trace_id=- req_id=220 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.869642 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.869644 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.869647 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870055 352748 Krpcchannel.cc:1475] trace_id=- req_id=225 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870085 352751 Krpcchannel.cc:1475] trace_id=- req_id=224 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870095 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870100 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870101 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870116 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870126 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870127 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870193 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870214 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870216 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870452 352748 Krpcchannel.cc:1475] trace_id=- req_id=228 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870464 352751 Krpcchannel.cc:1475] trace_id=- req_id=229 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870491 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870494 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870496 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870499 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870503 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870622 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870512 352747 Krpcchannel.cc:1475] trace_id=- req_id=233 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870685 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870693 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870697 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870819 352748 Krpcchannel.cc:1475] trace_id=- req_id=234 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870852 352747 Krpcchannel.cc:1475] trace_id=- req_id=239 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.870880 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.870908 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.870916 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.870954 352751 Krpcchannel.cc:1475] trace_id=- req_id=235 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871064 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871073 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871074 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871356 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871373 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871376 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871439 352751 Krpcchannel.cc:1475] trace_id=- req_id=243 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871484 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871503 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871506 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871521 352748 Krpcchannel.cc:1475] trace_id=- req_id=240 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871556 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871560 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871563 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871631 352747 Krpcchannel.cc:1475] trace_id=- req_id=244 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871675 352751 Krpcchannel.cc:1475] trace_id=- req_id=246 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871732 352743 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871738 352743 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871740 352743 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871778 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871814 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871821 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.871915 352748 Krpcchannel.cc:1475] trace_id=- req_id=248 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.871942 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.871945 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.871948 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.872073 352747 Krpcchannel.cc:1475] trace_id=- req_id=252 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872109 352751 Krpcchannel.cc:1475] trace_id=- req_id=250 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872169 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.872180 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.872184 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.872409 352747 Krpcchannel.cc:1475] trace_id=- req_id=257 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872464 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.872471 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.872473 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.872488 352748 Krpcchannel.cc:1475] trace_id=- req_id=254 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872534 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.872542 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.872545 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.872709 352748 Krpcchannel.cc:1475] trace_id=- req_id=261 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872776 352747 Krpcchannel.cc:1475] trace_id=- req_id=259 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.872778 352740 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.872808 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.872810 352740 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.872817 352740 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.872813 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.872822 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.873009 352748 Krpcchannel.cc:1475] trace_id=- req_id=263 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.873220 352747 Krpcchannel.cc:1475] trace_id=- req_id=265 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.873256 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.873260 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.873262 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.873461 352747 Krpcchannel.cc:1475] trace_id=- req_id=268 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.873483 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.873486 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.873488 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.873701 352747 Krpcchannel.cc:1475] trace_id=- req_id=270 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.873725 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.873733 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.873735 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.873926 352747 Krpcchannel.cc:1475] trace_id=- req_id=272 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.873947 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.873950 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.873952 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.874217 352747 Krpcchannel.cc:1475] trace_id=- req_id=274 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.874243 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.874246 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.874248 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.874389 352747 Krpcchannel.cc:1475] trace_id=- req_id=276 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.874431 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.874442 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.874445 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.874889 352747 Krpcchannel.cc:1475] trace_id=- req_id=278 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.874971 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.874984 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.874986 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.875352 352747 Krpcchannel.cc:1475] trace_id=- req_id=280 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.875475 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.875487 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.875490 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.875789 352747 Krpcchannel.cc:1475] trace_id=- req_id=282 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.875928 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.875941 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.875944 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.876170 352747 Krpcchannel.cc:1475] trace_id=- req_id=284 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.876238 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.876248 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.876250 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.876478 352747 Krpcchannel.cc:1475] trace_id=- req_id=286 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.876551 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.876564 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.876565 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.876796 352747 Krpcchannel.cc:1475] trace_id=- req_id=288 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.876842 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.876852 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.876854 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.877456 352747 Krpcchannel.cc:1475] trace_id=- req_id=290 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.877533 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.877544 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.877547 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.877748 352747 Krpcchannel.cc:1475] trace_id=- req_id=292 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.877794 352741 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.877803 352741 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.877806 352741 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.878253 352747 Krpcchannel.cc:1475] trace_id=- req_id=294 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.952378 352753 Krpcchannel.cc:1475] trace_id=- req_id=3 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=103 error=
+I1229 11:39:20.952593 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.952636 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.952639 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.953099 352753 Krpcchannel.cc:1475] trace_id=- req_id=297 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.953150 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.953166 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.953169 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.953351 352753 Krpcchannel.cc:1475] trace_id=- req_id=299 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.953399 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.953414 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.953416 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.953712 352753 Krpcchannel.cc:1475] trace_id=- req_id=301 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.953765 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.953773 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.953774 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.953979 352753 Krpcchannel.cc:1475] trace_id=- req_id=303 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.954062 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.954087 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.954090 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.954298 352753 Krpcchannel.cc:1475] trace_id=- req_id=305 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.954347 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.954358 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.954360 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.954658 352753 Krpcchannel.cc:1475] trace_id=- req_id=307 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.954717 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.954725 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.954727 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.954923 352753 Krpcchannel.cc:1475] trace_id=- req_id=309 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.954969 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.954975 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.954985 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.955137 352753 Krpcchannel.cc:1475] trace_id=- req_id=311 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.955175 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.955183 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.955185 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.955368 352753 Krpcchannel.cc:1475] trace_id=- req_id=313 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.955417 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.955425 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.955428 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.955629 352753 Krpcchannel.cc:1475] trace_id=- req_id=315 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.955672 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.955679 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.955682 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.955852 352753 Krpcchannel.cc:1475] trace_id=- req_id=317 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.955897 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.955904 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.955907 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.956084 352753 Krpcchannel.cc:1475] trace_id=- req_id=319 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.956139 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.956147 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.956149 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.956442 352753 Krpcchannel.cc:1475] trace_id=- req_id=321 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.956494 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.956503 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.956506 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.956770 352753 Krpcchannel.cc:1475] trace_id=- req_id=323 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.956833 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.956840 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.956842 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.956944 352753 Krpcchannel.cc:1475] trace_id=- req_id=325 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.957005 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.957010 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.957012 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.957314 352753 Krpcchannel.cc:1475] trace_id=- req_id=327 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.957372 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.957378 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.957381 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.957554 352753 Krpcchannel.cc:1475] trace_id=- req_id=329 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.957600 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.957617 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.957620 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.957826 352753 Krpcchannel.cc:1475] trace_id=- req_id=331 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.957907 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.957934 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.957942 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.958153 352753 Krpcchannel.cc:1475] trace_id=- req_id=334 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.958238 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.958254 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.958258 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.958402 352753 Krpcchannel.cc:1475] trace_id=- req_id=335 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.958493 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.958513 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.958520 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.958678 352753 Krpcchannel.cc:1475] trace_id=- req_id=338 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.958737 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.958745 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.958746 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.958928 352753 Krpcchannel.cc:1475] trace_id=- req_id=339 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.958981 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.958986 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.958988 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.959175 352753 Krpcchannel.cc:1475] trace_id=- req_id=341 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.959230 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.959240 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.959242 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.959422 352753 Krpcchannel.cc:1475] trace_id=- req_id=343 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.959461 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.959470 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.959473 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.959667 352753 Krpcchannel.cc:1475] trace_id=- req_id=345 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.959694 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.959700 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.959703 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.959890 352753 Krpcchannel.cc:1475] trace_id=- req_id=347 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.959933 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.959939 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.959940 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.960121 352753 Krpcchannel.cc:1475] trace_id=- req_id=349 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.960165 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.960173 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.960175 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.960348 352753 Krpcchannel.cc:1475] trace_id=- req_id=351 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.960395 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.960402 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.960403 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.960661 352753 Krpcchannel.cc:1475] trace_id=- req_id=353 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.960706 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.960716 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.960719 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.961010 352753 Krpcchannel.cc:1475] trace_id=- req_id=355 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.961069 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.961079 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.961081 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.961251 352753 Krpcchannel.cc:1475] trace_id=- req_id=357 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.961310 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.961316 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.961318 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.961520 352753 Krpcchannel.cc:1475] trace_id=- req_id=359 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.961565 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.961570 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.961572 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.961706 352753 Krpcchannel.cc:1475] trace_id=- req_id=361 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.961743 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.961748 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.961750 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.961910 352753 Krpcchannel.cc:1475] trace_id=- req_id=363 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.961952 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.961958 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.961961 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.962152 352753 Krpcchannel.cc:1475] trace_id=- req_id=365 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.962177 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.962181 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.962183 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.962483 352753 Krpcchannel.cc:1475] trace_id=- req_id=367 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.962538 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.962545 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.962548 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.962728 352753 Krpcchannel.cc:1475] trace_id=- req_id=369 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.962855 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.962862 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.962864 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.963023 352753 Krpcchannel.cc:1475] trace_id=- req_id=371 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.963060 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.963066 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.963068 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.963294 352753 Krpcchannel.cc:1475] trace_id=- req_id=373 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.963342 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.963348 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.963351 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.963462 352753 Krpcchannel.cc:1475] trace_id=- req_id=375 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.963506 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.963514 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.963517 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.963685 352753 Krpcchannel.cc:1475] trace_id=- req_id=377 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.963732 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.963739 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.963742 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.963953 352753 Krpcchannel.cc:1475] trace_id=- req_id=379 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.963987 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.963994 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.963995 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.964149 352753 Krpcchannel.cc:1475] trace_id=- req_id=381 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.964277 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.964299 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.964305 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.964438 352753 Krpcchannel.cc:1475] trace_id=- req_id=383 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.964481 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.964488 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.964489 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.964653 352753 Krpcchannel.cc:1475] trace_id=- req_id=385 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.964701 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.964707 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.964709 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.964915 352753 Krpcchannel.cc:1475] trace_id=- req_id=387 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.964956 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.964962 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.964964 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.965137 352753 Krpcchannel.cc:1475] trace_id=- req_id=389 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.965191 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.965201 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.965204 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.965371 352753 Krpcchannel.cc:1475] trace_id=- req_id=391 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+I1229 11:39:20.965430 352739 Krpcchannel.cc:682] use cached endpoints for UserServiceRpc/Login, count=1
+I1229 11:39:20.965440 352739 Krpcchannel.cc:713] lb endpoints count=1
+I1229 11:39:20.965442 352739 Krpcchannel.cc:718] lb selected endpoint=127.0.0.1:8000
+I1229 11:39:20.965621 352753 Krpcchannel.cc:1475] trace_id=- req_id=393 service=UserServiceRpc method=Login peer=127.0.0.1:8000 status=OK latency_ms=0 error=
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=200
+success=200 fail=0 qps=626.959 total_cost_ms=319
+latency_ms p50=0 p95=1 p99=4 max=103

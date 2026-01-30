@@ -47,6 +47,9 @@
 - `heartbeat_miss_limit`：允许的连续心跳丢失次数（默认 3）。
 - `rpc_timeout_ms`：RPC 默认超时（默认 3000）。
 - `lb_fail_cooldown_ms`：负载均衡端点失败冷却时间（默认 3000）。
+- `log_minlevel`：日志最小级别（0=INFO，1=WARNING，2=ERROR，3=FATAL，默认 1）。
+- `logtostderr`：日志输出到 stderr（1 开、0 关，默认 1）。
+- `colorlogtostderr`：stderr 彩色输出（1 开、0 关，默认 1）。
 
 ## 7. 后续可扩展点
 - 引入真正的心跳 failover（重连后自动重新注册订阅）。
@@ -147,3 +150,29 @@ il），日志中可看到 send loop、timeout manager 的相关输出。
   - future 模式：`./bin/async_client -i ./bin/test.conf`（默认 future，可用 `ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20` 调整）。
   - callback 模式：`ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf`。
 - **输出**：打印总请求数、成功/失败、p50/p95/p99 延迟、总耗时，便于对比同步 vs 异步、future vs callback。
+
+## 15. 客户端零拷贝发送路径（writev 聚合）
+- **改动文件**：`src/Krpcchannel.cc`、`src/include/Krpcchannel.h`。
+- **实现要点**：
+  - 发送线程改为使用 `writev` 将 varint header + protobuf header + body 三段聚合写出，避免拼接大缓冲区的额外拷贝，并正确处理部分写和重试。
+  - 发送队列串行写 socket，与心跳/recv 分离，错误时会清空队列、关闭 fd 并批量失败 pending call，保证一致性。
+  - 长连接复用仍通过连接池/负载均衡选择端点，再在 send loop 中零拷贝发包。
+- **验证命令（同步 + 长连接）**：
+  ```bash
+  mkdir -p bench_logs
+  for KB in 1 4 16 64 256 1024; do
+    LOG=bench_logs/sync_${KB}k_zero.log
+    BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 BENCH_PAYLOAD_KB=$KB \
+      ./bin/bench_demo -i ./bin/test.conf >"$LOG" 2>&1
+    grep "=== bench summary ===" -A5 "$LOG"
+    echo ""
+  done
+  ```
+  最近一次运行（1KB→1MB）QPS ≈ 608–627，p95=0–1ms，p99≈103ms，成功率 100%。
+- **后续优化方向**：p99 被固定 ~103ms 的处理/计时开销主导，可在服务端去除固定延迟或拉长基准请求数以放大零拷贝收益；补充异步 + 更高并发基准对比零拷贝开/关。
+
+## 16. Msgpack 通道能力对齐（per-call 超时 / callback / 发送队列 / metrics）
+- **per-call 超时**：`KrpcMsgpackChannel::CallWithTimeout` 与 `CallAsyncWithTimeout` 支持单次调用超时，不再仅依赖全局 `rpc_timeout_ms`。
+- **callback 异步**：msgpack 新增 `CallAsync`/`CallAsyncWithTimeout`，回调在响应到达时触发，语义与 protobuf 通道一致。
+- **发送队列 + writev**：msgpack 客户端新增 send 线程，统一串行写 socket；发送路径使用 `writev` 聚合 length + payload，减少拷贝与系统调用。
+- **metrics 对齐**：msgpack 服务端记录调用耗时/成功率并复用 `metrics_http_*` 配置启动 metrics HTTP 服务；Prometheus 输出增加按 `service.method` 维度的分组指标。

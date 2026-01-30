@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: Krpc
-# Configurations: Release
+# Configurations: Debug
 # =============================================================================
 
 #############################################
@@ -24,7 +24,7 @@ ninja_required_version = 1.5
 #############################################
 # Set configuration variable for custom commands.
 
-CONFIGURATION = Release
+CONFIGURATION = Debug
 # =============================================================================
 # Include auxiliary files.
 
@@ -77,59 +77,80 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build cmake_object_order_depends_target_krpc_core: phony || src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpcapplication.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcapplication.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpcchannel.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcchannel.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpcconfig.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcconfig.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpccontroller.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpccontroller.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpcheader.pb.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcheader.pb.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/Krpcprovider.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcmsgpack_channel.cc || cmake_object_order_depends_target_krpc_core
+  DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = src/CMakeFiles/krpc_core.dir
+  OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
+
+build src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcmsgpack_provider.cc || cmake_object_order_depends_target_krpc_core
+  DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = src/CMakeFiles/krpc_core.dir
+  OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
+
+build src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/Krpcprovider.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/load_balancer.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/load_balancer.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/load_balancer.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/load_balancer.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/load_balancer.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
-build src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: CXX_COMPILER__krpc_core_Release /home/zzz/Krpc/src/zookeeperutil.cc || cmake_object_order_depends_target_krpc_core
+build src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/metrics_http_server.cc || cmake_object_order_depends_target_krpc_core
+  DEP_FILE = src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = src/CMakeFiles/krpc_core.dir
+  OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
+
+build src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: CXX_COMPILER__krpc_core_Debug /home/zzz/Krpc/src/zookeeperutil.cc || cmake_object_order_depends_target_krpc_core
   DEP_FILE = src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   OBJECT_FILE_DIR = src/CMakeFiles/krpc_core.dir
 
@@ -141,8 +162,8 @@ build src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o: CXX_COMPILER__krpc_core_R
 #############################################
 # Link the static library src/libkrpc_core.a
 
-build src/libkrpc_core.a: CXX_STATIC_LIBRARY_LINKER__krpc_core_Release src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o src/CMakeFiles/krpc_core.dir/load_balancer.cc.o src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o
-  LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG
+build src/libkrpc_core.a: CXX_STATIC_LIBRARY_LINKER__krpc_core_Debug src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o src/CMakeFiles/krpc_core.dir/load_balancer.cc.o src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o
+  LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = src/CMakeFiles/krpc_core.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -214,17 +235,17 @@ build example/rebuild_cache: phony example/CMakeFiles/rebuild_cache.util
 
 build cmake_object_order_depends_target_server: phony || cmake_object_order_depends_target_krpc_core
 
-build example/callee/CMakeFiles/server.dir/Kserver.cc.o: CXX_COMPILER__server_Release /home/zzz/Krpc/example/callee/Kserver.cc || cmake_object_order_depends_target_server
+build example/callee/CMakeFiles/server.dir/Kserver.cc.o: CXX_COMPILER__server_Debug /home/zzz/Krpc/example/callee/Kserver.cc || cmake_object_order_depends_target_server
   DEP_FILE = example/callee/CMakeFiles/server.dir/Kserver.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/callee/CMakeFiles/server.dir
   OBJECT_FILE_DIR = example/callee/CMakeFiles/server.dir
 
-build example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: CXX_COMPILER__server_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_server
+build example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: CXX_COMPILER__server_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_server
   DEP_FILE = example/callee/CMakeFiles/server.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/callee/CMakeFiles/server.dir
   OBJECT_FILE_DIR = example/callee/CMakeFiles/server.dir/__
 
@@ -236,8 +257,8 @@ build example/callee/CMakeFiles/server.dir/__/user.pb.cc.o: CXX_COMPILER__server
 #############################################
 # Link the executable ../bin/server
 
-build ../bin/server: CXX_EXECUTABLE_LINKER__server_Release example/callee/CMakeFiles/server.dir/Kserver.cc.o example/callee/CMakeFiles/server.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/server: CXX_EXECUTABLE_LINKER__server_Debug example/callee/CMakeFiles/server.dir/Kserver.cc.o example/callee/CMakeFiles/server.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/callee/CMakeFiles/server.dir
@@ -283,17 +304,17 @@ build example/callee/rebuild_cache: phony example/callee/CMakeFiles/rebuild_cach
 
 build cmake_object_order_depends_target_client: phony || cmake_object_order_depends_target_krpc_core
 
-build example/caller/CMakeFiles/client.dir/Kclient.cc.o: CXX_COMPILER__client_Release /home/zzz/Krpc/example/caller/Kclient.cc || cmake_object_order_depends_target_client
+build example/caller/CMakeFiles/client.dir/Kclient.cc.o: CXX_COMPILER__client_Debug /home/zzz/Krpc/example/caller/Kclient.cc || cmake_object_order_depends_target_client
   DEP_FILE = example/caller/CMakeFiles/client.dir/Kclient.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/caller/CMakeFiles/client.dir
   OBJECT_FILE_DIR = example/caller/CMakeFiles/client.dir
 
-build example/caller/CMakeFiles/client.dir/__/user.pb.cc.o: CXX_COMPILER__client_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_client
+build example/caller/CMakeFiles/client.dir/__/user.pb.cc.o: CXX_COMPILER__client_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_client
   DEP_FILE = example/caller/CMakeFiles/client.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/caller/CMakeFiles/client.dir
   OBJECT_FILE_DIR = example/caller/CMakeFiles/client.dir/__
 
@@ -305,8 +326,8 @@ build example/caller/CMakeFiles/client.dir/__/user.pb.cc.o: CXX_COMPILER__client
 #############################################
 # Link the executable ../bin/client
 
-build ../bin/client: CXX_EXECUTABLE_LINKER__client_Release example/caller/CMakeFiles/client.dir/Kclient.cc.o example/caller/CMakeFiles/client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/client: CXX_EXECUTABLE_LINKER__client_Debug example/caller/CMakeFiles/client.dir/Kclient.cc.o example/caller/CMakeFiles/client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/caller/CMakeFiles/client.dir
@@ -352,17 +373,17 @@ build example/caller/rebuild_cache: phony example/caller/CMakeFiles/rebuild_cach
 
 build cmake_object_order_depends_target_timeout_client: phony || cmake_object_order_depends_target_krpc_core
 
-build example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o: CXX_COMPILER__timeout_client_Release /home/zzz/Krpc/example/timeout_demo/TimeoutClient.cc || cmake_object_order_depends_target_timeout_client
+build example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o: CXX_COMPILER__timeout_client_Debug /home/zzz/Krpc/example/timeout_demo/TimeoutClient.cc || cmake_object_order_depends_target_timeout_client
   DEP_FILE = example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/timeout_demo/CMakeFiles/timeout_client.dir
   OBJECT_FILE_DIR = example/timeout_demo/CMakeFiles/timeout_client.dir
 
-build example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o: CXX_COMPILER__timeout_client_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_timeout_client
+build example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o: CXX_COMPILER__timeout_client_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_timeout_client
   DEP_FILE = example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/timeout_demo/CMakeFiles/timeout_client.dir
   OBJECT_FILE_DIR = example/timeout_demo/CMakeFiles/timeout_client.dir/__
 
@@ -374,8 +395,8 @@ build example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o: CXX_CO
 #############################################
 # Link the executable ../bin/timeout_client
 
-build ../bin/timeout_client: CXX_EXECUTABLE_LINKER__timeout_client_Release example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/timeout_client: CXX_EXECUTABLE_LINKER__timeout_client_Debug example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/timeout_demo/CMakeFiles/timeout_client.dir
@@ -421,17 +442,17 @@ build example/timeout_demo/rebuild_cache: phony example/timeout_demo/CMakeFiles/
 
 build cmake_object_order_depends_target_heartbeat_client: phony || cmake_object_order_depends_target_krpc_core
 
-build example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: CXX_COMPILER__heartbeat_client_Release /home/zzz/Krpc/example/heartbeat_demo/HeartbeatClient.cc || cmake_object_order_depends_target_heartbeat_client
+build example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o: CXX_COMPILER__heartbeat_client_Debug /home/zzz/Krpc/example/heartbeat_demo/HeartbeatClient.cc || cmake_object_order_depends_target_heartbeat_client
   DEP_FILE = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
   OBJECT_FILE_DIR = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
 
-build example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: CXX_COMPILER__heartbeat_client_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_heartbeat_client
+build example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: CXX_COMPILER__heartbeat_client_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_heartbeat_client
   DEP_FILE = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
   OBJECT_FILE_DIR = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__
 
@@ -443,8 +464,8 @@ build example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o: CX
 #############################################
 # Link the executable ../bin/heartbeat_client
 
-build ../bin/heartbeat_client: CXX_EXECUTABLE_LINKER__heartbeat_client_Release example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/heartbeat_client: CXX_EXECUTABLE_LINKER__heartbeat_client_Debug example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/heartbeat_demo/CMakeFiles/heartbeat_client.dir
@@ -490,17 +511,17 @@ build example/heartbeat_demo/rebuild_cache: phony example/heartbeat_demo/CMakeFi
 
 build cmake_object_order_depends_target_async_client: phony || cmake_object_order_depends_target_krpc_core
 
-build example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o: CXX_COMPILER__async_client_Release /home/zzz/Krpc/example/async_demo/AsyncClient.cc || cmake_object_order_depends_target_async_client
+build example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o: CXX_COMPILER__async_client_Debug /home/zzz/Krpc/example/async_demo/AsyncClient.cc || cmake_object_order_depends_target_async_client
   DEP_FILE = example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/async_demo/CMakeFiles/async_client.dir
   OBJECT_FILE_DIR = example/async_demo/CMakeFiles/async_client.dir
 
-build example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o: CXX_COMPILER__async_client_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_async_client
+build example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o: CXX_COMPILER__async_client_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_async_client
   DEP_FILE = example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/async_demo/CMakeFiles/async_client.dir
   OBJECT_FILE_DIR = example/async_demo/CMakeFiles/async_client.dir/__
 
@@ -512,8 +533,8 @@ build example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o: CXX_COMPIL
 #############################################
 # Link the executable ../bin/async_client
 
-build ../bin/async_client: CXX_EXECUTABLE_LINKER__async_client_Release example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/async_client: CXX_EXECUTABLE_LINKER__async_client_Debug example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/async_demo/CMakeFiles/async_client.dir
@@ -559,17 +580,17 @@ build example/async_demo/rebuild_cache: phony example/async_demo/CMakeFiles/rebu
 
 build cmake_object_order_depends_target_pool_demo: phony || cmake_object_order_depends_target_krpc_core
 
-build example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o: CXX_COMPILER__pool_demo_Release /home/zzz/Krpc/example/pool_demo/PoolDemo.cc || cmake_object_order_depends_target_pool_demo
+build example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o: CXX_COMPILER__pool_demo_Debug /home/zzz/Krpc/example/pool_demo/PoolDemo.cc || cmake_object_order_depends_target_pool_demo
   DEP_FILE = example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/pool_demo/CMakeFiles/pool_demo.dir
   OBJECT_FILE_DIR = example/pool_demo/CMakeFiles/pool_demo.dir
 
-build example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o: CXX_COMPILER__pool_demo_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_pool_demo
+build example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o: CXX_COMPILER__pool_demo_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_pool_demo
   DEP_FILE = example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/pool_demo/CMakeFiles/pool_demo.dir
   OBJECT_FILE_DIR = example/pool_demo/CMakeFiles/pool_demo.dir/__
 
@@ -581,8 +602,8 @@ build example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o: CXX_COMPILER__
 #############################################
 # Link the executable ../bin/pool_demo
 
-build ../bin/pool_demo: CXX_EXECUTABLE_LINKER__pool_demo_Release example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/pool_demo: CXX_EXECUTABLE_LINKER__pool_demo_Debug example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/pool_demo/CMakeFiles/pool_demo.dir
@@ -628,17 +649,17 @@ build example/pool_demo/rebuild_cache: phony example/pool_demo/CMakeFiles/rebuil
 
 build cmake_object_order_depends_target_bench_demo: phony || cmake_object_order_depends_target_krpc_core
 
-build example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o: CXX_COMPILER__bench_demo_Release /home/zzz/Krpc/example/bench_demo/BenchClient.cc || cmake_object_order_depends_target_bench_demo
+build example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o: CXX_COMPILER__bench_demo_Debug /home/zzz/Krpc/example/bench_demo/BenchClient.cc || cmake_object_order_depends_target_bench_demo
   DEP_FILE = example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/bench_demo/CMakeFiles/bench_demo.dir
   OBJECT_FILE_DIR = example/bench_demo/CMakeFiles/bench_demo.dir
 
-build example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o: CXX_COMPILER__bench_demo_Release /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_bench_demo
+build example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o: CXX_COMPILER__bench_demo_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_bench_demo
   DEP_FILE = example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o.d
-  FLAGS = -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11
-  INCLUDES = -I/home/zzz/Krpc/src/include
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
   OBJECT_DIR = example/bench_demo/CMakeFiles/bench_demo.dir
   OBJECT_FILE_DIR = example/bench_demo/CMakeFiles/bench_demo.dir/__
 
@@ -650,8 +671,8 @@ build example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o: CXX_COMPILER
 #############################################
 # Link the executable ../bin/bench_demo
 
-build ../bin/bench_demo: CXX_EXECUTABLE_LINKER__bench_demo_Release example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
-  FLAGS = -O3 -DNDEBUG
+build ../bin/bench_demo: CXX_EXECUTABLE_LINKER__bench_demo_Debug example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
   OBJECT_DIR = example/bench_demo/CMakeFiles/bench_demo.dir
@@ -684,6 +705,212 @@ build example/bench_demo/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build example/bench_demo/rebuild_cache: phony example/bench_demo/CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/zzz/Krpc/example/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target msgpack_server
+
+
+#############################################
+# Order-only phony target for msgpack_server
+
+build cmake_object_order_depends_target_msgpack_server: phony || cmake_object_order_depends_target_krpc_core
+
+build example/msgpack_demo/CMakeFiles/msgpack_server.dir/MsgpackServer.cc.o: CXX_COMPILER__msgpack_server_Debug /home/zzz/Krpc/example/msgpack_demo/MsgpackServer.cc || cmake_object_order_depends_target_msgpack_server
+  DEP_FILE = example/msgpack_demo/CMakeFiles/msgpack_server.dir/MsgpackServer.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/msgpack_demo/CMakeFiles/msgpack_server.dir
+  OBJECT_FILE_DIR = example/msgpack_demo/CMakeFiles/msgpack_server.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target msgpack_server
+
+
+#############################################
+# Link the executable ../bin/msgpack_server
+
+build ../bin/msgpack_server: CXX_EXECUTABLE_LINKER__msgpack_server_Debug example/msgpack_demo/CMakeFiles/msgpack_server.dir/MsgpackServer.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
+  OBJECT_DIR = example/msgpack_demo/CMakeFiles/msgpack_server.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = ../bin/msgpack_server
+  TARGET_PDB = msgpack_server.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target msgpack_client
+
+
+#############################################
+# Order-only phony target for msgpack_client
+
+build cmake_object_order_depends_target_msgpack_client: phony || cmake_object_order_depends_target_krpc_core
+
+build example/msgpack_demo/CMakeFiles/msgpack_client.dir/MsgpackClient.cc.o: CXX_COMPILER__msgpack_client_Debug /home/zzz/Krpc/example/msgpack_demo/MsgpackClient.cc || cmake_object_order_depends_target_msgpack_client
+  DEP_FILE = example/msgpack_demo/CMakeFiles/msgpack_client.dir/MsgpackClient.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/msgpack_demo/CMakeFiles/msgpack_client.dir
+  OBJECT_FILE_DIR = example/msgpack_demo/CMakeFiles/msgpack_client.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target msgpack_client
+
+
+#############################################
+# Link the executable ../bin/msgpack_client
+
+build ../bin/msgpack_client: CXX_EXECUTABLE_LINKER__msgpack_client_Debug example/msgpack_demo/CMakeFiles/msgpack_client.dir/MsgpackClient.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
+  OBJECT_DIR = example/msgpack_demo/CMakeFiles/msgpack_client.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = ../bin/msgpack_client
+  TARGET_PDB = msgpack_client.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build example/msgpack_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/msgpack_demo && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build example/msgpack_demo/edit_cache: phony example/msgpack_demo/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build example/msgpack_demo/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/msgpack_demo && /usr/bin/cmake --regenerate-during-build -S/home/zzz/Krpc -B/home/zzz/Krpc/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build example/msgpack_demo/rebuild_cache: phony example/msgpack_demo/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/zzz/Krpc/example/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target switch_server
+
+
+#############################################
+# Order-only phony target for switch_server
+
+build cmake_object_order_depends_target_switch_server: phony || cmake_object_order_depends_target_krpc_core
+
+build example/switch_demo/CMakeFiles/switch_server.dir/SwitchServer.cc.o: CXX_COMPILER__switch_server_Debug /home/zzz/Krpc/example/switch_demo/SwitchServer.cc || cmake_object_order_depends_target_switch_server
+  DEP_FILE = example/switch_demo/CMakeFiles/switch_server.dir/SwitchServer.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_server.dir
+  OBJECT_FILE_DIR = example/switch_demo/CMakeFiles/switch_server.dir
+
+build example/switch_demo/CMakeFiles/switch_server.dir/__/user.pb.cc.o: CXX_COMPILER__switch_server_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_switch_server
+  DEP_FILE = example/switch_demo/CMakeFiles/switch_server.dir/__/user.pb.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_server.dir
+  OBJECT_FILE_DIR = example/switch_demo/CMakeFiles/switch_server.dir/__
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target switch_server
+
+
+#############################################
+# Link the executable ../bin/switch_server
+
+build ../bin/switch_server: CXX_EXECUTABLE_LINKER__switch_server_Debug example/switch_demo/CMakeFiles/switch_server.dir/SwitchServer.cc.o example/switch_demo/CMakeFiles/switch_server.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_server.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = ../bin/switch_server
+  TARGET_PDB = switch_server.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target switch_client
+
+
+#############################################
+# Order-only phony target for switch_client
+
+build cmake_object_order_depends_target_switch_client: phony || cmake_object_order_depends_target_krpc_core
+
+build example/switch_demo/CMakeFiles/switch_client.dir/SwitchClient.cc.o: CXX_COMPILER__switch_client_Debug /home/zzz/Krpc/example/switch_demo/SwitchClient.cc || cmake_object_order_depends_target_switch_client
+  DEP_FILE = example/switch_demo/CMakeFiles/switch_client.dir/SwitchClient.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_client.dir
+  OBJECT_FILE_DIR = example/switch_demo/CMakeFiles/switch_client.dir
+
+build example/switch_demo/CMakeFiles/switch_client.dir/__/user.pb.cc.o: CXX_COMPILER__switch_client_Debug /home/zzz/Krpc/example/user.pb.cc || cmake_object_order_depends_target_switch_client
+  DEP_FILE = example/switch_demo/CMakeFiles/switch_client.dir/__/user.pb.cc.o.d
+  FLAGS = -g -std=c++11 -Wall -std=gnu++11
+  INCLUDES = -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_client.dir
+  OBJECT_FILE_DIR = example/switch_demo/CMakeFiles/switch_client.dir/__
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target switch_client
+
+
+#############################################
+# Link the executable ../bin/switch_client
+
+build ../bin/switch_client: CXX_EXECUTABLE_LINKER__switch_client_Debug example/switch_demo/CMakeFiles/switch_client.dir/SwitchClient.cc.o example/switch_demo/CMakeFiles/switch_client.dir/__/user.pb.cc.o | src/libkrpc_core.a || src/libkrpc_core.a
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libkrpc_core.a  -lprotobuf  -lpthread  -lzookeeper_mt  -lmuduo_net  -lmuduo_base  -lglog
+  OBJECT_DIR = example/switch_demo/CMakeFiles/switch_client.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = ../bin/switch_client
+  TARGET_PDB = switch_client.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build example/switch_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/switch_demo && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build example/switch_demo/edit_cache: phony example/switch_demo/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build example/switch_demo/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/switch_demo && /usr/bin/cmake --regenerate-during-build -S/home/zzz/Krpc -B/home/zzz/Krpc/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build example/switch_demo/rebuild_cache: phony example/switch_demo/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
 
 build async_client: phony ../bin/async_client
@@ -698,9 +925,17 @@ build krpc_core: phony src/libkrpc_core.a
 
 build libkrpc_core.a: phony src/libkrpc_core.a
 
+build msgpack_client: phony ../bin/msgpack_client
+
+build msgpack_server: phony ../bin/msgpack_server
+
 build pool_demo: phony ../bin/pool_demo
 
 build server: phony ../bin/server
+
+build switch_client: phony ../bin/switch_client
+
+build switch_server: phony ../bin/switch_server
 
 build timeout_client: phony ../bin/timeout_client
 
@@ -719,7 +954,7 @@ build all: phony src/all example/all
 #############################################
 # Folder: /home/zzz/Krpc/build/example
 
-build example/all: phony example/callee/all example/caller/all example/timeout_demo/all example/heartbeat_demo/all example/async_demo/all example/pool_demo/all example/bench_demo/all
+build example/all: phony example/callee/all example/caller/all example/timeout_demo/all example/heartbeat_demo/all example/async_demo/all example/pool_demo/all example/bench_demo/all example/msgpack_demo/all example/switch_demo/all
 
 # =============================================================================
 
@@ -759,9 +994,23 @@ build example/heartbeat_demo/all: phony ../bin/heartbeat_client
 # =============================================================================
 
 #############################################
+# Folder: /home/zzz/Krpc/build/example/msgpack_demo
+
+build example/msgpack_demo/all: phony ../bin/msgpack_server ../bin/msgpack_client
+
+# =============================================================================
+
+#############################################
 # Folder: /home/zzz/Krpc/build/example/pool_demo
 
 build example/pool_demo/all: phony ../bin/pool_demo
+
+# =============================================================================
+
+#############################################
+# Folder: /home/zzz/Krpc/build/example/switch_demo
+
+build example/switch_demo/all: phony ../bin/switch_server ../bin/switch_client
 
 # =============================================================================
 
@@ -789,14 +1038,14 @@ build src/all: phony src/libkrpc_core.a
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake: phony
+build ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake: phony
 
 
 #############################################

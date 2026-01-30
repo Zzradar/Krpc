@@ -1,6 +1,21 @@
 #include "Krpcapplication.h"
+#include "KrpcLogger.h"
 #include<cstdlib>
 #include<unistd.h>
+
+namespace {
+int ParseConfigInt(const std::string &value, int default_value) {
+    if (value.empty()) {
+        return default_value;
+    }
+    char *end = nullptr;
+    long parsed = std::strtol(value.c_str(), &end, 10);
+    if (end == value.c_str()) {
+        return default_value;
+    }
+    return static_cast<int>(parsed);
+}
+}  // namespace
 
 Krpcconfig KrpcApplication::m_config;  // 全局配置对象
 std::mutex KrpcApplication::m_mutex;  // 用于线程安全的互斥锁
@@ -36,6 +51,12 @@ void KrpcApplication::Init(int argc, char **argv) {
 
     // 加载配置文件
     m_config.LoadConfigFile(config_file.c_str());
+
+    // 日志配置（可选）
+    const int minloglevel = ParseConfigInt(m_config.Load("log_minlevel"), 1);
+    const bool logtostderr = ParseConfigInt(m_config.Load("logtostderr"), 1) != 0;
+    const bool colorlogtostderr = ParseConfigInt(m_config.Load("colorlogtostderr"), 1) != 0;
+    KrpcLogger::InitOnce(argv[0], minloglevel, logtostderr, colorlogtostderr);
 }
 
 // 获取单例对象的引用，保证全局只有一个实例

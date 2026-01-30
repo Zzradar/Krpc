@@ -1,10 +1,14 @@
 #include "Krpcapplication.h"
 #include "Krpcchannel.h"
 #include "Krpccontroller.h"
+#include "Krpcmsgpack_channel.h"
 #include "../user.pb.h"
+#include "../common/codec_util.h"
+#include "../common/user_types.h"
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
+#include <exception>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -43,6 +47,7 @@ struct BenchConfig {
     int concurrency{4};
     int total_requests{100};
     int sleep_ms{0};
+    int payload_kb{0}; // 可选，构造大包
 };
 
 struct Metrics {
@@ -119,6 +124,124 @@ void OnAsyncDone(AsyncCallCtx *ctx) {
     delete ctx;
 }
 
+struct MsgpackAsyncCall {
+    int64_t start_ms{0};
+    std::future<krpc::msgpack::object_handle> future;
+    std::shared_ptr<KrpcMsgpackChannel> channel_holder;
+};
+
+bool IsSuccess(const MsgpackUserResult &resp) {
+    return resp.errcode == 0 && resp.success;
+}
+
+void RunBenchMsgpack(const BenchConfig &cfg) {
+    Metrics metrics;
+    std::atomic<int> pending{cfg.total_requests};
+
+    const int64_t start_ts = NowMs();
+    auto worker = [&](int tid) {
+        std::unique_ptr<KrpcMsgpackChannel> sync_channel;
+        std::shared_ptr<KrpcMsgpackChannel> async_channel;
+        if (cfg.conn_mode == "keepalive") {
+            if (cfg.mode == "sync") {
+                sync_channel.reset(new KrpcMsgpackChannel());
+            } else {
+                async_channel = std::make_shared<KrpcMsgpackChannel>();
+            }
+        }
+
+        std::vector<MsgpackAsyncCall> async_calls;
+        if (cfg.mode == "async") {
+            async_calls.reserve(static_cast<size_t>(cfg.total_requests / cfg.concurrency + 1));
+        }
+
+        for (int i = tid; i < cfg.total_requests; i += cfg.concurrency) {
+            std::string name = cfg.payload_kb > 0
+                               ? std::string(static_cast<size_t>(cfg.payload_kb) * 1024, 'x')
+                               : std::string("bench");
+
+            if (cfg.mode == "sync") {
+                std::unique_ptr<KrpcMsgpackChannel> short_channel;
+                KrpcMsgpackChannel *channel_ptr = nullptr;
+                if (cfg.conn_mode == "keepalive") {
+                    channel_ptr = sync_channel.get();
+                } else {
+                    short_channel.reset(new KrpcMsgpackChannel());
+                    channel_ptr = short_channel.get();
+                }
+                auto t0 = std::chrono::steady_clock::now();
+                bool ok = false;
+                try {
+                    auto resp = channel_ptr->Call<MsgpackUserResult>("UserServiceRpc", "Login",
+                                                                     name, std::string("123456"));
+                    ok = IsSuccess(resp);
+                } catch (...) {
+                    ok = false;
+                }
+                auto cost = std::chrono::duration_cast<std::chrono::milliseconds>(
+                        std::chrono::steady_clock::now() - t0).count();
+                Record(metrics, ok, cost);
+                pending.fetch_sub(1, std::memory_order_release);
+                if (cfg.sleep_ms > 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
+                }
+                continue;
+            }
+
+            std::shared_ptr<KrpcMsgpackChannel> channel_holder;
+            KrpcMsgpackChannel *channel_ptr = nullptr;
+            if (cfg.conn_mode == "keepalive") {
+                channel_ptr = async_channel.get();
+            } else {
+                channel_holder = std::make_shared<KrpcMsgpackChannel>();
+                channel_ptr = channel_holder.get();
+            }
+            MsgpackAsyncCall call;
+            call.start_ms = NowMs();
+            auto future = channel_ptr->CallAsyncRaw("UserServiceRpc", "Login",
+                                                    name, std::string("123456"));
+            call.future = std::move(future);
+            call.channel_holder = std::move(channel_holder);
+            async_calls.push_back(std::move(call));
+            if (cfg.sleep_ms > 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
+            }
+        }
+
+        if (cfg.mode == "async") {
+            for (auto &call : async_calls) {
+                bool ok = false;
+                try {
+                    auto oh = call.future.get();
+                    MsgpackUserResult resp;
+                    oh.get().convert(resp);
+                    ok = IsSuccess(resp);
+                } catch (...) {
+                    ok = false;
+                }
+                const int64_t cost = NowMs() - call.start_ms;
+                Record(metrics, ok, cost);
+                pending.fetch_sub(1, std::memory_order_release);
+            }
+        }
+    };
+
+    std::vector<std::thread> threads;
+    threads.reserve(cfg.concurrency);
+    for (int i = 0; i < cfg.concurrency; ++i) {
+        threads.emplace_back(worker, i);
+    }
+
+    while (pending.load(std::memory_order_acquire) > 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    for (auto &t : threads) {
+        if (t.joinable()) t.join();
+    }
+    const int64_t total_cost = NowMs() - start_ts;
+    PrintSummary(cfg, metrics, total_cost);
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
@@ -130,13 +253,21 @@ int main(int argc, char **argv) {
     cfg.concurrency = ReadEnvInt("BENCH_CONCURRENCY", 4);
     cfg.total_requests = ReadEnvInt("BENCH_REQUESTS", 100);
     cfg.sleep_ms = ReadEnvInt("BENCH_SLEEP_MS", 0);
+    cfg.payload_kb = ReadEnvInt("BENCH_PAYLOAD_KB", 0);
 
     std::cout << "bench mode=" << cfg.mode
               << " conn=" << cfg.conn_mode
               << " concurrency=" << cfg.concurrency
               << " total_requests=" << cfg.total_requests
               << " sleep_ms=" << cfg.sleep_ms
+              << " payload_kb=" << cfg.payload_kb
               << std::endl;
+
+    const bool use_msgpack = KrpcUseMsgpack();
+    if (use_msgpack) {
+        RunBenchMsgpack(cfg);
+        return 0;
+    }
 
     Metrics metrics;
     std::atomic<int> pending{cfg.total_requests};
@@ -159,7 +290,11 @@ int main(int argc, char **argv) {
 
         for (int i = tid; i < cfg.total_requests; i += cfg.concurrency) {
             Kuser::LoginRequest request;
-            request.set_name("bench");
+            if (cfg.payload_kb > 0) {
+                request.set_name(std::string(static_cast<size_t>(cfg.payload_kb) * 1024, 'x'));
+            } else {
+                request.set_name("bench");
+            }
             request.set_pwd("123456");
 
             if (cfg.mode == "sync") {

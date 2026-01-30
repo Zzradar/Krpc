@@ -2,6 +2,8 @@
 #include "Krpcapplication.h"
 #include "Krpcheader.pb.h"
 #include "KrpcLogger.h"
+#include "metrics_export.h"
+#include <muduo/net/Buffer.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <iostream>
@@ -9,6 +11,7 @@
 #include <exception>
 #include <memory>
 #include <thread>
+#include "metrics_http_server.h"
 
 namespace {
 
@@ -81,6 +84,7 @@ void KrpcProvider::Run() {
     // 读取配置文件中的RPC服务器IP和端口
     std::string ip = KrpcApplication::GetInstance().GetConfig().Load("rpcserverip");
     int port = atoi(KrpcApplication::GetInstance().GetConfig().Load("rpcserverport").c_str());
+    auto &config = KrpcApplication::GetInstance().GetConfig();
 
     // 使用muduo网络库，创建地址对象
     muduo::net::InetAddress address(ip, port);
@@ -118,6 +122,17 @@ void KrpcProvider::Run() {
     // RPC服务端准备启动，打印信息
     std::cout << "RpcProvider start service at ip:" << ip << " port:" << port << std::endl;
 
+    // 启动指标 HTTP 端点（可选）
+    const bool metrics_enabled = ParseConfigInt(config.Load("metrics_http_enabled"), 0) != 0;
+    const int metrics_port = ParseConfigInt(config.Load("metrics_http_port"), 0);
+    if (metrics_enabled && metrics_port > 0) {
+        if (StartMetricsHttpServer(metrics_port)) {
+            LOG(INFO) << "metrics http server started at 0.0.0.0:" << metrics_port;
+        } else {
+            LOG(WARNING) << "metrics http server failed to start at port " << metrics_port;
+        }
+    }
+
     // 启动网络服务
     ScheduleIdleScan();
     StartWorkerPool();
@@ -130,6 +145,8 @@ void KrpcProvider::Run() {
 // 连接回调函数，处理客户端连接事件
 void KrpcProvider::OnConnection(const muduo::net::TcpConnectionPtr &conn) {
     if (conn->connected()) {
+        // 低延迟场景关闭 Nagle，减少小包合并等待
+        conn->setTcpNoDelay(true);
         RegisterConnection(conn);
         return;
     }
@@ -254,11 +271,13 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
         task.request = request;
         task.response = response;
         task.done = done;
+        task.start_time = muduo::Timestamp::now();
 
         if (!EnqueueTask(task)) {
             KrpcLogger::ERROR("task queue unavailable, executing request inline");
             std::unique_ptr<google::protobuf::Message> request_guard(request);
-            service->CallMethod(method, nullptr, request_guard.get(), response, done);
+            const bool ok = CallAndMeasure(service, method, request_guard.get(), response, done, task.start_time);
+            (void)ok;
             request_guard.reset();
         }
     }
@@ -287,16 +306,46 @@ void KrpcProvider::SendRpcResponse(const muduo::net::TcpConnectionPtr &conn, uin
         return;
     }
 
-    std::string send_buf;
+    std::string header_varint;
     {
-        google::protobuf::io::StringOutputStream string_output(&send_buf);
+        google::protobuf::io::StringOutputStream string_output(&header_varint);
         google::protobuf::io::CodedOutputStream coded_output(&string_output);
         coded_output.WriteVarint32(static_cast<uint32_t>(header_str.size()));
-        coded_output.WriteString(header_str);
     }
-    send_buf += response_str;
-    conn->send(send_buf);
+
+    muduo::net::Buffer buffer;
+    buffer.append(header_varint.data(), header_varint.size());
+    buffer.append(header_str.data(), header_str.size());
+    buffer.append(response_str.data(), response_str.size());
+
+    conn->send(&buffer);
     delete response;
+}
+
+bool KrpcProvider::CallAndMeasure(google::protobuf::Service *service,
+                                  const google::protobuf::MethodDescriptor *method,
+                                  google::protobuf::Message *request,
+                                  google::protobuf::Message *response,
+                                  google::protobuf::Closure *done,
+                                  muduo::Timestamp start_time) {
+    const auto begin = start_time.valid() ? start_time : muduo::Timestamp::now();
+    bool ok = true;
+    try {
+        service->CallMethod(method, nullptr, request, response, done);
+    } catch (const std::exception &e) {
+        ok = false;
+        KrpcLogger::ERROR(std::string("provider call exception: ") + e.what());
+    } catch (...) {
+        ok = false;
+        KrpcLogger::ERROR("provider call unknown exception");
+    }
+    const double cost_ms = muduo::timeDifference(muduo::Timestamp::now(), begin) * 1000.0;
+    const auto *sd = method ? method->service() : nullptr;
+    const std::string label = (sd ? sd->name() : std::string("unknown")) + "." +
+                              (method ? method->name() : std::string("unknown"));
+    // 这里仅添加样本，不获取快照
+    RecordMetricsSampleWithLabel(label, ok, static_cast<int64_t>(cost_ms));
+    return ok;
 }
 
 void KrpcProvider::SendHeartbeatFrame(const muduo::net::TcpConnectionPtr &conn,
@@ -497,14 +546,9 @@ void KrpcProvider::WorkerLoop() {
         }
 
         std::unique_ptr<google::protobuf::Message> request_guard(task.request);
-        try {
-            task.service->CallMethod(task.method, nullptr, request_guard.get(), task.response, task.done);
-        } catch (const std::exception &ex) {
-            KrpcLogger::ERROR(std::string("CallMethod exception: ") + ex.what());
-            delete task.response;
-            delete task.done;
-        } catch (...) {
-            KrpcLogger::ERROR("CallMethod unknown exception");
+        const bool ok = CallAndMeasure(task.service, task.method, request_guard.get(), task.response, task.done, task.start_time);
+        if (!ok) {
+            // 失败时响应已在 CallAndMeasure 中处理日志，但这里仍需清理响应资源
             delete task.response;
             delete task.done;
         }

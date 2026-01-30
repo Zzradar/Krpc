@@ -1,112 +1,157 @@
 [
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o -c /home/zzz/Krpc/src/Krpcapplication.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o -c /home/zzz/Krpc/src/Krpcapplication.cc",
   "file": "/home/zzz/Krpc/src/Krpcapplication.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o -c /home/zzz/Krpc/src/Krpcchannel.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o -c /home/zzz/Krpc/src/Krpcchannel.cc",
   "file": "/home/zzz/Krpc/src/Krpcchannel.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o -c /home/zzz/Krpc/src/Krpcconfig.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o -c /home/zzz/Krpc/src/Krpcconfig.cc",
   "file": "/home/zzz/Krpc/src/Krpcconfig.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o -c /home/zzz/Krpc/src/Krpccontroller.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o -c /home/zzz/Krpc/src/Krpccontroller.cc",
   "file": "/home/zzz/Krpc/src/Krpccontroller.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o -c /home/zzz/Krpc/src/Krpcheader.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o -c /home/zzz/Krpc/src/Krpcheader.pb.cc",
   "file": "/home/zzz/Krpc/src/Krpcheader.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o -c /home/zzz/Krpc/src/Krpcprovider.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o -c /home/zzz/Krpc/src/Krpcmsgpack_channel.cc",
+  "file": "/home/zzz/Krpc/src/Krpcmsgpack_channel.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o -c /home/zzz/Krpc/src/Krpcmsgpack_provider.cc",
+  "file": "/home/zzz/Krpc/src/Krpcmsgpack_provider.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o -c /home/zzz/Krpc/src/Krpcprovider.cc",
   "file": "/home/zzz/Krpc/src/Krpcprovider.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/load_balancer.cc.o -c /home/zzz/Krpc/src/load_balancer.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/load_balancer.cc.o -c /home/zzz/Krpc/src/load_balancer.cc",
   "file": "/home/zzz/Krpc/src/load_balancer.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o -c /home/zzz/Krpc/src/zookeeperutil.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o -c /home/zzz/Krpc/src/metrics_http_server.cc",
+  "file": "/home/zzz/Krpc/src/metrics_http_server.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o -c /home/zzz/Krpc/src/zookeeperutil.cc",
   "file": "/home/zzz/Krpc/src/zookeeperutil.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/callee/CMakeFiles/server.dir/Kserver.cc.o -c /home/zzz/Krpc/example/callee/Kserver.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/callee/CMakeFiles/server.dir/Kserver.cc.o -c /home/zzz/Krpc/example/callee/Kserver.cc",
   "file": "/home/zzz/Krpc/example/callee/Kserver.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/callee/CMakeFiles/server.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/callee/CMakeFiles/server.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/caller/CMakeFiles/client.dir/Kclient.cc.o -c /home/zzz/Krpc/example/caller/Kclient.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/caller/CMakeFiles/client.dir/Kclient.cc.o -c /home/zzz/Krpc/example/caller/Kclient.cc",
   "file": "/home/zzz/Krpc/example/caller/Kclient.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/caller/CMakeFiles/client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/caller/CMakeFiles/client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o -c /home/zzz/Krpc/example/timeout_demo/TimeoutClient.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/timeout_demo/CMakeFiles/timeout_client.dir/TimeoutClient.cc.o -c /home/zzz/Krpc/example/timeout_demo/TimeoutClient.cc",
   "file": "/home/zzz/Krpc/example/timeout_demo/TimeoutClient.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/timeout_demo/CMakeFiles/timeout_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o -c /home/zzz/Krpc/example/heartbeat_demo/HeartbeatClient.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/HeartbeatClient.cc.o -c /home/zzz/Krpc/example/heartbeat_demo/HeartbeatClient.cc",
   "file": "/home/zzz/Krpc/example/heartbeat_demo/HeartbeatClient.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/heartbeat_demo/CMakeFiles/heartbeat_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o -c /home/zzz/Krpc/example/async_demo/AsyncClient.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/async_demo/CMakeFiles/async_client.dir/AsyncClient.cc.o -c /home/zzz/Krpc/example/async_demo/AsyncClient.cc",
   "file": "/home/zzz/Krpc/example/async_demo/AsyncClient.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/async_demo/CMakeFiles/async_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o -c /home/zzz/Krpc/example/pool_demo/PoolDemo.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/pool_demo/CMakeFiles/pool_demo.dir/PoolDemo.cc.o -c /home/zzz/Krpc/example/pool_demo/PoolDemo.cc",
   "file": "/home/zzz/Krpc/example/pool_demo/PoolDemo.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/pool_demo/CMakeFiles/pool_demo.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o -c /home/zzz/Krpc/example/bench_demo/BenchClient.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/bench_demo/CMakeFiles/bench_demo.dir/BenchClient.cc.o -c /home/zzz/Krpc/example/bench_demo/BenchClient.cc",
   "file": "/home/zzz/Krpc/example/bench_demo/BenchClient.cc"
 },
 {
   "directory": "/home/zzz/Krpc/build",
-  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -O3 -DNDEBUG -std=c++11 -Wall -std=gnu++11 -o example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/bench_demo/CMakeFiles/bench_demo.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "file": "/home/zzz/Krpc/example/user.pb.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/msgpack_demo/CMakeFiles/msgpack_server.dir/MsgpackServer.cc.o -c /home/zzz/Krpc/example/msgpack_demo/MsgpackServer.cc",
+  "file": "/home/zzz/Krpc/example/msgpack_demo/MsgpackServer.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/msgpack_demo/CMakeFiles/msgpack_client.dir/MsgpackClient.cc.o -c /home/zzz/Krpc/example/msgpack_demo/MsgpackClient.cc",
+  "file": "/home/zzz/Krpc/example/msgpack_demo/MsgpackClient.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/switch_demo/CMakeFiles/switch_server.dir/SwitchServer.cc.o -c /home/zzz/Krpc/example/switch_demo/SwitchServer.cc",
+  "file": "/home/zzz/Krpc/example/switch_demo/SwitchServer.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/switch_demo/CMakeFiles/switch_server.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
+  "file": "/home/zzz/Krpc/example/user.pb.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/switch_demo/CMakeFiles/switch_client.dir/SwitchClient.cc.o -c /home/zzz/Krpc/example/switch_demo/SwitchClient.cc",
+  "file": "/home/zzz/Krpc/example/switch_demo/SwitchClient.cc"
+},
+{
+  "directory": "/home/zzz/Krpc/build",
+  "command": "/usr/bin/g++ -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/third_party -g -std=c++11 -Wall -std=gnu++11 -o example/switch_demo/CMakeFiles/switch_client.dir/__/user.pb.cc.o -c /home/zzz/Krpc/example/user.pb.cc",
   "file": "/home/zzz/Krpc/example/user.pb.cc"
 }
 ]

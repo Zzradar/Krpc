@@ -26,3 +26,11 @@
 /home/zzz/Krpc/build/example/bench_demo/CMakeFiles/bench_demo.dir
 /home/zzz/Krpc/build/example/bench_demo/CMakeFiles/edit_cache.dir
 /home/zzz/Krpc/build/example/bench_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/msgpack_demo/CMakeFiles/msgpack_server.dir
+/home/zzz/Krpc/build/example/msgpack_demo/CMakeFiles/msgpack_client.dir
+/home/zzz/Krpc/build/example/msgpack_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/msgpack_demo/CMakeFiles/rebuild_cache.dir
+/home/zzz/Krpc/build/example/switch_demo/CMakeFiles/switch_server.dir
+/home/zzz/Krpc/build/example/switch_demo/CMakeFiles/switch_client.dir
+/home/zzz/Krpc/build/example/switch_demo/CMakeFiles/edit_cache.dir
+/home/zzz/Krpc/build/example/switch_demo/CMakeFiles/rebuild_cache.dir

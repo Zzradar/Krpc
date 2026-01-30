@@ -20,6 +20,7 @@
 #include <deque>
 #include <thread>
 #include <atomic>
+#include "metrics_export.h"
 
 #include "Krpcheader.pb.h"
 #include "Krpcprotocol.h"
@@ -56,6 +57,7 @@ private:
         google::protobuf::Message *request{nullptr};
         google::protobuf::Message *response{nullptr};
         google::protobuf::Closure *done{nullptr};
+        muduo::Timestamp start_time;
     };
 
     std::deque<RpcTask> task_queue_;
@@ -84,6 +86,12 @@ private:
     bool EnqueueTask(RpcTask task);
     void WorkerLoop();
     void LogQueueMetricsLocked(size_t queue_size);
+    bool CallAndMeasure(google::protobuf::Service *service,
+                        const google::protobuf::MethodDescriptor *method,
+                        google::protobuf::Message *request,
+                        google::protobuf::Message *response,
+                        google::protobuf::Closure *done,
+                        muduo::Timestamp start_time);
 
     class SendResponseClosure : public google::protobuf::Closure {
     public:

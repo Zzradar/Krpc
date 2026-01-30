@@ -1,7 +1,10 @@
 #include "Krpcapplication.h"
 #include "Krpcchannel.h"
 #include "Krpccontroller.h"
+#include "Krpcmsgpack_channel.h"
 #include "../user.pb.h"
+#include "../common/codec_util.h"
+#include "../common/user_types.h"
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -47,6 +50,7 @@ struct Options {
     int requests{20};
     int timeout_ms{3000};
     int sleep_ms{0};
+    std::string name{"sleep"}; // 默认用 sleep 触发服务端慢路径，便于验证超时/失败
 };
 
 // 采样指标：成功/失败计数与延迟样本，原子变量用于多线程安全累加
@@ -85,6 +89,7 @@ Options LoadOptions() {
     opts.requests = ReadEnvInt("ASYNC_REQUESTS", opts.requests);
     opts.timeout_ms = ReadEnvInt("ASYNC_TIMEOUT_MS", opts.timeout_ms);
     opts.sleep_ms = ReadEnvInt("ASYNC_SLEEP_MS", opts.sleep_ms);
+    opts.name = ReadEnvString("ASYNC_NAME", opts.name);
     if (opts.concurrency < 1) {
         opts.concurrency = 1;
     }
@@ -102,6 +107,10 @@ bool IsSuccess(const Kuser::LoginResponse &resp, const ::google::protobuf::RpcCo
     return resp.result().errcode() == 0;
 }
 
+bool IsSuccess(const MsgpackUserResult &resp) {
+    return resp.errcode == 0 && resp.success;
+}
+
 // 汇总打印：模式、并发、成功失败数、p50/p95/p99
 void PrintSummary(const Options &opts, Metrics &metrics) {
     std::vector<double> latencies_copy;
@@ -115,6 +124,7 @@ void PrintSummary(const Options &opts, Metrics &metrics) {
     std::cout << "mode=" << opts.mode
               << " concurrency=" << opts.concurrency
               << " requests=" << opts.requests
+              << " name=" << opts.name
               << " timeout_ms=" << opts.timeout_ms << std::endl;
     std::cout << "total=" << total
               << " success=" << metrics.success
@@ -149,7 +159,7 @@ void RunFutureMode(KrpcChannel *channel,
         threads.emplace_back([channel, method, count, &opts, &metrics]() {
             for (int i = 0; i < count; ++i) {
                 Kuser::LoginRequest request;
-                request.set_name("async_future");
+                request.set_name(opts.name);
                 request.set_pwd("123456");
 
                 auto controller = std::make_shared<Krpccontroller>();
@@ -222,7 +232,7 @@ void RunCallbackMode(KrpcChannel *channel,
         threads.emplace_back([channel, method, count, &opts, &metrics, &waiters, &waiters_mutex]() {
             for (int i = 0; i < count; ++i) {
                 Kuser::LoginRequest request;
-                request.set_name("async_callback");
+                request.set_name(opts.name);
                 request.set_pwd("123456");
 
                 auto controller = std::make_shared<Krpccontroller>();
@@ -277,6 +287,122 @@ void RunCallbackMode(KrpcChannel *channel,
     }
 }
 
+void RunFutureModeMsgpack(KrpcMsgpackChannel *channel,
+                          const Options &opts,
+                          Metrics &metrics) {
+    const int base = opts.requests / opts.concurrency;
+    const int extra = opts.requests % opts.concurrency;
+    std::vector<std::thread> threads;
+    threads.reserve(opts.concurrency);
+
+    for (int t = 0; t < opts.concurrency; ++t) {
+        const int count = base + (t < extra ? 1 : 0);
+        if (count <= 0) {
+            continue;
+        }
+        threads.emplace_back([channel, count, &opts, &metrics]() {
+            for (int i = 0; i < count; ++i) {
+                const auto start = std::chrono::steady_clock::now();
+                try {
+                    auto future = channel->CallAsyncRawWithTimeout("UserServiceRpc", "Login",
+                                                                   opts.timeout_ms,
+                                                                   opts.name, std::string("123456"));
+                    auto oh = future.get();
+                    MsgpackUserResult resp;
+                    oh.get().convert(resp);
+                    const auto end = std::chrono::steady_clock::now();
+                    const double latency_ms = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start).count();
+                    RecordLatency(metrics, latency_ms);
+                    if (IsSuccess(resp)) {
+                        metrics.success.fetch_add(1);
+                    } else {
+                        metrics.fail.fetch_add(1);
+                    }
+                } catch (...) {
+                    const auto end = std::chrono::steady_clock::now();
+                    const double latency_ms = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start).count();
+                    RecordLatency(metrics, latency_ms);
+                    metrics.fail.fetch_add(1);
+                }
+                if (opts.sleep_ms > 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(opts.sleep_ms));
+                }
+            }
+        });
+    }
+
+    for (auto &th : threads) {
+        th.join();
+    }
+}
+
+void RunCallbackModeMsgpack(KrpcMsgpackChannel *channel,
+                            const Options &opts,
+                            Metrics &metrics) {
+    std::vector<std::shared_future<void>> waiters;
+    waiters.reserve(opts.requests);
+    std::mutex waiters_mutex;
+
+    const int base = opts.requests / opts.concurrency;
+    const int extra = opts.requests % opts.concurrency;
+    std::vector<std::thread> threads;
+    threads.reserve(opts.concurrency);
+
+    for (int t = 0; t < opts.concurrency; ++t) {
+        const int count = base + (t < extra ? 1 : 0);
+        if (count <= 0) {
+            continue;
+        }
+        threads.emplace_back([channel, count, &opts, &waiters, &waiters_mutex, &metrics]() {
+            for (int i = 0; i < count; ++i) {
+                const auto start = std::chrono::steady_clock::now();
+                auto promise_ptr = std::make_shared<std::promise<void>>();
+                {
+                    std::lock_guard<std::mutex> lock(waiters_mutex);
+                    waiters.push_back(promise_ptr->get_future().share());
+                }
+
+                channel->CallAsyncWithTimeout("UserServiceRpc",
+                                              "Login",
+                                              opts.timeout_ms,
+                                              [promise_ptr, start, &metrics](const std::string &err,
+                                                                             krpc::msgpack::object_handle result) {
+                                          const auto end = std::chrono::steady_clock::now();
+                                          const double latency_ms = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start).count();
+                                          RecordLatency(metrics, latency_ms);
+                                          if (!err.empty()) {
+                                              metrics.fail.fetch_add(1);
+                                          } else {
+                                              MsgpackUserResult resp;
+                                              result.get().convert(resp);
+                                              if (IsSuccess(resp)) {
+                                                  metrics.success.fetch_add(1);
+                                              } else {
+                                                  metrics.fail.fetch_add(1);
+                                              }
+                                          }
+                                          try {
+                                              promise_ptr->set_value();
+                                          } catch (const std::future_error &) {
+                                          }
+                                      },
+                                      opts.name, std::string("123456"));
+                if (opts.sleep_ms > 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(opts.sleep_ms));
+                }
+            }
+        });
+    }
+
+    for (auto &th : threads) {
+        th.join();
+    }
+
+    for (auto &f : waiters) {
+        f.wait();
+    }
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
@@ -290,6 +416,8 @@ int main(int argc, char **argv) {
               << " ASYNC_REQUESTS=" << opts.requests
               << " ASYNC_TIMEOUT_MS=" << opts.timeout_ms << std::endl;
 
+    const bool use_msgpack = KrpcUseMsgpack();
+
     auto channel = std::make_shared<KrpcChannel>(false);
     const auto *method = Kuser::UserServiceRpc::descriptor()->FindMethodByName("Login");
     if (method == nullptr) {
@@ -299,10 +427,19 @@ int main(int argc, char **argv) {
 
     Metrics metrics;
     const auto start = std::chrono::steady_clock::now();
-    if (opts.mode == "callback") {
-        RunCallbackMode(channel.get(), method, opts, metrics);
+    if (use_msgpack) {
+        KrpcMsgpackChannel msgpack_channel;
+        if (opts.mode == "callback") {
+            RunCallbackModeMsgpack(&msgpack_channel, opts, metrics);
+        } else {
+            RunFutureModeMsgpack(&msgpack_channel, opts, metrics);
+        }
     } else {
-        RunFutureMode(channel.get(), method, opts, metrics);
+        if (opts.mode == "callback") {
+            RunCallbackMode(channel.get(), method, opts, metrics);
+        } else {
+            RunFutureMode(channel.get(), method, opts, metrics);
+        }
     }
     const auto end = std::chrono::steady_clock::now();
     const double elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();

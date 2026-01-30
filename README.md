@@ -121,6 +121,7 @@ C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛
 - `heartbeat_interval_ms`：客户端心跳发送周期（默认 5000ms）。
 - `heartbeat_miss_limit`：允许连续丢失的心跳次数（默认 3 次）。
 - `rpc_timeout_ms`：同步 RPC 的默认超时时间，心跳往返也沿用该超时。
+- `rpc_codec`：序列化协议切换（`protobuf` 或 `msgpack`，默认 `protobuf`）。
 
 ### 验证步骤
 
@@ -177,6 +178,37 @@ C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛
 	```
 - **可调参数**（环境变量）：`ASYNC_CONCURRENCY` 并发线程，`ASYNC_REQUESTS` 请求总数，`ASYNC_TIMEOUT_MS` 单次超时，`ASYNC_SLEEP_MS` 请求间隔毫秒。
 - **输出**：展示成功/失败数、p50/p95/p99 延迟与总耗时，便于对比同步 vs 异步、future vs callback。
+- **补充**：msgpack 也支持 future/callback 两种异步形态，并且 `ASYNC_TIMEOUT_MS` 在 msgpack 下也生效（per-call 超时）。
+
+## 序列化切换（protobuf / msgpack）
+
+- 所有示例支持 `rpc_codec` 切换，**服务端与客户端必须保持一致**。
+- 默认 `protobuf`：不配置或设置 `rpc_codec=protobuf`。
+- 使用 `msgpack`：设置 `rpc_codec=msgpack`。
+- msgpack 也支持 per-call 超时（如 `CallWithTimeout/CallAsyncWithTimeout`），示例见 `timeout_demo/async_demo`。
+
+## 日志配置（glog）
+
+- `log_minlevel`：最小日志级别（0=INFO，1=WARNING，2=ERROR，3=FATAL），默认 1。
+- `logtostderr`：是否输出到 stderr（1 开、0 关），默认 1。
+- `colorlogtostderr`：stderr 彩色输出（1 开、0 关），默认 1。
+
+## Metrics 监控（Prometheus 文本）
+
+- 通过配置开启：
+  - `metrics_http_enabled=1`
+  - `metrics_http_port=9090`
+- 访问 `http://127.0.0.1:9090/metrics` 获取指标。
+- 输出包含全局指标与按 `service.method` 的分组指标（`method` label）。
+
+示例（以 `server/client` 为例）：
+
+```bash
+cp bin/test.conf bin/test_switch.conf
+printf "\nrpc_codec=msgpack\n" >> bin/test_switch.conf
+bin/server -i bin/test_switch.conf
+bin/client -i bin/test_switch.conf
+```
 
 ## 负载均衡（Round Robin）
 

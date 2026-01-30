@@ -37,6 +37,11 @@ public:
                    const ::google::protobuf::Message *request,
                    ::google::protobuf::Message *response,
                    AsyncCallback callback);
+    // 异步调用（无回调），返回可等待的 future；适合业务代码自行等待/聚合结果
+    std::shared_future<void> CallAsyncFuture(const ::google::protobuf::MethodDescriptor *method,
+                                             ::google::protobuf::RpcController *controller,
+                                             const ::google::protobuf::Message *request,
+                                             ::google::protobuf::Message *response);
 private:
     int m_clientfd; // 存放客户端套接字
     std::string m_ip;
@@ -88,7 +93,9 @@ private:
     std::string m_recv_buffer;
     struct SendTask {
         uint64_t request_id{0};
-        std::string buffer;
+        std::string header_varint;
+        std::string header;
+        std::string body;
     };
     std::queue<SendTask> m_send_queue;
     std::mutex m_send_mutex;
@@ -142,12 +149,11 @@ private:
     bool EnsureConnection(const ::google::protobuf::MethodDescriptor *method,
                           ::google::protobuf::RpcController *controller,
                           std::string *error_text);
-    bool SendBuffer(const std::string &buffer, std::string *error_text);
     bool EndpointAvailable(const Endpoint &ep, std::chrono::steady_clock::time_point now, std::chrono::steady_clock::time_point &next_retry);
     void MarkEndpointFailure(const Endpoint &ep);
     void ClearEndpointFailure(const Endpoint &ep);
     void CloseConnectionLocked();
-    void EnqueueSend(uint64_t request_id, std::string &&buffer);
+    void EnqueueSend(uint64_t request_id, std::string &&header_varint, std::string &&header, std::string &&body);
     void CompletePending(const std::shared_ptr<PendingCall> &pending, const std::string &reason, bool success);
 };
 #endif

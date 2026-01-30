@@ -1,8 +1,13 @@
 #include "Krpcapplication.h"
 #include "Krpcchannel.h"
 #include "Krpccontroller.h"
+#include "Krpcmsgpack_channel.h"
 #include "../user.pb.h"
+#include "../common/codec_util.h"
+#include "../common/user_types.h"
+
 #include <chrono>
+#include <exception>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -57,9 +62,15 @@ int main(int argc, char **argv) {
               << " idle_ms=" << idle_ms
               << " idle_at=" << idle_at << std::endl;
 
+    const bool use_msgpack = KrpcUseMsgpack();
     std::shared_ptr<Kuser::UserServiceRpc_Stub> shared_stub;
+    std::shared_ptr<KrpcMsgpackChannel> shared_msgpack;
     if (mode == "single") {
-        shared_stub.reset(new Kuser::UserServiceRpc_Stub(new KrpcChannel(false)));
+        if (use_msgpack) {
+            shared_msgpack = std::make_shared<KrpcMsgpackChannel>();
+        } else {
+            shared_stub.reset(new Kuser::UserServiceRpc_Stub(new KrpcChannel(false)));
+        }
     }
 
     int ok = 0, fail = 0;
@@ -67,33 +78,55 @@ int main(int argc, char **argv) {
         // 每次新建 Channel 的模式用于观察连接池复用：开启池时第二次起应看到“reuse pooled connection”
         // 注意 stub 默认不拥有 Channel，需要手动释放
         std::unique_ptr<KrpcChannel> owned_channel;
+        std::unique_ptr<KrpcMsgpackChannel> owned_msgpack;
         if (mode == "new_channel") {
-            owned_channel.reset(new KrpcChannel(false));
-            shared_stub.reset(new Kuser::UserServiceRpc_Stub(owned_channel.get()));
+            if (use_msgpack) {
+                owned_msgpack.reset(new KrpcMsgpackChannel());
+            } else {
+                owned_channel.reset(new KrpcChannel(false));
+                shared_stub.reset(new Kuser::UserServiceRpc_Stub(owned_channel.get()));
+            }
         }
-
-        Kuser::LoginRequest request;
-        request.set_name("pool_demo");
-        request.set_pwd("123456");
-
-        Kuser::LoginResponse response;
-        Krpccontroller controller;
 
         auto start = std::chrono::steady_clock::now();
-        shared_stub->Login(&controller, &request, &response, nullptr);
+        bool call_ok = false;
+        if (use_msgpack) {
+            KrpcMsgpackChannel *channel_ptr = shared_msgpack ? shared_msgpack.get() : owned_msgpack.get();
+            try {
+                auto result = channel_ptr->Call<MsgpackUserResult>("UserServiceRpc", "Login",
+                                                                  std::string("pool_demo"),
+                                                                  std::string("123456"));
+                call_ok = result.success;
+            } catch (const std::exception &e) {
+                std::cout << "[" << i << "] call failed: " << e.what() << std::endl;
+                call_ok = false;
+            }
+        } else {
+            Kuser::LoginRequest request;
+            request.set_name("pool_demo");
+            request.set_pwd("123456");
+            Kuser::LoginResponse response;
+            Krpccontroller controller;
+            shared_stub->Login(&controller, &request, &response, nullptr);
+            call_ok = !controller.Failed() && response.success();
+            if (!call_ok && controller.Failed()) {
+                std::cout << "[" << i << "] call failed: " << controller.ErrorText() << std::endl;
+            }
+        }
+
         auto end = std::chrono::steady_clock::now();
         auto cost_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-        if (controller.Failed()) {
-            std::cout << "[" << i << "] call failed: " << controller.ErrorText() << std::endl;
-            ++fail;
-        } else {
-            std::cout << "[" << i << "] call ok, success=" << std::boolalpha << response.success()
+        if (call_ok) {
+            std::cout << "[" << i << "] call ok, success=true"
                       << " cost_ms=" << cost_ms << std::endl;
             ++ok;
+        } else {
+            ++fail;
         }
+
         // new_channel 模式下手动销毁 Channel，确保连接归还到池
         owned_channel.reset();
+        owned_msgpack.reset();
 
         if (idle_ms > 0 && i + 1 == idle_at) {
             std::cout << "idle pause " << idle_ms << " ms to test pooled fd health..." << std::endl;
