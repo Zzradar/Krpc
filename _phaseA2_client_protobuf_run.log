@@ -1,0 +1,141 @@
+=== codec=protobuf mode=sync conn=keepalive payload_kb=0 ===
+bench mode=sync conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=27.8552 total_cost_ms=359
+latency_ms p50=15 p95=109 p99=109 max=109
+
+=== codec=protobuf mode=sync conn=keepalive payload_kb=1 ===
+bench mode=sync conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=28.9017 total_cost_ms=346
+latency_ms p50=14 p95=103 p99=103 max=103
+
+=== codec=protobuf mode=sync conn=keepalive payload_kb=64 ===
+bench mode=sync conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=28.49 total_cost_ms=351
+latency_ms p50=16 p95=109 p99=109 max=109
+
+=== codec=protobuf mode=sync conn=keepalive payload_kb=256 ===
+bench mode=sync conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=27.7008 total_cost_ms=361
+latency_ms p50=26 p95=97 p99=97 max=97
+
+=== codec=protobuf mode=sync conn=keepalive payload_kb=1024 ===
+bench mode=sync conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=sync conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=20.6612 total_cost_ms=484
+latency_ms p50=66 p95=137 p99=137 max=137
+
+=== codec=protobuf mode=sync conn=short payload_kb=0 ===
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=11.0497 total_cost_ms=905
+latency_ms p50=94 p95=108 p99=108 max=108
+
+=== codec=protobuf mode=sync conn=short payload_kb=1 ===
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=13.4228 total_cost_ms=745
+latency_ms p50=7 p95=112 p99=112 max=112
+
+=== codec=protobuf mode=sync conn=short payload_kb=64 ===
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=10.3413 total_cost_ms=967
+latency_ms p50=94 p95=103 p99=103 max=103
+
+=== codec=protobuf mode=sync conn=short payload_kb=256 ===
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=13.9665 total_cost_ms=716
+latency_ms p50=23 p95=112 p99=112 max=112
+
+=== codec=protobuf mode=sync conn=short payload_kb=1024 ===
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=9.68992 total_cost_ms=1032
+latency_ms p50=107 p95=126 p99=126 max=126
+
+=== codec=protobuf mode=async conn=keepalive payload_kb=0 ===
+bench mode=async conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=async conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=78.125 total_cost_ms=128
+latency_ms p50=98 p95=105 p99=105 max=105
+
+=== codec=protobuf mode=async conn=keepalive payload_kb=1 ===
+bench mode=async conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=async conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=78.125 total_cost_ms=128
+latency_ms p50=86 p95=100 p99=100 max=100
+
+=== codec=protobuf mode=async conn=keepalive payload_kb=64 ===
+bench mode=async conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=async conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=78.7402 total_cost_ms=127
+latency_ms p50=98 p95=102 p99=102 max=102
+
+=== codec=protobuf mode=async conn=keepalive payload_kb=256 ===
+bench mode=async conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=async conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=77.5194 total_cost_ms=129
+latency_ms p50=74 p95=92 p99=92 max=92
+
+=== codec=protobuf mode=async conn=keepalive payload_kb=1024 ===
+bench mode=async conn=keepalive concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=async conn=keepalive concurrency=4 requests=10
+success=10 fail=0 qps=44.6429 total_cost_ms=224
+latency_ms p50=72 p95=153 p99=153 max=153
+
+=== codec=protobuf mode=async conn=short payload_kb=0 ===
+bench mode=async conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=async conn=short concurrency=4 requests=10
+success=10 fail=0 qps=49.505 total_cost_ms=202
+latency_ms p50=96 p95=102 p99=102 max=102
+
+=== codec=protobuf mode=async conn=short payload_kb=1 ===
+bench mode=async conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=async conn=short concurrency=4 requests=10
+success=10 fail=0 qps=55.5556 total_cost_ms=180
+latency_ms p50=97 p95=102 p99=102 max=102
+
+=== codec=protobuf mode=async conn=short payload_kb=64 ===
+bench mode=async conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=async conn=short concurrency=4 requests=10
+success=10 fail=0 qps=62.8931 total_cost_ms=159
+latency_ms p50=102 p95=106 p99=106 max=106
+
+=== codec=protobuf mode=async conn=short payload_kb=256 ===
+bench mode=async conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=async conn=short concurrency=4 requests=10
+success=10 fail=0 qps=47.1698 total_cost_ms=212
+latency_ms p50=103 p95=106 p99=106 max=106
+
+=== codec=protobuf mode=async conn=short payload_kb=1024 ===
+bench mode=async conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=async conn=short concurrency=4 requests=10
+success=10 fail=0 qps=33.7838 total_cost_ms=296
+latency_ms p50=104 p95=127 p99=127 max=127
+
+Wrote /home/zzz/Krpc/docs/bench_results_protobuf.txt

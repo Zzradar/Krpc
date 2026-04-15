@@ -1,0 +1,141 @@
+=== codec=msgpack mode=sync conn=keepalive payload_kb=0 ===
+bench mode=sync conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=sync conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=41.6667 total_cost_ms=24
+latency_ms p50=8 p95=8 p99=8 max=8
+
+=== codec=msgpack mode=sync conn=keepalive payload_kb=1 ===
+bench mode=sync conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=sync conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=90.9091 total_cost_ms=11
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=keepalive payload_kb=64 ===
+bench mode=sync conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=sync conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=58.8235 total_cost_ms=17
+latency_ms p50=0 p95=0 p99=0 max=0
+
+=== codec=msgpack mode=sync conn=keepalive payload_kb=256 ===
+bench mode=sync conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=sync conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=66.6667 total_cost_ms=15
+latency_ms p50=0 p95=0 p99=0 max=0
+
+=== codec=msgpack mode=sync conn=keepalive payload_kb=1024 ===
+bench mode=sync conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=sync conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=43.4783 total_cost_ms=23
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=short payload_kb=0 ===
+bench mode=sync conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=sync conn=short concurrency=1 requests=1
+success=0 fail=1 qps=71.4286 total_cost_ms=14
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=short payload_kb=1 ===
+bench mode=sync conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=sync conn=short concurrency=1 requests=1
+success=0 fail=1 qps=76.9231 total_cost_ms=13
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=short payload_kb=64 ===
+bench mode=sync conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=sync conn=short concurrency=1 requests=1
+success=0 fail=1 qps=50 total_cost_ms=20
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=short payload_kb=256 ===
+bench mode=sync conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=sync conn=short concurrency=1 requests=1
+success=0 fail=1 qps=90.9091 total_cost_ms=11
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=sync conn=short payload_kb=1024 ===
+bench mode=sync conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=sync conn=short concurrency=1 requests=1
+success=0 fail=1 qps=34.4828 total_cost_ms=29
+latency_ms p50=2 p95=2 p99=2 max=2
+
+=== codec=msgpack mode=async conn=keepalive payload_kb=0 ===
+bench mode=async conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=async conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=45.4545 total_cost_ms=22
+latency_ms p50=3 p95=3 p99=3 max=3
+
+=== codec=msgpack mode=async conn=keepalive payload_kb=1 ===
+bench mode=async conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=async conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=66.6667 total_cost_ms=15
+latency_ms p50=3 p95=3 p99=3 max=3
+
+=== codec=msgpack mode=async conn=keepalive payload_kb=64 ===
+bench mode=async conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=async conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=83.3333 total_cost_ms=12
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=async conn=keepalive payload_kb=256 ===
+bench mode=async conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=async conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=66.6667 total_cost_ms=15
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=async conn=keepalive payload_kb=1024 ===
+bench mode=async conn=keepalive concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=async conn=keepalive concurrency=1 requests=1
+success=0 fail=1 qps=43.4783 total_cost_ms=23
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=async conn=short payload_kb=0 ===
+bench mode=async conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=0
+=== bench summary ===
+mode=async conn=short concurrency=1 requests=1
+success=0 fail=1 qps=58.8235 total_cost_ms=17
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=async conn=short payload_kb=1 ===
+bench mode=async conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1
+=== bench summary ===
+mode=async conn=short concurrency=1 requests=1
+success=0 fail=1 qps=66.6667 total_cost_ms=15
+latency_ms p50=0 p95=0 p99=0 max=0
+
+=== codec=msgpack mode=async conn=short payload_kb=64 ===
+bench mode=async conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=64
+=== bench summary ===
+mode=async conn=short concurrency=1 requests=1
+success=0 fail=1 qps=52.6316 total_cost_ms=19
+latency_ms p50=1 p95=1 p99=1 max=1
+
+=== codec=msgpack mode=async conn=short payload_kb=256 ===
+bench mode=async conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=256
+=== bench summary ===
+mode=async conn=short concurrency=1 requests=1
+success=0 fail=1 qps=43.4783 total_cost_ms=23
+latency_ms p50=5 p95=5 p99=5 max=5
+
+=== codec=msgpack mode=async conn=short payload_kb=1024 ===
+bench mode=async conn=short concurrency=1 total_requests=1 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=async conn=short concurrency=1 requests=1
+success=0 fail=1 qps=55.5556 total_cost_ms=18
+latency_ms p50=2 p95=2 p99=2 max=2
+
+Wrote /home/zzz/Krpc/docs/bench_results_msgpack.txt

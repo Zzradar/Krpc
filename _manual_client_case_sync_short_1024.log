@@ -1,0 +1,5 @@
+bench mode=sync conn=short concurrency=4 total_requests=10 sleep_ms=0 payload_kb=1024
+=== bench summary ===
+mode=sync conn=short concurrency=4 requests=10
+success=10 fail=0 qps=10.2987 total_cost_ms=971
+latency_ms p50=318 p95=509 p99=509 max=509

@@ -1,0 +1,22 @@
+Start testing: Mar 30 19:41 CST
+----------------------------------------------------------
+1/1 Testing: krpc_unit_tests
+1/1 Test: krpc_unit_tests
+Command: "/home/zzz/Krpc/build_ci_unit/tests/krpc_unit_tests"
+Directory: /home/zzz/Krpc/build_ci_unit/tests
+"krpc_unit_tests" start time: Mar 30 19:41 CST
+Output:
+----------------------------------------------------------
+Randomness seeded to: 1457805347
+===============================================================================
+All tests passed (14 assertions in 3 test cases)
+
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"krpc_unit_tests" end time: Mar 30 19:41 CST
+"krpc_unit_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 30 19:41 CST

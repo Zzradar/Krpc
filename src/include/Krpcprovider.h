@@ -107,5 +107,8 @@ private:
         uint64_t request_id_;
         google::protobuf::Message *response_;
     };
+
+    // 保持 ZK 会话存活至进程退出；若仅用栈上 ZkClient，注册后析构会 zookeeper_close，临时节点立即消失。
+    std::unique_ptr<ZkClient> zk_registry_;
 };
 #endif 

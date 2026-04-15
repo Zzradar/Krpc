@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -rdynamic CMakeFiles/msgpack_client.dir/MsgpackClient.cc.o -o ../../../bin/msgpack_client  ../../src/libkrpc_core.a -lprotobuf -lpthread -lzookeeper_mt -lmuduo_net -lmuduo_base -lglog 

@@ -2,216 +2,162 @@
 
 > **本项目目前只在[知识星球](https://programmercarl.com/other/kstar.html)答疑并维护**。
 
-本项目如果是有C++语法基础的录友，且做过[知识星球](https://programmercarl.com/other/kstar.html)的：[基于Raft共识算法的KV数据库](https://programmercarl.com/other/project_fenbushi.html)，[协程库](https://programmercarl.com/other/project_coroutine.html)，那大家上手这个项目的时间会非常快：
+如果你已有 C++ 语法基础，且做过[知识星球](https://programmercarl.com/other/kstar.html)里的 [基于 Raft 共识算法的 KV 数据库](https://programmercarl.com/other/project_fenbushi.html)、[协程库](https://programmercarl.com/other/project_coroutine.html)，上手会非常快：每天抽 3～4 小时，大约 3 天可以把项目过一遍。若基础较弱、需要补理论，每天 6～8 小时大约两周可以完成。
 
-学习时间：一天只需要抽3-4个小时，看3天左右基本能看完整个项目。
+## Krpc 是什么（给第一次接触的人）
 
-如果你还是新手，很多理论知识还要从头学习，如果一天学6-8小时，大概需要两周基本能完成这个RPC项目。
+Krpc 是一个用 **C++** 实现的 **RPC（远程过程调用）** 学习与练手项目：你的业务代码在**客户端**像调本地函数一样发起调用，框架把参数打包，通过 **TCP** 发到**服务端**，服务端执行后再把结果发回来。
 
-## 做完本项目你讲收获
+整体上可以把它理解成四件事：
 
-* 深入理解RPC框架原理与分布式系统设计
-* 夯实C++面向对象、STL、设计模式核心功底
-* 掌握Socket、TCP/UDP及高并发I/O模型（epoll）
-* 基于Muduo库实现Reactor网络模型，解耦业务与通信
-* 熟练使用Protobuf定义消息、实现高效序列化/反序列化
-* 设计自定义协议，解决TCP粘包/拆包问题
-* 集成Zookeeper作为注册中心，实现服务注册与发现
-* 运用Watcher机制动态感知服务状态，保障高可用
-* 从0到1打造高性能RPC框架，获得分布式系统开发经验
-* 提升解决复杂工程问题（协议设计、高并发、解耦）的能力
+1. **自定义二进制协议**：解决 TCP 流式传输里的「粘包、半包」问题，让每一帧请求/响应都能被正确切开和配对。  
+2. **两种序列化方式**：常用的是 Protobuf；也可切换为 Msgpack，便于对照学习。客户端与服务端必须使用同一种。  
+3. **可选的服务发现**：需要多实例、动态扩缩时，可对接 **ZooKeeper** 做注册与发现；简单场景也可以用静态地址列表，不依赖注册中心。  
+4. **工程化能力**：例如调用超时、长连接心跳、服务端用线程池跑业务避免阻塞网络线程、连接池与简单负载均衡、基础监控指标等——这些在真实系统里也很常见。
 
-## 为什么要做c++版的rpc？
+你**不需要**先记住仓库里的类名或文件名；下面「功能概览」从**角色**（客户端 / 服务端）说明能力，细节见 [docs/feature_summary.md](docs/feature_summary.md) 与 [docs/项目说明书_架构与模块.md](docs/项目说明书_架构与模块.md)。
 
-1.高性能需求
+## 功能概览（按角色）
 
-c++以其高效的内存管理和底层控制能力，成为性能要求比较高的系统(如金融、游戏服务器、实时通信系统)的首选语言。
+| 能力 | 主要在哪一侧 | 说明 |
+|------|----------------|------|
+| 协议帧、请求/响应配对 | 双方 | 同一套帧格式，保证在 TCP 上可靠解析。 |
+| 调用超时 | 客户端 | 限制单次调用最长等待时间，避免卡死。 |
+| 心跳与空闲断开 | 客户端发、服务端答；服务端可踢长期无流量连接 | 保活长连接，回收僵尸连接。 |
+| 同步 / 异步调用 | 客户端 | 同步阻塞等待；异步用 future 或回调，不阻塞业务线程。 |
+| 业务执行与网络分离 | 服务端 | 网络线程只负责收发包，业务在线程池里跑。 |
+| 连接池与多节点 | 客户端为主 | 复用 TCP；可选从注册中心或静态列表选多个地址并轮询。 |
+| 监控指标 | 服务端（可选） | 以 HTTP 暴露 Prometheus 文本格式，便于本地观察。 |
 
-在这些场景下，RPC框架需要尽可能减少通信开销，而C++天生的性能优势可以满足这一需要求。
+## 做完本项目你将收获
 
+* 理解 RPC 在分布式系统里解决什么问题、典型分层长什么样  
+* 巩固 C++、STL、常见设计模式  
+* 熟悉 Socket、TCP 与高并发 I/O（如 epoll），以及基于 Muduo 的 Reactor 用法  
+* 用 Protobuf（及可选 Msgpack）做高效序列化  
+* 自己设计协议并处理粘包/拆包  
+* 了解用 ZooKeeper 做服务注册与发现、以及简单的多节点与负载均衡思路  
+* 从零搭一个可运行的 RPC 框架原型，并有能力按文档继续扩展  
 
-2.系统级开发
+## 为什么要做 C++ 版的 RPC？
 
-很多底层基础设施(如数据库、中间件、分布式存储系统)都是用c++开发。
+1. **性能**：很多低延迟、高吞吐场景（金融、游戏、实时通信）仍依赖 C++ 的控制力与开销。  
+2. **基础设施**：数据库、中间件、存储系统大量用 C++，需要与语言贴合的 RPC 形态。  
+3. **可移植**：Linux、Windows、嵌入式等环境都能落地。  
+4. **可扩展**：序列化、传输方式、线程模型等可按项目需要替换或加深。
 
-这些系统需要一个与语言无缝结合的高效RPC框架，避免因语言间的切换导致性能损耗
-
-
-3.跨平台
-
-C++的可移植性在不同平台(如linux、Windows、嵌入式系统)上广泛使用。
-
-一个C++RPC框架能够为这些多平台环境提供统一的通信接口，降低开发成本。
-
-4.灵活性与可扩展性
-
-与某些语言的封闭生态不同，C++允许开发者灵活地调整底层实现。例如：可以定制序列化协议(如Protobuf、Thrift)、网络传输方式(如TCP、UDP、QUIC)等，以满足不同场景的需求。
-
-关于C++版RPC框架的使用场景：
-
-* 微服务架构：在微服务架构中，服务通常分布在不同的网络和不同的服务器上，此时就需要一个高效的通信手段就是我们的rpc。
-* 实时通信：如在线游戏、视频直播、即时通信等场景，要求低延迟和高吞吐。C++RPC可以通过优化网络传输协议和序列化协议，提供实时性保障。
-* 分布式存储与计算：像hadoop、或者你做个raft的共识算法的话，也可也发现我们在不同节点之间使用rpc传递数据进行通信。
-* 嵌入式系统： 在嵌入式设备之间的通信中，资源有限且性能要求严格。C++的轻量级特性使其成为嵌入式RPC实现的理想选择。
-* 跨语言调用： C++ RPC框架通常支持多语言绑定（如Python、Java），可以用作跨语言调用的桥梁。例如，在后端服务使用C++开发的情况下，前端服务可以通过RPC框架调用其功能。
+常见使用场景包括：微服务间调用、实时业务、分布式存储与共识（如 Raft 节点间通信）、资源受限的嵌入式互联等。
 
 ## 项目专栏
 
-在项目专栏中， 该**项目简历如何写、性能如何测试、项目怎么优化、面试都会问哪些问题**，都安排好了。
-
-不仅如此，还有 「技术栈需求」「运行环境」「RPC理论」「日志库」「代码解读」
+专栏里会讲**简历怎么写、性能怎么测、可以怎么优化、面试常问什么**，并配套技术栈、环境、RPC 概念、日志与代码导读。  
+（以下为星球内部宣传与截图，获取方式见文末「获取本项目专栏」。）
 
 ### 简历写法
 
-专栏里直接给出简历写法， 项目难点 和 个人收获是面试官最关心的部分。
+专栏里直接给出简历写法，**项目难点**和**个人收获**是面试官最关心的部分。
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103223303.png' width=500 alt=''></img></div>
 
-在[知识星球](https://programmercarl.com/other/kstar.html)RPC项目专栏 会给出本项目的参考简历写法，为了不让 这些写法重复率太高，所以公众号上是打码的。
+在 [知识星球](https://programmercarl.com/other/kstar.html) RPC 项目专栏会给出参考简历写法；公众号上为防重复率过高做了打码。
 
 ### 性能测试
 
-带大家测试RPC的性能，更充分了解 系统的表现。
+带大家测 RPC 性能，更直观了解系统表现。
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103224011.png' width=500 alt=''></img></div>
 
 ### 项目优化
 
-项目文档列出的十几个优化点：
+文档中会列出多个可扩展方向（通信、注册发现、负载均衡、零拷贝、日志与监控、健康检测与熔断、重试与超时等），便于你做出差异化。
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103224306.png' width=500 alt=''></img></div>
 
-涉及到 「通信模块」 「服务注册与发现模块」「负载均衡模块」「零拷贝优化技术」「日志与监控模块」「健康检测与熔断机制」「重试与超时处理」
-
-从各个方面，带大家去了解项目如何进一步优化，帮助大家找到可以拓展的方向，打造自己的项目竞争力，也避免了项目重复。
-
 ### 代码讲解
 
-给出项目整体流程图：
+整体流程与逐函数说明、日志库导读等均在专栏中。
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103224628.png' width=500 alt=''></img></div>
 
-其中项目的所有代码以及每个函数和类都有详细解释，根本不用担心自己看不懂：
-
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103224733.png' width=500 alt=''></img></div>
-
-同时我们对项目中需要用到的日志库做了详细的分析：
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103225024.png' width=500 alt=''></img></div>
 
-### RPC理论
+### RPC 理论
 
-项目文档帮大家梳理清楚 RPC 的来龙去脉 ：
+梳理 RPC 的来龙去脉。
 
 <div align="center"><img src='https://file1.kamacoder.com/i/algo/20250103224858.png' width=500 alt=''></img></div>
 
-### 突击来用
+### 突击使用
 
-如果大家面试在即，实在没时间做项目了，可以直接按照专栏给出的简历写法，写到简历上，然后把项目专栏里的面试问题，都认真背一背就好了，基本覆盖 绝大多数 RPC项目问题。
-
+若面试在即，可按专栏简历模板整理经历，并准备专栏中的面试问题。
 
 ## 获取本项目专栏
 
-本文档仅为星球内部专享，大家可以加入[知识星球](https://programmercarl.com/other/kstar.html)里获取。
+本文档仅为星球内部专享，可加入 [知识星球](https://programmercarl.com/other/kstar.html) 获取。
 
-## 心跳与空闲连接测试指引
+---
 
-当前源码已经内置**心跳保活**和**服务端空闲踢除**机制，相关配置项位于 `bin/test.conf`：
+## 文档与运行说明（仓库内）
 
-- `heartbeat_interval_ms`：客户端心跳发送周期（默认 5000ms）。
-- `heartbeat_miss_limit`：允许连续丢失的心跳次数（默认 3 次）。
-- `rpc_timeout_ms`：同步 RPC 的默认超时时间，心跳往返也沿用该超时。
-- `rpc_codec`：序列化协议切换（`protobuf` 或 `msgpack`，默认 `protobuf`）。
+更细的功能说明、**客户端/服务端分工**与**可复现命令**见：[docs/feature_summary.md](docs/feature_summary.md)。
 
-### 验证步骤
+### 心跳与空闲连接（验证）
 
-1. **编译**
-	```bash
-	cmake --build build
-	```
-2. **启动服务端**（终端 A）
-	```bash
-	bin/server -i bin/test.conf
-	```
-3. **长时间心跳演示**（终端 B）
-	```bash
-	HEARTBEAT_IDLE_SECONDS=30 HEARTBEAT_IDLE_ROUNDS=2 bin/heartbeat_client -i bin/test.conf
-	```
-	- 每轮执行一次 `Login`，然后空闲 30s。期间客户端日志应持续成功，表明心跳在空闲时仍保持连接。
-4. **空闲踢除观察**
-	- 继续观察终端 A，约 `heartbeat_interval_ms × (heartbeat_miss_limit + 1)` 时间后，会看到 `closing idle connection` 与 Muduo 的 `removeConnectionInLoop` 日志，表示服务端检测到连接长时间未活动并主动关闭。
-5. **超时/重连示例**（终端 C）
-	```bash
-	bin/timeout_client -i bin/test.conf
-	```
-	- 正常请求会成功，`sleep` 用户名的请求因 1s 自定义超时被客户端关闭，对应服务端会打印 `Broken pipe`，验证 RPC 超时路径不会影响心跳。
+配置在 `bin/test.conf`，常见项：
 
-通过以上流程，可以分别验证：
-- 客户端在空闲阶段仍发送 PING/PONG，保持连接（步骤 3）。
-- 服务端基于 `connection_states_` 的 `last_activity` 自动剔除长期无活动的连接（步骤 4）。
-- 客户端超时后能自动重连继续访问（步骤 5）。
+- `heartbeat_interval_ms`：心跳周期（默认 5000 ms）。  
+- `heartbeat_miss_limit`：允许连续丢失心跳次数（默认 3）。  
+- `rpc_timeout_ms`：默认调用超时；心跳等待也沿用该超时。  
+- `rpc_codec`：`protobuf` 或 `msgpack`，**两端需一致**。
 
-## 连接池与验证
+**验证步骤**：
 
-- 配置项（`bin/test.conf`）：
-  - `enable_connection_pool`：1 开启、0 关闭（默认 1）。
-  - `connection_pool_max_idle`：单端点最大空闲连接数（默认 4）。
-- 示例验证（需要先启动 server）：  
-  - 开池复用：`enable_connection_pool=1`  
-    ```bash
-    POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
-    grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
-    ```  
-    预期：首条握手，后续多数为 `reuse pooled connection`。
-  - 关池对比：`enable_connection_pool=0`，同样命令，预期每次都是 `connect server success`。
+1. 编译：`cmake --build build`  
+2. 终端 A 启动服务端：`bin/server -i bin/test.conf`  
+3. 终端 B 长心跳演示：`HEARTBEAT_IDLE_SECONDS=30 HEARTBEAT_IDLE_ROUNDS=2 bin/heartbeat_client -i bin/test.conf`  
+4. 观察 A：约 `heartbeat_interval_ms × (heartbeat_miss_limit + 1)` 后若连接长期无活动，会出现空闲关闭相关日志。  
+5. 终端 C 超时演示：`bin/timeout_client -i bin/test.conf`  
 
-## 异步模式示例
+可分别验证：空闲时客户端仍保活、服务端会踢空闲连接、超时后客户端可继续重连访问。
 
-- **编译**：`cmake --build build --target async_client`
-- **future 模式（默认）**：
-	```bash
-	ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf
-	```
-- **callback 模式**：
-	```bash
-	ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf
-	```
-- **可调参数**（环境变量）：`ASYNC_CONCURRENCY` 并发线程，`ASYNC_REQUESTS` 请求总数，`ASYNC_TIMEOUT_MS` 单次超时，`ASYNC_SLEEP_MS` 请求间隔毫秒。
-- **输出**：展示成功/失败数、p50/p95/p99 延迟与总耗时，便于对比同步 vs 异步、future vs callback。
-- **补充**：msgpack 也支持 future/callback 两种异步形态，并且 `ASYNC_TIMEOUT_MS` 在 msgpack 下也生效（per-call 超时）。
+### 连接池
 
-## 序列化切换（protobuf / msgpack）
+- `enable_connection_pool`：是否启用（默认 1）。  
+- `connection_pool_max_idle`：单地址最大空闲连接数（默认 4）。  
 
-- 所有示例支持 `rpc_codec` 切换，**服务端与客户端必须保持一致**。
-- 默认 `protobuf`：不配置或设置 `rpc_codec=protobuf`。
-- 使用 `msgpack`：设置 `rpc_codec=msgpack`。
-- msgpack 也支持 per-call 超时（如 `CallWithTimeout/CallAsyncWithTimeout`），示例见 `timeout_demo/async_demo`。
+先启动 server，再运行 `pool_demo`；开池时首条建连后多轮应出现复用日志，关池则每次新建连接。详见 `docs/feature_summary.md`。
 
-## 日志配置（glog）
+### 异步模式示例
 
-- `log_minlevel`：最小日志级别（0=INFO，1=WARNING，2=ERROR，3=FATAL），默认 1。
-- `logtostderr`：是否输出到 stderr（1 开、0 关），默认 1。
-- `colorlogtostderr`：stderr 彩色输出（1 开、0 关），默认 1。
+编译：`cmake --build build --target async_client`  
 
-## Metrics 监控（Prometheus 文本）
+- 默认 future 风格：`ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf`  
+- 回调风格：`ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf`  
 
-- 通过配置开启：
-  - `metrics_http_enabled=1`
-  - `metrics_http_port=9090`
-- 访问 `http://127.0.0.1:9090/metrics` 获取指标。
-- 输出包含全局指标与按 `service.method` 的分组指标（`method` label）。
+可调：`ASYNC_CONCURRENCY`、`ASYNC_REQUESTS`、`ASYNC_TIMEOUT_MS`、`ASYNC_SLEEP_MS`。使用 msgpack 时同样可配置单次超时。
 
-示例（以 `server/client` 为例）：
+### 序列化切换（protobuf / msgpack）
 
-```bash
-cp bin/test.conf bin/test_switch.conf
-printf "\nrpc_codec=msgpack\n" >> bin/test_switch.conf
-bin/server -i bin/test_switch.conf
-bin/client -i bin/test_switch.conf
-```
+两端配置一致即可；默认 protobuf。切换为 msgpack 时，所有示例需同样修改配置后再起服务与客户端。
 
-## 负载均衡（Round Robin）
+### 日志（glog）
 
-- 服务端注册：同一 service/method 可在 ZK 下注册多个端点，路径形如 `/Service/Method/<ip:port>`（临时节点）。
-- 客户端发现：`KrpcChannel` 读取子节点列表，默认使用轮询策略选择节点。
-- 配合连接池：选中的端点会从连接池取/还连接，切换节点时重新建连；日志区分新建/复用。
+- `log_minlevel`：最小级别（0=INFO … 3=FATAL），默认 1。  
+- `logtostderr` / `colorlogtostderr`：是否输出到 stderr、是否彩色。
+
+### 监控（Prometheus 文本）
+
+- `metrics_http_enabled=1`、`metrics_http_port=9090` 等，浏览器访问 `http://127.0.0.1:9090/metrics`。  
+- 含全局与按方法维度的指标（具体以运行输出为准）。
+
+示例：复制 `bin/test.conf` 为 `bin/test_switch.conf`，追加 `rpc_codec=msgpack` 后，服务端与客户端均用该配置启动。
+
+### 负载均衡（多实例）
+
+- **服务端**：同一服务方法可在注册中心下注册多个实例（多节点）。  
+- **客户端**：从注册中心或静态环境变量读取多个地址，按轮询等方式选节点；失败节点可短暂冷却并尝试其他节点。  
+- 与连接池一起：先选节点，再对该节点复用或新建 TCP。  
+
+细节与验证命令见 [docs/feature_summary.md](docs/feature_summary.md)。

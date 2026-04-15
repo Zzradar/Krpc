@@ -99,24 +99,29 @@ void KrpcProvider::Run() {
     // 设置muduo库的线程数量
     server->setThreadNum(4);
 
-    // 将当前RPC节点上要发布的服务全部注册到ZooKeeper上，让RPC客户端可以在ZooKeeper上发现服务
-    ZkClient zkclient;
-    zkclient.Start();  // 连接ZooKeeper服务器
-    // service_name为永久节点，method_name为临时节点
-    for (auto &sp : service_map) {
-        // service_name 在ZooKeeper中的目录是"/"+service_name
-        std::string service_path = "/" + sp.first;
-        zkclient.Create(service_path.c_str(), nullptr, 0);  // 创建服务节点
-        for (auto &mp : sp.second.method_map) {
-            std::string method_path = service_path + "/" + mp.first;
-            zkclient.Create(method_path.c_str(), nullptr, 0); // 持久化方法节点
-            char method_path_data[128] = {0};
-            sprintf(method_path_data, "%s:%d", ip.c_str(), port);  // 将IP和端口信息存入节点数据
-            // 为每个实例注册独立子节点，便于客户端获取多副本列表
-            std::string child_path = method_path + "/" + method_path_data;
-            zkclient.Create(child_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
-            LOG(INFO) << "zk register ok " << child_path;
+    // 将当前RPC节点上要发布的服务全部注册到ZooKeeper（可用 skip_zookeeper_registration=1 跳过，便于本地压测/CI）
+    const bool skip_zk = ParseConfigInt(config.Load("skip_zookeeper_registration"), 0) != 0;
+    if (!skip_zk) {
+        zk_registry_.reset(new ZkClient());
+        zk_registry_->Start();  // 连接ZooKeeper服务器（会话保持到进程退出）
+        // service_name为永久节点，method_name为临时节点
+        for (auto &sp : service_map) {
+            // service_name 在ZooKeeper中的目录是"/"+service_name
+            std::string service_path = "/" + sp.first;
+            zk_registry_->Create(service_path.c_str(), nullptr, 0);  // 创建服务节点
+            for (auto &mp : sp.second.method_map) {
+                std::string method_path = service_path + "/" + mp.first;
+                zk_registry_->Create(method_path.c_str(), nullptr, 0); // 持久化方法节点
+                char method_path_data[128] = {0};
+                sprintf(method_path_data, "%s:%d", ip.c_str(), port);  // 将IP和端口信息存入节点数据
+                // 为每个实例注册独立子节点，便于客户端获取多副本列表
+                std::string child_path = method_path + "/" + method_path_data;
+                zk_registry_->Create(child_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
+                LOG(INFO) << "zk register ok " << child_path;
+            }
         }
+    } else {
+        LOG(WARNING) << "skip_zookeeper_registration=1: ZooKeeper registration skipped (use LB_STATIC_ENDPOINTS on clients)";
     }
 
     // RPC服务端准备启动，打印信息
@@ -240,6 +245,10 @@ void KrpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::ne
         const std::string &service_name = rpc_header.service_name();
         const std::string &method_name = rpc_header.method_name();
         const uint64_t request_id = rpc_header.request_id();
+        if (!rpc_header.trace_id().empty()) {
+            LOG(INFO) << "rpc trace_id=" << rpc_header.trace_id() << " " << service_name << "." << method_name
+                      << " request_id=" << request_id;
+        }
 
         auto it = service_map.find(service_name);
         if (it == service_map.end()) {

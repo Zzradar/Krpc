@@ -8,6 +8,7 @@
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
+#include <cmath>
 #include <exception>
 #include <functional>
 #include <iostream>
@@ -84,7 +85,12 @@ void PrintSummary(const BenchConfig &cfg, Metrics &m, int64_t total_cost_ms) {
     std::sort(samples.begin(), samples.end());
     auto perc = [&](double p) -> int64_t {
         if (samples.empty()) return 0;
-        const size_t idx = static_cast<size_t>((p / 100.0) * samples.size() + 0.5);
+        // Nearest-rank percentile: ceil(p * N) - 1
+        const double rank = (p / 100.0) * static_cast<double>(samples.size());
+        size_t idx = 0;
+        if (rank > 1.0) {
+            idx = static_cast<size_t>(std::ceil(rank) - 1.0);
+        }
         return samples[std::min(idx, samples.size() - 1)];
     };
     double qps = total_cost_ms > 0 ? (static_cast<double>(total) * 1000.0 / total_cost_ms) : 0.0;
@@ -124,9 +130,10 @@ void OnAsyncDone(AsyncCallCtx *ctx) {
     delete ctx;
 }
 
-struct MsgpackAsyncCall {
+struct MsgpackAsyncCallCtx {
     int64_t start_ms{0};
-    std::future<krpc::msgpack::object_handle> future;
+    Metrics *metrics{nullptr};
+    std::atomic<int> *pending{nullptr};
     std::shared_ptr<KrpcMsgpackChannel> channel_holder;
 };
 
@@ -148,11 +155,6 @@ void RunBenchMsgpack(const BenchConfig &cfg) {
             } else {
                 async_channel = std::make_shared<KrpcMsgpackChannel>();
             }
-        }
-
-        std::vector<MsgpackAsyncCall> async_calls;
-        if (cfg.mode == "async") {
-            async_calls.reserve(static_cast<size_t>(cfg.total_requests / cfg.concurrency + 1));
         }
 
         for (int i = tid; i < cfg.total_requests; i += cfg.concurrency) {
@@ -196,32 +198,35 @@ void RunBenchMsgpack(const BenchConfig &cfg) {
                 channel_holder = std::make_shared<KrpcMsgpackChannel>();
                 channel_ptr = channel_holder.get();
             }
-            MsgpackAsyncCall call;
-            call.start_ms = NowMs();
-            auto future = channel_ptr->CallAsyncRaw("UserServiceRpc", "Login",
-                                                    name, std::string("123456"));
-            call.future = std::move(future);
-            call.channel_holder = std::move(channel_holder);
-            async_calls.push_back(std::move(call));
+            auto *call_ctx = new MsgpackAsyncCallCtx();
+            call_ctx->start_ms = NowMs();
+            call_ctx->metrics = &metrics;
+            call_ctx->pending = &pending;
+            // Keep channel alive until callback finishes.
+            call_ctx->channel_holder = channel_holder ? channel_holder : async_channel;
+            channel_ptr->CallAsync(
+                    "UserServiceRpc",
+                    "Login",
+                    [call_ctx](const std::string &error, krpc::msgpack::object_handle result) {
+                        bool ok = false;
+                        if (error.empty()) {
+                            try {
+                                MsgpackUserResult resp;
+                                result.get().convert(resp);
+                                ok = IsSuccess(resp);
+                            } catch (...) {
+                                ok = false;
+                            }
+                        }
+                        const int64_t cost = NowMs() - call_ctx->start_ms;
+                        Record(*call_ctx->metrics, ok, cost);
+                        call_ctx->pending->fetch_sub(1, std::memory_order_release);
+                        delete call_ctx;
+                    },
+                    name,
+                    std::string("123456"));
             if (cfg.sleep_ms > 0) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
-            }
-        }
-
-        if (cfg.mode == "async") {
-            for (auto &call : async_calls) {
-                bool ok = false;
-                try {
-                    auto oh = call.future.get();
-                    MsgpackUserResult resp;
-                    oh.get().convert(resp);
-                    ok = IsSuccess(resp);
-                } catch (...) {
-                    ok = false;
-                }
-                const int64_t cost = NowMs() - call.start_ms;
-                Record(metrics, ok, cost);
-                pending.fetch_sub(1, std::memory_order_release);
             }
         }
     };

@@ -1,13 +1,14 @@
 #include "Krpccontroller.h"
 
 // 构造函数，初始化控制器状态
-Krpccontroller::Krpccontroller() : m_failed(false), m_errText(""), m_timeout_ms(0) {}
+Krpccontroller::Krpccontroller() : m_failed(false), m_errText(""), m_timeout_ms(0), m_trace_id() {}
 
 // 重置控制器状态，将失败标志和错误信息清空
 void Krpccontroller::Reset() {
     m_failed = false;  // 重置失败标志
     m_errText = "";    // 清空错误信息
     m_timeout_ms = 0;   // 重置自定义超时
+    m_trace_id.clear();
 }
 
 // 判断当前RPC调用是否失败
@@ -34,6 +35,14 @@ void Krpccontroller::SetTimeoutMs(int timeout_ms) {
 // 获取当前配置的超时时间
 int Krpccontroller::TimeoutMs() const {
     return m_timeout_ms;
+}
+
+void Krpccontroller::SetTraceId(const std::string &trace_id) {
+    m_trace_id = trace_id;
+}
+
+const std::string &Krpccontroller::TraceId() const {
+    return m_trace_id;
 }
 
 // 以下功能未实现，是RPC服务端提供的取消功能

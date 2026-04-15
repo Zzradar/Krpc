@@ -21,6 +21,84 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "Debug Server (msgpack)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/server",
+            "args": [
+                "-i",
+                "${workspaceFolder}/bin/test_msgpack_async.conf"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Debug AsyncClient (msgpack future)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/async_client",
+            "args": [
+                "-i",
+                "${workspaceFolder}/bin/test_msgpack_async.conf"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "environment": [
+                {
+                    "name": "ASYNC_MODE",
+                    "value": "future"
+                },
+                {
+                    "name": "ASYNC_CONCURRENCY",
+                    "value": "1"
+                },
+                {
+                    "name": "ASYNC_REQUESTS",
+                    "value": "1"
+                },
+                {
+                    "name": "ASYNC_TIMEOUT_MS",
+                    "value": "5000"
+                },
+                {
+                    "name": "ASYNC_SLEEP_MS",
+                    "value": "0"
+                },
+                {
+                    "name": "ASYNC_NAME",
+                    "value": "zhangsan"
+                }
+            ],
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug Msgpack Future Flow (Server+Client)",
+            "configurations": [
+                "Debug Server (msgpack)",
+                "Debug AsyncClient (msgpack future)"
+            ],
+            "stopAll": true
         }
     ]
 }

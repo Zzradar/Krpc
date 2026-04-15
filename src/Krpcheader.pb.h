@@ -237,6 +237,7 @@ class RpcHeader PROTOBUF_FINAL :
   enum : int {
     kServiceNameFieldNumber = 7,
     kMethodNameFieldNumber = 8,
+    kTraceIdFieldNumber = 9,
     kMagicFieldNumber = 1,
     kVersionFieldNumber = 2,
     kRequestIdFieldNumber = 4,
@@ -292,6 +293,31 @@ class RpcHeader PROTOBUF_FINAL :
   const std::string& _internal_method_name() const;
   void _internal_set_method_name(const std::string& value);
   std::string* _internal_mutable_method_name();
+  public:
+
+  // string trace_id = 9;
+  void clear_trace_id();
+  const std::string& trace_id() const;
+  void set_trace_id(const std::string& value);
+  void set_trace_id(std::string&& value);
+  void set_trace_id(const char* value);
+  void set_trace_id(const char* value, size_t size);
+  std::string* mutable_trace_id();
+  std::string* release_trace_id();
+  void set_allocated_trace_id(std::string* trace_id);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_trace_id();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_trace_id(
+      std::string* trace_id);
+  private:
+  const std::string& _internal_trace_id() const;
+  void _internal_set_trace_id(const std::string& value);
+  std::string* _internal_mutable_trace_id();
   public:
 
   // uint32 magic = 1;
@@ -357,6 +383,7 @@ class RpcHeader PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr service_name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_name_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr trace_id_;
   ::PROTOBUF_NAMESPACE_ID::uint32 magic_;
   ::PROTOBUF_NAMESPACE_ID::uint32 version_;
   ::PROTOBUF_NAMESPACE_ID::uint64 request_id_;
@@ -657,6 +684,87 @@ inline void RpcHeader::unsafe_arena_set_allocated_method_name(
   method_name_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       method_name, GetArena());
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Krpc.RpcHeader.method_name)
+}
+
+// string trace_id = 9;
+inline void RpcHeader::clear_trace_id() {
+  trace_id_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& RpcHeader::trace_id() const {
+  // @@protoc_insertion_point(field_get:Krpc.RpcHeader.trace_id)
+  return _internal_trace_id();
+}
+inline void RpcHeader::set_trace_id(const std::string& value) {
+  _internal_set_trace_id(value);
+  // @@protoc_insertion_point(field_set:Krpc.RpcHeader.trace_id)
+}
+inline std::string* RpcHeader::mutable_trace_id() {
+  // @@protoc_insertion_point(field_mutable:Krpc.RpcHeader.trace_id)
+  return _internal_mutable_trace_id();
+}
+inline const std::string& RpcHeader::_internal_trace_id() const {
+  return trace_id_.Get();
+}
+inline void RpcHeader::_internal_set_trace_id(const std::string& value) {
+  
+  trace_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void RpcHeader::set_trace_id(std::string&& value) {
+  
+  trace_id_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:Krpc.RpcHeader.trace_id)
+}
+inline void RpcHeader::set_trace_id(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  trace_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:Krpc.RpcHeader.trace_id)
+}
+inline void RpcHeader::set_trace_id(const char* value,
+    size_t size) {
+  
+  trace_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:Krpc.RpcHeader.trace_id)
+}
+inline std::string* RpcHeader::_internal_mutable_trace_id() {
+  
+  return trace_id_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* RpcHeader::release_trace_id() {
+  // @@protoc_insertion_point(field_release:Krpc.RpcHeader.trace_id)
+  return trace_id_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void RpcHeader::set_allocated_trace_id(std::string* trace_id) {
+  if (trace_id != nullptr) {
+    
+  } else {
+    
+  }
+  trace_id_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), trace_id,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:Krpc.RpcHeader.trace_id)
+}
+inline std::string* RpcHeader::unsafe_arena_release_trace_id() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:Krpc.RpcHeader.trace_id)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  
+  return trace_id_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void RpcHeader::unsafe_arena_set_allocated_trace_id(
+    std::string* trace_id) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (trace_id != nullptr) {
+    
+  } else {
+    
+  }
+  trace_id_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      trace_id, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Krpc.RpcHeader.trace_id)
 }
 
 #ifdef __GNUC__

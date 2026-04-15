@@ -42,6 +42,18 @@ include CMakeFiles/rules.ninja
 cmake_ninja_workdir = /home/zzz/Krpc/build/
 
 #############################################
+# Utility command for test
+
+build CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build test: phony CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -172,6 +184,18 @@ build src/libkrpc_core.a: CXX_STATIC_LIBRARY_LINKER__krpc_core_Debug src/CMakeFi
 
 
 #############################################
+# Utility command for test
+
+build src/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/src && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build src/test: phony src/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build src/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -197,6 +221,18 @@ build src/rebuild_cache: phony src/CMakeFiles/rebuild_cache.util
 # Write statements declared in CMakeLists.txt:
 # /home/zzz/Krpc/CMakeLists.txt
 # =============================================================================
+
+
+#############################################
+# Utility command for test
+
+build example/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/test: phony example/CMakeFiles/test.util
 
 
 #############################################
@@ -269,6 +305,18 @@ build ../bin/server: CXX_EXECUTABLE_LINKER__server_Debug example/callee/CMakeFil
 
 
 #############################################
+# Utility command for test
+
+build example/callee/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/callee && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/callee/test: phony example/callee/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build example/callee/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -335,6 +383,18 @@ build ../bin/client: CXX_EXECUTABLE_LINKER__client_Debug example/caller/CMakeFil
   PRE_LINK = :
   TARGET_FILE = ../bin/client
   TARGET_PDB = client.dbg
+
+
+#############################################
+# Utility command for test
+
+build example/caller/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/caller && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/caller/test: phony example/caller/CMakeFiles/test.util
 
 
 #############################################
@@ -407,6 +467,18 @@ build ../bin/timeout_client: CXX_EXECUTABLE_LINKER__timeout_client_Debug example
 
 
 #############################################
+# Utility command for test
+
+build example/timeout_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/timeout_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/timeout_demo/test: phony example/timeout_demo/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build example/timeout_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -473,6 +545,18 @@ build ../bin/heartbeat_client: CXX_EXECUTABLE_LINKER__heartbeat_client_Debug exa
   PRE_LINK = :
   TARGET_FILE = ../bin/heartbeat_client
   TARGET_PDB = heartbeat_client.dbg
+
+
+#############################################
+# Utility command for test
+
+build example/heartbeat_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/heartbeat_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/heartbeat_demo/test: phony example/heartbeat_demo/CMakeFiles/test.util
 
 
 #############################################
@@ -545,6 +629,18 @@ build ../bin/async_client: CXX_EXECUTABLE_LINKER__async_client_Debug example/asy
 
 
 #############################################
+# Utility command for test
+
+build example/async_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/async_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/async_demo/test: phony example/async_demo/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build example/async_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -614,6 +710,18 @@ build ../bin/pool_demo: CXX_EXECUTABLE_LINKER__pool_demo_Debug example/pool_demo
 
 
 #############################################
+# Utility command for test
+
+build example/pool_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/pool_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/pool_demo/test: phony example/pool_demo/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build example/pool_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -680,6 +788,18 @@ build ../bin/bench_demo: CXX_EXECUTABLE_LINKER__bench_demo_Debug example/bench_d
   PRE_LINK = :
   TARGET_FILE = ../bin/bench_demo
   TARGET_PDB = bench_demo.dbg
+
+
+#############################################
+# Utility command for test
+
+build example/bench_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/bench_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/bench_demo/test: phony example/bench_demo/CMakeFiles/test.util
 
 
 #############################################
@@ -776,6 +896,18 @@ build ../bin/msgpack_client: CXX_EXECUTABLE_LINKER__msgpack_client_Debug example
   PRE_LINK = :
   TARGET_FILE = ../bin/msgpack_client
   TARGET_PDB = msgpack_client.dbg
+
+
+#############################################
+# Utility command for test
+
+build example/msgpack_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/msgpack_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/msgpack_demo/test: phony example/msgpack_demo/CMakeFiles/test.util
 
 
 #############################################
@@ -889,6 +1021,18 @@ build ../bin/switch_client: CXX_EXECUTABLE_LINKER__switch_client_Debug example/s
 
 
 #############################################
+# Utility command for test
+
+build example/switch_demo/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/example/switch_demo && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/switch_demo/test: phony example/switch_demo/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build example/switch_demo/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -911,7 +1055,1440 @@ build example/switch_demo/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build example/switch_demo/rebuild_cache: phony example/switch_demo/CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/zzz/Krpc/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target krpc_unit_tests
+
+
+#############################################
+# Order-only phony target for krpc_unit_tests
+
+build cmake_object_order_depends_target_krpc_unit_tests: phony || cmake_object_order_depends_target_Catch2 cmake_object_order_depends_target_Catch2WithMain
+
+build tests/CMakeFiles/krpc_unit_tests.dir/test_header.cc.o: CXX_COMPILER__krpc_unit_tests_Debug /home/zzz/Krpc/tests/test_header.cc || cmake_object_order_depends_target_krpc_unit_tests
+  DEP_FILE = tests/CMakeFiles/krpc_unit_tests.dir/test_header.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/src -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  OBJECT_FILE_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+
+build tests/CMakeFiles/krpc_unit_tests.dir/test_frame_codec.cc.o: CXX_COMPILER__krpc_unit_tests_Debug /home/zzz/Krpc/tests/test_frame_codec.cc || cmake_object_order_depends_target_krpc_unit_tests
+  DEP_FILE = tests/CMakeFiles/krpc_unit_tests.dir/test_frame_codec.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/src -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  OBJECT_FILE_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+
+build tests/CMakeFiles/krpc_unit_tests.dir/test_controller.cc.o: CXX_COMPILER__krpc_unit_tests_Debug /home/zzz/Krpc/tests/test_controller.cc || cmake_object_order_depends_target_krpc_unit_tests
+  DEP_FILE = tests/CMakeFiles/krpc_unit_tests.dir/test_controller.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/src -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  OBJECT_FILE_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+
+build tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpcheader.pb.cc.o: CXX_COMPILER__krpc_unit_tests_Debug /home/zzz/Krpc/src/Krpcheader.pb.cc || cmake_object_order_depends_target_krpc_unit_tests
+  DEP_FILE = tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpcheader.pb.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/src -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  OBJECT_FILE_DIR = tests/CMakeFiles/krpc_unit_tests.dir/__/src
+
+build tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpccontroller.cc.o: CXX_COMPILER__krpc_unit_tests_Debug /home/zzz/Krpc/src/Krpccontroller.cc || cmake_object_order_depends_target_krpc_unit_tests
+  DEP_FILE = tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpccontroller.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/src -I/home/zzz/Krpc/src/include -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  OBJECT_FILE_DIR = tests/CMakeFiles/krpc_unit_tests.dir/__/src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target krpc_unit_tests
+
+
+#############################################
+# Link the executable tests/krpc_unit_tests
+
+build tests/krpc_unit_tests: CXX_EXECUTABLE_LINKER__krpc_unit_tests_Debug tests/CMakeFiles/krpc_unit_tests.dir/test_header.cc.o tests/CMakeFiles/krpc_unit_tests.dir/test_frame_codec.cc.o tests/CMakeFiles/krpc_unit_tests.dir/test_controller.cc.o tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpcheader.pb.cc.o tests/CMakeFiles/krpc_unit_tests.dir/__/src/Krpccontroller.cc.o | _deps/catch2-build/src/libCatch2Maind.a _deps/catch2-build/src/libCatch2d.a || _deps/catch2-build/src/libCatch2Maind.a _deps/catch2-build/src/libCatch2d.a
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = _deps/catch2-build/src/libCatch2Maind.a  -lprotobuf  _deps/catch2-build/src/libCatch2d.a
+  OBJECT_DIR = tests/CMakeFiles/krpc_unit_tests.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/krpc_unit_tests
+  TARGET_PDB = krpc_unit_tests.dbg
+
+
+#############################################
+# Utility command for Experimental
+
+build tests/Experimental: phony tests/CMakeFiles/Experimental
+
+
+#############################################
+# Utility command for Nightly
+
+build tests/Nightly: phony tests/CMakeFiles/Nightly
+
+
+#############################################
+# Utility command for Continuous
+
+build tests/Continuous: phony tests/CMakeFiles/Continuous
+
+
+#############################################
+# Utility command for NightlyMemoryCheck
+
+build tests/NightlyMemoryCheck: phony tests/CMakeFiles/NightlyMemoryCheck
+
+
+#############################################
+# Utility command for NightlyStart
+
+build tests/NightlyStart: phony tests/CMakeFiles/NightlyStart
+
+
+#############################################
+# Utility command for NightlyUpdate
+
+build tests/NightlyUpdate: phony tests/CMakeFiles/NightlyUpdate
+
+
+#############################################
+# Utility command for NightlyConfigure
+
+build tests/NightlyConfigure: phony tests/CMakeFiles/NightlyConfigure
+
+
+#############################################
+# Utility command for NightlyBuild
+
+build tests/NightlyBuild: phony tests/CMakeFiles/NightlyBuild
+
+
+#############################################
+# Utility command for NightlyTest
+
+build tests/NightlyTest: phony tests/CMakeFiles/NightlyTest
+
+
+#############################################
+# Utility command for NightlyCoverage
+
+build tests/NightlyCoverage: phony tests/CMakeFiles/NightlyCoverage
+
+
+#############################################
+# Utility command for NightlyMemCheck
+
+build tests/NightlyMemCheck: phony tests/CMakeFiles/NightlyMemCheck
+
+
+#############################################
+# Utility command for NightlySubmit
+
+build tests/NightlySubmit: phony tests/CMakeFiles/NightlySubmit
+
+
+#############################################
+# Utility command for ExperimentalStart
+
+build tests/ExperimentalStart: phony tests/CMakeFiles/ExperimentalStart
+
+
+#############################################
+# Utility command for ExperimentalUpdate
+
+build tests/ExperimentalUpdate: phony tests/CMakeFiles/ExperimentalUpdate
+
+
+#############################################
+# Utility command for ExperimentalConfigure
+
+build tests/ExperimentalConfigure: phony tests/CMakeFiles/ExperimentalConfigure
+
+
+#############################################
+# Utility command for ExperimentalBuild
+
+build tests/ExperimentalBuild: phony tests/CMakeFiles/ExperimentalBuild
+
+
+#############################################
+# Utility command for ExperimentalTest
+
+build tests/ExperimentalTest: phony tests/CMakeFiles/ExperimentalTest
+
+
+#############################################
+# Utility command for ExperimentalCoverage
+
+build tests/ExperimentalCoverage: phony tests/CMakeFiles/ExperimentalCoverage
+
+
+#############################################
+# Utility command for ExperimentalMemCheck
+
+build tests/ExperimentalMemCheck: phony tests/CMakeFiles/ExperimentalMemCheck
+
+
+#############################################
+# Utility command for ExperimentalSubmit
+
+build tests/ExperimentalSubmit: phony tests/CMakeFiles/ExperimentalSubmit
+
+
+#############################################
+# Utility command for ContinuousStart
+
+build tests/ContinuousStart: phony tests/CMakeFiles/ContinuousStart
+
+
+#############################################
+# Utility command for ContinuousUpdate
+
+build tests/ContinuousUpdate: phony tests/CMakeFiles/ContinuousUpdate
+
+
+#############################################
+# Utility command for ContinuousConfigure
+
+build tests/ContinuousConfigure: phony tests/CMakeFiles/ContinuousConfigure
+
+
+#############################################
+# Utility command for ContinuousBuild
+
+build tests/ContinuousBuild: phony tests/CMakeFiles/ContinuousBuild
+
+
+#############################################
+# Utility command for ContinuousTest
+
+build tests/ContinuousTest: phony tests/CMakeFiles/ContinuousTest
+
+
+#############################################
+# Utility command for ContinuousCoverage
+
+build tests/ContinuousCoverage: phony tests/CMakeFiles/ContinuousCoverage
+
+
+#############################################
+# Utility command for ContinuousMemCheck
+
+build tests/ContinuousMemCheck: phony tests/CMakeFiles/ContinuousMemCheck
+
+
+#############################################
+# Utility command for ContinuousSubmit
+
+build tests/ContinuousSubmit: phony tests/CMakeFiles/ContinuousSubmit
+
+
+#############################################
+# Utility command for test
+
+build tests/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build tests/test: phony tests/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/edit_cache: phony tests/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/cmake --regenerate-during-build -S/home/zzz/Krpc -B/home/zzz/Krpc/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/rebuild_cache: phony tests/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Custom command for tests/CMakeFiles/Experimental
+
+build tests/CMakeFiles/Experimental | ${cmake_ninja_workdir}tests/CMakeFiles/Experimental: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D Experimental
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/Nightly
+
+build tests/CMakeFiles/Nightly | ${cmake_ninja_workdir}tests/CMakeFiles/Nightly: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D Nightly
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/Continuous
+
+build tests/CMakeFiles/Continuous | ${cmake_ninja_workdir}tests/CMakeFiles/Continuous: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D Continuous
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyMemoryCheck
+
+build tests/CMakeFiles/NightlyMemoryCheck | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyMemoryCheck: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyMemoryCheck
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyStart
+
+build tests/CMakeFiles/NightlyStart | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyStart: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyStart
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyUpdate
+
+build tests/CMakeFiles/NightlyUpdate | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyUpdate: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyUpdate
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyConfigure
+
+build tests/CMakeFiles/NightlyConfigure | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyConfigure: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyConfigure
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyBuild
+
+build tests/CMakeFiles/NightlyBuild | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyBuild: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyBuild
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyTest
+
+build tests/CMakeFiles/NightlyTest | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyTest: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyTest
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyCoverage
+
+build tests/CMakeFiles/NightlyCoverage | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyCoverage: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyCoverage
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlyMemCheck
+
+build tests/CMakeFiles/NightlyMemCheck | ${cmake_ninja_workdir}tests/CMakeFiles/NightlyMemCheck: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlyMemCheck
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/NightlySubmit
+
+build tests/CMakeFiles/NightlySubmit | ${cmake_ninja_workdir}tests/CMakeFiles/NightlySubmit: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D NightlySubmit
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalStart
+
+build tests/CMakeFiles/ExperimentalStart | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalStart: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalStart
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalUpdate
+
+build tests/CMakeFiles/ExperimentalUpdate | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalUpdate: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalUpdate
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalConfigure
+
+build tests/CMakeFiles/ExperimentalConfigure | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalConfigure: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalConfigure
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalBuild
+
+build tests/CMakeFiles/ExperimentalBuild | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalBuild: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalBuild
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalTest
+
+build tests/CMakeFiles/ExperimentalTest | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalTest: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalTest
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalCoverage
+
+build tests/CMakeFiles/ExperimentalCoverage | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalCoverage: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalCoverage
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalMemCheck
+
+build tests/CMakeFiles/ExperimentalMemCheck | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalMemCheck: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalMemCheck
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ExperimentalSubmit
+
+build tests/CMakeFiles/ExperimentalSubmit | ${cmake_ninja_workdir}tests/CMakeFiles/ExperimentalSubmit: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ExperimentalSubmit
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousStart
+
+build tests/CMakeFiles/ContinuousStart | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousStart: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousStart
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousUpdate
+
+build tests/CMakeFiles/ContinuousUpdate | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousUpdate: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousUpdate
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousConfigure
+
+build tests/CMakeFiles/ContinuousConfigure | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousConfigure: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousConfigure
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousBuild
+
+build tests/CMakeFiles/ContinuousBuild | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousBuild: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousBuild
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousTest
+
+build tests/CMakeFiles/ContinuousTest | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousTest: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousTest
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousCoverage
+
+build tests/CMakeFiles/ContinuousCoverage | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousCoverage: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousCoverage
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousMemCheck
+
+build tests/CMakeFiles/ContinuousMemCheck | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousMemCheck: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousMemCheck
+  pool = console
+
+
+#############################################
+# Custom command for tests/CMakeFiles/ContinuousSubmit
+
+build tests/CMakeFiles/ContinuousSubmit | ${cmake_ninja_workdir}tests/CMakeFiles/ContinuousSubmit: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/tests && /usr/bin/ctest -D ContinuousSubmit
+  pool = console
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/zzz/Krpc/tests/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for test
+
+build _deps/catch2-build/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build _deps/catch2-build/test: phony _deps/catch2-build/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build _deps/catch2-build/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build _deps/catch2-build/edit_cache: phony _deps/catch2-build/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build _deps/catch2-build/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build && /usr/bin/cmake --regenerate-during-build -S/home/zzz/Krpc -B/home/zzz/Krpc/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build _deps/catch2-build/rebuild_cache: phony _deps/catch2-build/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/zzz/Krpc/build/_deps/catch2-src/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target Catch2
+
+
+#############################################
+# Order-only phony target for Catch2
+
+build cmake_object_order_depends_target_Catch2: phony || _deps/catch2-build/src/CMakeFiles/Catch2.dir
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/catch_chronometer.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/benchmark/catch_chronometer.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/catch_chronometer.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_analyse.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/benchmark/detail/catch_analyse.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_analyse.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_benchmark_function.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/benchmark/detail/catch_benchmark_function.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_benchmark_function.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_run_for_at_least.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/benchmark/detail/catch_run_for_at_least.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_run_for_at_least.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_stats.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/benchmark/detail/catch_stats.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_stats.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generator_exception.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/generators/catch_generator_exception.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generator_exception.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/generators/catch_generators.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators_random.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/generators/catch_generators_random.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators_random.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_automake.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_automake.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_automake.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_common_base.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_common_base.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_common_base.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_compact.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_compact.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_compact.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_console.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_console.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_console.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_cumulative_base.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_cumulative_base.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_cumulative_base.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_event_listener.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_event_listener.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_event_listener.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_helpers.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_helpers.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_helpers.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_json.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_json.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_json.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_junit.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_junit.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_junit.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_multi.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_multi.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_multi.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_registrars.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_registrars.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_registrars.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_sonarqube.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_sonarqube.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_sonarqube.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_streaming_base.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_streaming_base.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_streaming_base.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_tap.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_tap.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_tap.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_teamcity.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_teamcity.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_teamcity.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_xml.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/reporters/catch_reporter_xml.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_xml.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_capture.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_capture.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_capture.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_config.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_config.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_config.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_exception.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_exception.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_exception.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_generatortracker.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_generatortracker.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_generatortracker.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_registry_hub.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_registry_hub.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_registry_hub.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_reporter.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter_factory.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_reporter_factory.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter_factory.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_testcase.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/interfaces/catch_interfaces_testcase.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_testcase.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_approx.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_approx.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_approx.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_assertion_result.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_assertion_result.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_assertion_result.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_config.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_config.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_config.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_get_random_seed.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_get_random_seed.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_get_random_seed.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_message.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_message.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_message.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_registry_hub.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_registry_hub.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_registry_hub.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_session.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_session.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_session.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tag_alias_autoregistrar.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_tag_alias_autoregistrar.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tag_alias_autoregistrar.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_case_info.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_test_case_info.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_case_info.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_spec.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_test_spec.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_spec.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_timer.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_timer.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_timer.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tostring.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_tostring.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tostring.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_totals.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_totals.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_totals.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_translate_exception.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_translate_exception.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_translate_exception.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_version.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/catch_version.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_version.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_assertion_handler.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_assertion_handler.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_assertion_handler.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_case_insensitive_comparisons.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_case_insensitive_comparisons.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_case_insensitive_comparisons.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_clara.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_clara.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_clara.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_commandline.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_commandline.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_commandline.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_console_colour.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_console_colour.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_console_colour.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_context.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_context.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_context.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debug_console.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_debug_console.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debug_console.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debugger.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_debugger.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debugger.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_decomposer.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_decomposer.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_decomposer.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enforce.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_enforce.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enforce.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enum_values_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_enum_values_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enum_values_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_errno_guard.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_errno_guard.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_errno_guard.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_exception_translator_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_exception_translator_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_exception_translator_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_fatal_condition_handler.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_fatal_condition_handler.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_fatal_condition_handler.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_floating_point_helpers.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_floating_point_helpers.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_floating_point_helpers.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_getenv.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_getenv.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_getenv.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_istream.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_istream.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_istream.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_jsonwriter.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_jsonwriter.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_jsonwriter.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_lazy_expr.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_lazy_expr.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_lazy_expr.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_leak_detector.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_leak_detector.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_leak_detector.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_list.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_list.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_list.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_message_info.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_message_info.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_message_info.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_output_redirect.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_output_redirect.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_output_redirect.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_parse_numbers.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_parse_numbers.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_parse_numbers.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_polyfills.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_polyfills.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_polyfills.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_number_generator.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_random_number_generator.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_number_generator.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_seed_generation.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_random_seed_generation.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_seed_generation.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_reporter_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_spec_parser.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_reporter_spec_parser.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_spec_parser.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_result_type.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_result_type.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_result_type.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reusable_string_stream.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_reusable_string_stream.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reusable_string_stream.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_run_context.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_run_context.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_run_context.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_section.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_section.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_section.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_singletons.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_singletons.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_singletons.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_source_line_info.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_source_line_info.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_source_line_info.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_startup_exception_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_startup_exception_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_startup_exception_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stdstreams.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_stdstreams.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stdstreams.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_string_manip.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_string_manip.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_string_manip.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stringref.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_stringref.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stringref.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_tag_alias_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_tag_alias_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_tag_alias_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_info_hasher.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_case_info_hasher.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_info_hasher.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_registry_impl.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_case_registry_impl.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_registry_impl.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_tracker.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_case_tracker.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_tracker.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_failure_exception.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_failure_exception.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_failure_exception.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_registry.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_registry.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_registry.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_spec_parser.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_test_spec_parser.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_spec_parser.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_textflow.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_textflow.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_textflow.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_uncaught_exceptions.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_uncaught_exceptions.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_uncaught_exceptions.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_wildcard_pattern.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_wildcard_pattern.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_wildcard_pattern.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_xmlwriter.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_xmlwriter.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_xmlwriter.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_container_properties.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_container_properties.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_container_properties.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_exception.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_exception.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_exception.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_floating_point.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_floating_point.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_floating_point.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_predicate.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_predicate.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_predicate.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_quantifiers.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_quantifiers.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_quantifiers.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_string.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_string.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_string.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_templated.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/catch_matchers_templated.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_templated.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers
+
+build _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/internal/catch_matchers_impl.cpp.o: CXX_COMPILER__Catch2_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/matchers/internal/catch_matchers_impl.cpp || cmake_object_order_depends_target_Catch2
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/internal/catch_matchers_impl.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/internal
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target Catch2
+
+
+#############################################
+# Link the static library _deps/catch2-build/src/libCatch2d.a
+
+build _deps/catch2-build/src/libCatch2d.a: CXX_STATIC_LIBRARY_LINKER__Catch2_Debug _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/catch_chronometer.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_analyse.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_benchmark_function.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_run_for_at_least.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_stats.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generator_exception.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators_random.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_automake.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_common_base.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_compact.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_console.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_cumulative_base.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_event_listener.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_helpers.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_json.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_junit.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_multi.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_registrars.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_sonarqube.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_streaming_base.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_tap.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_teamcity.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_xml.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_capture.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_config.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_exception.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_generatortracker.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_registry_hub.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter_factory.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_testcase.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_approx.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_assertion_result.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_config.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_get_random_seed.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_message.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_registry_hub.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_session.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tag_alias_autoregistrar.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_case_info.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_test_spec.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_timer.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_tostring.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_totals.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_translate_exception.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/catch_version.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_assertion_handler.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_case_insensitive_comparisons.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_clara.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_commandline.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_console_colour.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_context.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debug_console.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debugger.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_decomposer.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enforce.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enum_values_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_errno_guard.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_exception_translator_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_fatal_condition_handler.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_floating_point_helpers.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_getenv.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_istream.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_jsonwriter.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_lazy_expr.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_leak_detector.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_list.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_message_info.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_output_redirect.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_parse_numbers.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_polyfills.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_number_generator.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_seed_generation.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_spec_parser.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_result_type.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reusable_string_stream.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_run_context.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_section.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_singletons.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_source_line_info.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_startup_exception_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stdstreams.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_string_manip.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stringref.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_tag_alias_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_info_hasher.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_registry_impl.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_tracker.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_failure_exception.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_registry.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_spec_parser.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_textflow.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_uncaught_exceptions.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_wildcard_pattern.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/internal/catch_xmlwriter.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_container_properties.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_exception.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_floating_point.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_predicate.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_quantifiers.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_string.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_templated.cpp.o _deps/catch2-build/src/CMakeFiles/Catch2.dir/catch2/matchers/internal/catch_matchers_impl.cpp.o
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = _deps/catch2-build/src/libCatch2d.a
+  TARGET_PDB = Catch2d.a.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target Catch2WithMain
+
+
+#############################################
+# Order-only phony target for Catch2WithMain
+
+build cmake_object_order_depends_target_Catch2WithMain: phony || cmake_object_order_depends_target_Catch2
+
+build _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/catch2/internal/catch_main.cpp.o: CXX_COMPILER__Catch2WithMain_Debug /home/zzz/Krpc/build/_deps/catch2-src/src/catch2/internal/catch_main.cpp || cmake_object_order_depends_target_Catch2WithMain
+  DEP_FILE = _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/catch2/internal/catch_main.cpp.o.d
+  FLAGS = -g -ffile-prefix-map=/home/zzz/Krpc/build/_deps/catch2-src/= -std=gnu++14
+  INCLUDES = -I/home/zzz/Krpc/build/_deps/catch2-src/src/catch2/.. -I/home/zzz/Krpc/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir
+  OBJECT_FILE_DIR = _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/catch2/internal
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target Catch2WithMain
+
+
+#############################################
+# Link the static library _deps/catch2-build/src/libCatch2Maind.a
+
+build _deps/catch2-build/src/libCatch2Maind.a: CXX_STATIC_LIBRARY_LINKER__Catch2WithMain_Debug _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/catch2/internal/catch_main.cpp.o || _deps/catch2-build/src/libCatch2d.a
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = _deps/catch2-build/src/libCatch2Maind.a
+  TARGET_PDB = Catch2Maind.a.dbg
+
+
+#############################################
+# Utility command for test
+
+build _deps/catch2-build/src/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build/src && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build _deps/catch2-build/src/test: phony _deps/catch2-build/src/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build _deps/catch2-build/src/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build/src && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build _deps/catch2-build/src/edit_cache: phony _deps/catch2-build/src/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build _deps/catch2-build/src/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/zzz/Krpc/build/_deps/catch2-build/src && /usr/bin/cmake --regenerate-during-build -S/home/zzz/Krpc -B/home/zzz/Krpc/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build _deps/catch2-build/src/rebuild_cache: phony _deps/catch2-build/src/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
+
+build Catch2: phony _deps/catch2-build/src/libCatch2d.a
+
+build Catch2WithMain: phony _deps/catch2-build/src/libCatch2Maind.a
+
+build Continuous: phony tests/Continuous
+
+build ContinuousBuild: phony tests/ContinuousBuild
+
+build ContinuousConfigure: phony tests/ContinuousConfigure
+
+build ContinuousCoverage: phony tests/ContinuousCoverage
+
+build ContinuousMemCheck: phony tests/ContinuousMemCheck
+
+build ContinuousStart: phony tests/ContinuousStart
+
+build ContinuousSubmit: phony tests/ContinuousSubmit
+
+build ContinuousTest: phony tests/ContinuousTest
+
+build ContinuousUpdate: phony tests/ContinuousUpdate
+
+build Experimental: phony tests/Experimental
+
+build ExperimentalBuild: phony tests/ExperimentalBuild
+
+build ExperimentalConfigure: phony tests/ExperimentalConfigure
+
+build ExperimentalCoverage: phony tests/ExperimentalCoverage
+
+build ExperimentalMemCheck: phony tests/ExperimentalMemCheck
+
+build ExperimentalStart: phony tests/ExperimentalStart
+
+build ExperimentalSubmit: phony tests/ExperimentalSubmit
+
+build ExperimentalTest: phony tests/ExperimentalTest
+
+build ExperimentalUpdate: phony tests/ExperimentalUpdate
+
+build Nightly: phony tests/Nightly
+
+build NightlyBuild: phony tests/NightlyBuild
+
+build NightlyConfigure: phony tests/NightlyConfigure
+
+build NightlyCoverage: phony tests/NightlyCoverage
+
+build NightlyMemCheck: phony tests/NightlyMemCheck
+
+build NightlyMemoryCheck: phony tests/NightlyMemoryCheck
+
+build NightlyStart: phony tests/NightlyStart
+
+build NightlySubmit: phony tests/NightlySubmit
+
+build NightlyTest: phony tests/NightlyTest
+
+build NightlyUpdate: phony tests/NightlyUpdate
 
 build async_client: phony ../bin/async_client
 
@@ -922,6 +2499,12 @@ build client: phony ../bin/client
 build heartbeat_client: phony ../bin/heartbeat_client
 
 build krpc_core: phony src/libkrpc_core.a
+
+build krpc_unit_tests: phony tests/krpc_unit_tests
+
+build libCatch2Maind.a: phony _deps/catch2-build/src/libCatch2Maind.a
+
+build libCatch2d.a: phony _deps/catch2-build/src/libCatch2d.a
 
 build libkrpc_core.a: phony src/libkrpc_core.a
 
@@ -947,7 +2530,21 @@ build timeout_client: phony ../bin/timeout_client
 #############################################
 # Folder: /home/zzz/Krpc/build
 
-build all: phony src/all example/all
+build all: phony src/all example/all tests/all
+
+# =============================================================================
+
+#############################################
+# Folder: /home/zzz/Krpc/build/_deps/catch2-build
+
+build _deps/catch2-build/all: phony _deps/catch2-build/src/all
+
+# =============================================================================
+
+#############################################
+# Folder: /home/zzz/Krpc/build/_deps/catch2-build/src
+
+build _deps/catch2-build/src/all: phony _deps/catch2-build/src/libCatch2d.a _deps/catch2-build/src/libCatch2Maind.a
 
 # =============================================================================
 
@@ -1027,6 +2624,13 @@ build example/timeout_demo/all: phony ../bin/timeout_client
 build src/all: phony src/libkrpc_core.a
 
 # =============================================================================
+
+#############################################
+# Folder: /home/zzz/Krpc/build/tests
+
+build tests/all: phony tests/krpc_unit_tests _deps/catch2-build/all
+
+# =============================================================================
 # Unknown Build Time Dependencies.
 # Tell Ninja that they may appear as side effects of build rules
 # otherwise ordered by order-only dependencies.
@@ -1038,14 +2642,14 @@ build src/all: phony src/libkrpc_core.a
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt ../tests/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeDependentOption.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakePackageConfigHelpers.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CTest.cmake /usr/share/cmake-3.22/Modules/CTestTargets.cmake /usr/share/cmake-3.22/Modules/CTestUseLaunchers.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckCXXCompilerFlag.cmake /usr/share/cmake-3.22/Modules/CheckCXXSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/DartConfiguration.tcl.in /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindGit.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/GNUInstallDirs.cmake /usr/share/cmake-3.22/Modules/Internal/CheckCompilerFlag.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake /usr/share/cmake-3.22/Modules/WriteBasicConfigVersionFile.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake _deps/catch2-src/CMake/CatchConfigOptions.cmake _deps/catch2-src/CMake/CatchMiscFunctions.cmake _deps/catch2-src/CMakeLists.txt _deps/catch2-src/src/CMakeLists.txt _deps/catch2-src/src/catch2/catch_user_config.hpp.in
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake: phony
+build ../CMakeLists.txt ../example/CMakeLists.txt ../example/async_demo/CMakeLists.txt ../example/bench_demo/CMakeLists.txt ../example/callee/CMakeLists.txt ../example/caller/CMakeLists.txt ../example/heartbeat_demo/CMakeLists.txt ../example/msgpack_demo/CMakeLists.txt ../example/pool_demo/CMakeLists.txt ../example/switch_demo/CMakeLists.txt ../example/timeout_demo/CMakeLists.txt ../src/CMakeLists.txt ../tests/CMakeLists.txt /usr/share/cmake-3.22/Modules/CMakeCInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.22/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.22/Modules/CMakeDependentOption.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.22/Modules/CMakePackageConfigHelpers.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/CTest.cmake /usr/share/cmake-3.22/Modules/CTestTargets.cmake /usr/share/cmake-3.22/Modules/CTestUseLaunchers.cmake /usr/share/cmake-3.22/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckCXXCompilerFlag.cmake /usr/share/cmake-3.22/Modules/CheckCXXSourceCompiles.cmake /usr/share/cmake-3.22/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.22/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Compiler/GNU.cmake /usr/share/cmake-3.22/Modules/DartConfiguration.tcl.in /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindGit.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindProtobuf.cmake /usr/share/cmake-3.22/Modules/FindThreads.cmake /usr/share/cmake-3.22/Modules/GNUInstallDirs.cmake /usr/share/cmake-3.22/Modules/Internal/CheckCompilerFlag.cmake /usr/share/cmake-3.22/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/SelectLibraryConfigurations.cmake /usr/share/cmake-3.22/Modules/WriteBasicConfigVersionFile.cmake CMakeCache.txt CMakeFiles/3.22.1/CMakeCCompiler.cmake CMakeFiles/3.22.1/CMakeCXXCompiler.cmake CMakeFiles/3.22.1/CMakeSystem.cmake _deps/catch2-src/CMake/CatchConfigOptions.cmake _deps/catch2-src/CMake/CatchMiscFunctions.cmake _deps/catch2-src/CMakeLists.txt _deps/catch2-src/src/CMakeLists.txt _deps/catch2-src/src/catch2/catch_user_config.hpp.in: phony
 
 
 #############################################

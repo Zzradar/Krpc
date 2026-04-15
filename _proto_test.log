@@ -1,0 +1,208 @@
+service_name=UserServiceRpc
+method_name=Login
+method_name=Register
+RpcProvider start service at ip:127.0.0.1 port:8000
+20260330 10:47:12.894247Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#1] from 127.0.0.1:54554 - TcpServer.cc:80
+20260330 10:47:12.898733Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#2] from 127.0.0.1:54568 - TcpServer.cc:80
+20260330 10:47:12.901837Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#3] from 127.0.0.1:54580 - TcpServer.cc:80
+20260330 10:47:12.909854Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#4] from 127.0.0.1:54596 - TcpServer.cc:80
+20260330 10:47:13.238025Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#3 - TcpServer.cc:109
+20260330 10:47:13.238277Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#2 - TcpServer.cc:109
+20260330 10:47:13.240081Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#4 - TcpServer.cc:109
+20260330 10:47:13.240147Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#1 - TcpServer.cc:109
+20260330 10:47:13.303827Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#5] from 127.0.0.1:54602 - TcpServer.cc:80
+20260330 10:47:13.313934Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#6] from 127.0.0.1:54604 - TcpServer.cc:80
+20260330 10:47:13.320602Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#7] from 127.0.0.1:54620 - TcpServer.cc:80
+20260330 10:47:13.327130Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#8] from 127.0.0.1:54632 - TcpServer.cc:80
+20260330 10:47:13.645426Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#7 - TcpServer.cc:109
+20260330 10:47:13.645593Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#8 - TcpServer.cc:109
+20260330 10:47:13.648160Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#5 - TcpServer.cc:109
+20260330 10:47:13.649793Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#6 - TcpServer.cc:109
+20260330 10:47:13.729080Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#9] from 127.0.0.1:54634 - TcpServer.cc:80
+20260330 10:47:13.737223Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#10] from 127.0.0.1:54650 - TcpServer.cc:80
+20260330 10:47:13.741795Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#11] from 127.0.0.1:54662 - TcpServer.cc:80
+20260330 10:47:13.742788Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#12] from 127.0.0.1:54664 - TcpServer.cc:80
+20260330 10:47:14.066869Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#11 - TcpServer.cc:109
+20260330 10:47:14.070738Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#12 - TcpServer.cc:109
+20260330 10:47:14.070895Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#10 - TcpServer.cc:109
+20260330 10:47:14.071068Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#9 - TcpServer.cc:109
+20260330 10:47:14.152631Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#13] from 127.0.0.1:54674 - TcpServer.cc:80
+20260330 10:47:14.163132Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#14] from 127.0.0.1:54690 - TcpServer.cc:80
+20260330 10:47:14.171687Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#15] from 127.0.0.1:54702 - TcpServer.cc:80
+20260330 10:47:14.178768Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#16] from 127.0.0.1:54714 - TcpServer.cc:80
+20260330 10:47:14.497037Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#16 - TcpServer.cc:109
+20260330 10:47:14.497180Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#13 - TcpServer.cc:109
+20260330 10:47:14.497447Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#14 - TcpServer.cc:109
+20260330 10:47:14.497605Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#15 - TcpServer.cc:109
+20260330 10:47:14.603905Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#17] from 127.0.0.1:54730 - TcpServer.cc:80
+20260330 10:47:14.608656Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#18] from 127.0.0.1:54734 - TcpServer.cc:80
+20260330 10:47:14.612798Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#19] from 127.0.0.1:54750 - TcpServer.cc:80
+20260330 10:47:14.628721Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#20] from 127.0.0.1:54754 - TcpServer.cc:80
+20260330 10:47:15.042573Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#20 - TcpServer.cc:109
+20260330 10:47:15.042748Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#17 - TcpServer.cc:109
+20260330 10:47:15.043129Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#19 - TcpServer.cc:109
+20260330 10:47:15.043736Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#18 - TcpServer.cc:109
+20260330 10:47:15.136768Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#21] from 127.0.0.1:54766 - TcpServer.cc:80
+20260330 10:47:15.137193Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#22] from 127.0.0.1:54772 - TcpServer.cc:80
+20260330 10:47:15.141509Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#23] from 127.0.0.1:54774 - TcpServer.cc:80
+20260330 10:47:15.149226Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#24] from 127.0.0.1:54784 - TcpServer.cc:80
+20260330 10:47:16.015739Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#24 - TcpServer.cc:109
+20260330 10:47:16.015816Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#23 - TcpServer.cc:109
+20260330 10:47:16.016073Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#21 - TcpServer.cc:109
+20260330 10:47:16.016238Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#22 - TcpServer.cc:109
+20260330 10:47:16.089894Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#25] from 127.0.0.1:54792 - TcpServer.cc:80
+20260330 10:47:16.094206Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#26] from 127.0.0.1:54800 - TcpServer.cc:80
+20260330 10:47:16.099278Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#27] from 127.0.0.1:54806 - TcpServer.cc:80
+20260330 10:47:16.109931Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#28] from 127.0.0.1:54818 - TcpServer.cc:80
+20260330 10:47:16.828708Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#27 - TcpServer.cc:109
+20260330 10:47:16.828867Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#26 - TcpServer.cc:109
+20260330 10:47:16.829088Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#28 - TcpServer.cc:109
+20260330 10:47:16.829696Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#25 - TcpServer.cc:109
+20260330 10:47:16.911473Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#29] from 127.0.0.1:54834 - TcpServer.cc:80
+20260330 10:47:16.921971Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#30] from 127.0.0.1:54840 - TcpServer.cc:80
+20260330 10:47:16.932328Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#31] from 127.0.0.1:54850 - TcpServer.cc:80
+20260330 10:47:16.934537Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#32] from 127.0.0.1:54866 - TcpServer.cc:80
+20260330 10:47:17.860825Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#32 - TcpServer.cc:109
+20260330 10:47:17.866706Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#30 - TcpServer.cc:109
+20260330 10:47:17.866781Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#31 - TcpServer.cc:109
+20260330 10:47:17.866934Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#29 - TcpServer.cc:109
+20260330 10:47:17.942088Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#33] from 127.0.0.1:54878 - TcpServer.cc:80
+20260330 10:47:17.948217Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#34] from 127.0.0.1:54888 - TcpServer.cc:80
+20260330 10:47:17.948886Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#35] from 127.0.0.1:54890 - TcpServer.cc:80
+20260330 10:47:17.982260Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#36] from 127.0.0.1:54892 - TcpServer.cc:80
+20260330 10:47:18.637273Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#36 - TcpServer.cc:109
+20260330 10:47:18.637980Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#35 - TcpServer.cc:109
+20260330 10:47:18.638093Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#33 - TcpServer.cc:109
+20260330 10:47:18.640847Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#34 - TcpServer.cc:109
+20260330 10:47:18.770248Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#37] from 127.0.0.1:54896 - TcpServer.cc:80
+20260330 10:47:18.770599Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#38] from 127.0.0.1:54904 - TcpServer.cc:80
+20260330 10:47:18.777269Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#39] from 127.0.0.1:54908 - TcpServer.cc:80
+20260330 10:47:18.794278Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#40] from 127.0.0.1:54918 - TcpServer.cc:80
+20260330 10:47:19.747098Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#39 - TcpServer.cc:109
+20260330 10:47:19.747654Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#40 - TcpServer.cc:109
+20260330 10:47:19.747808Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#38 - TcpServer.cc:109
+20260330 10:47:19.747964Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#37 - TcpServer.cc:109
+20260330 10:47:19.831904Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#41] from 127.0.0.1:44986 - TcpServer.cc:80
+20260330 10:47:19.835146Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#42] from 127.0.0.1:44998 - TcpServer.cc:80
+20260330 10:47:19.836971Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#43] from 127.0.0.1:45012 - TcpServer.cc:80
+20260330 10:47:19.842090Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#44] from 127.0.0.1:45026 - TcpServer.cc:80
+20260330 10:47:19.954201Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#43 - TcpServer.cc:109
+20260330 10:47:19.954777Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#44 - TcpServer.cc:109
+20260330 10:47:19.955041Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#42 - TcpServer.cc:109
+20260330 10:47:19.961657Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#41 - TcpServer.cc:109
+20260330 10:47:20.053490Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#45] from 127.0.0.1:45040 - TcpServer.cc:80
+20260330 10:47:20.058629Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#46] from 127.0.0.1:45044 - TcpServer.cc:80
+20260330 10:47:20.060958Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#47] from 127.0.0.1:45052 - TcpServer.cc:80
+20260330 10:47:20.073203Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#48] from 127.0.0.1:45066 - TcpServer.cc:80
+20260330 10:47:20.164954Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#48 - TcpServer.cc:109
+20260330 10:47:20.165246Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#47 - TcpServer.cc:109
+20260330 10:47:20.165749Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#46 - TcpServer.cc:109
+20260330 10:47:20.165889Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#45 - TcpServer.cc:109
+20260330 10:47:20.270476Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#49] from 127.0.0.1:45070 - TcpServer.cc:80
+20260330 10:47:20.283437Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#50] from 127.0.0.1:45072 - TcpServer.cc:80
+20260330 10:47:20.285851Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#51] from 127.0.0.1:45074 - TcpServer.cc:80
+20260330 10:47:20.293562Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#52] from 127.0.0.1:45078 - TcpServer.cc:80
+20260330 10:47:20.392907Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#52 - TcpServer.cc:109
+20260330 10:47:20.393246Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#49 - TcpServer.cc:109
+20260330 10:47:20.393487Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#51 - TcpServer.cc:109
+20260330 10:47:20.397953Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#50 - TcpServer.cc:109
+20260330 10:47:20.527566Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#53] from 127.0.0.1:45090 - TcpServer.cc:80
+20260330 10:47:20.528915Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#54] from 127.0.0.1:45098 - TcpServer.cc:80
+20260330 10:47:20.544193Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#55] from 127.0.0.1:45108 - TcpServer.cc:80
+20260330 10:47:20.544587Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#56] from 127.0.0.1:45120 - TcpServer.cc:80
+20260330 10:47:20.623629Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#54 - TcpServer.cc:109
+20260330 10:47:20.624734Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#53 - TcpServer.cc:109
+20260330 10:47:20.627734Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#56 - TcpServer.cc:109
+20260330 10:47:20.632721Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#55 - TcpServer.cc:109
+20260330 10:47:20.759012Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#57] from 127.0.0.1:45134 - TcpServer.cc:80
+20260330 10:47:20.776980Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#58] from 127.0.0.1:45148 - TcpServer.cc:80
+20260330 10:47:20.825677Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#59] from 127.0.0.1:45158 - TcpServer.cc:80
+20260330 10:47:20.839161Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#60] from 127.0.0.1:45160 - TcpServer.cc:80
+20260330 10:47:20.961544Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#60 - TcpServer.cc:109
+20260330 10:47:20.961677Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#59 - TcpServer.cc:109
+20260330 10:47:20.962002Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#57 - TcpServer.cc:109
+20260330 10:47:20.966081Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#58 - TcpServer.cc:109
+20260330 10:47:21.064053Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#61] from 127.0.0.1:45162 - TcpServer.cc:80
+20260330 10:47:21.064927Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#62] from 127.0.0.1:45170 - TcpServer.cc:80
+20260330 10:47:21.098150Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#63] from 127.0.0.1:45174 - TcpServer.cc:80
+20260330 10:47:21.102690Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#64] from 127.0.0.1:45190 - TcpServer.cc:80
+20260330 10:47:21.116697Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#65] from 127.0.0.1:45204 - TcpServer.cc:80
+20260330 10:47:21.123606Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#66] from 127.0.0.1:45206 - TcpServer.cc:80
+20260330 10:47:21.130714Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#67] from 127.0.0.1:45212 - TcpServer.cc:80
+20260330 10:47:21.134787Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#68] from 127.0.0.1:45224 - TcpServer.cc:80
+20260330 10:47:21.153545Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#69] from 127.0.0.1:45232 - TcpServer.cc:80
+20260330 10:47:21.280997Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#69 - TcpServer.cc:109
+20260330 10:47:21.288760Z 1947126 ERROR TcpConnection::handleError [KrpcProvider-127.0.0.1:8000#64] - SO_ERROR = 104 Connection reset by peer - TcpConnection.cc:426
+20260330 10:47:21.293157Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#67 - TcpServer.cc:109
+20260330 10:47:21.293677Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#63 - TcpServer.cc:109
+20260330 10:47:21.293754Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#68 - TcpServer.cc:109
+20260330 10:47:21.294009Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#64 - TcpServer.cc:109
+20260330 10:47:21.294087Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#66 - TcpServer.cc:109
+20260330 10:47:21.294614Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#62 - TcpServer.cc:109
+20260330 10:47:21.294688Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#65 - TcpServer.cc:109
+20260330 10:47:21.294935Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#61 - TcpServer.cc:109
+20260330 10:47:21.411701Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#70] from 127.0.0.1:45248 - TcpServer.cc:80
+20260330 10:47:21.417718Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#71] from 127.0.0.1:45262 - TcpServer.cc:80
+20260330 10:47:21.437986Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#72] from 127.0.0.1:45264 - TcpServer.cc:80
+20260330 10:47:21.450592Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#73] from 127.0.0.1:45272 - TcpServer.cc:80
+20260330 10:47:21.459213Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#74] from 127.0.0.1:45280 - TcpServer.cc:80
+20260330 10:47:21.460423Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#75] from 127.0.0.1:45288 - TcpServer.cc:80
+20260330 10:47:21.465487Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#76] from 127.0.0.1:45300 - TcpServer.cc:80
+20260330 10:47:21.472453Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#77] from 127.0.0.1:45304 - TcpServer.cc:80
+20260330 10:47:21.479230Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#78] from 127.0.0.1:45318 - TcpServer.cc:80
+20260330 10:47:21.486175Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#79] from 127.0.0.1:45322 - TcpServer.cc:80
+20260330 10:47:21.602587Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#79 - TcpServer.cc:109
+20260330 10:47:21.602840Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#78 - TcpServer.cc:109
+20260330 10:47:21.603104Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#76 - TcpServer.cc:109
+20260330 10:47:21.607112Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#75 - TcpServer.cc:109
+20260330 10:47:21.610807Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#71 - TcpServer.cc:109
+20260330 10:47:21.610852Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#77 - TcpServer.cc:109
+20260330 10:47:21.611006Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#73 - TcpServer.cc:109
+20260330 10:47:21.611045Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#74 - TcpServer.cc:109
+20260330 10:47:21.611219Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#70 - TcpServer.cc:109
+20260330 10:47:21.611256Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#72 - TcpServer.cc:109
+20260330 10:47:21.689217Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#80] from 127.0.0.1:45324 - TcpServer.cc:80
+20260330 10:47:21.692069Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#81] from 127.0.0.1:45328 - TcpServer.cc:80
+20260330 10:47:21.702094Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#82] from 127.0.0.1:45334 - TcpServer.cc:80
+20260330 10:47:21.706035Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#83] from 127.0.0.1:45346 - TcpServer.cc:80
+20260330 10:47:21.722913Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#84] from 127.0.0.1:45356 - TcpServer.cc:80
+20260330 10:47:21.728208Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#85] from 127.0.0.1:45362 - TcpServer.cc:80
+20260330 10:47:21.728915Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#86] from 127.0.0.1:45370 - TcpServer.cc:80
+20260330 10:47:21.729756Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#87] from 127.0.0.1:45376 - TcpServer.cc:80
+20260330 10:47:21.738536Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#88] from 127.0.0.1:45384 - TcpServer.cc:80
+20260330 10:47:21.743170Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#89] from 127.0.0.1:45398 - TcpServer.cc:80
+20260330 10:47:21.849566Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#89 - TcpServer.cc:109
+20260330 10:47:21.849714Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#87 - TcpServer.cc:109
+20260330 10:47:21.849929Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#85 - TcpServer.cc:109
+20260330 10:47:21.849969Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#86 - TcpServer.cc:109
+20260330 10:47:21.850107Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#83 - TcpServer.cc:109
+20260330 10:47:21.850149Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#81 - TcpServer.cc:109
+20260330 10:47:21.850190Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#82 - TcpServer.cc:109
+20260330 10:47:21.850443Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#88 - TcpServer.cc:109
+20260330 10:47:21.850502Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#84 - TcpServer.cc:109
+20260330 10:47:21.850540Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#80 - TcpServer.cc:109
+20260330 10:47:21.950830Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#90] from 127.0.0.1:45412 - TcpServer.cc:80
+20260330 10:47:21.963136Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#91] from 127.0.0.1:45416 - TcpServer.cc:80
+20260330 10:47:21.965015Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#92] from 127.0.0.1:45424 - TcpServer.cc:80
+20260330 10:47:21.968521Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#93] from 127.0.0.1:45426 - TcpServer.cc:80
+20260330 10:47:21.974838Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#94] from 127.0.0.1:45438 - TcpServer.cc:80
+20260330 10:47:21.976182Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#95] from 127.0.0.1:45454 - TcpServer.cc:80
+20260330 10:47:21.989439Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#96] from 127.0.0.1:45462 - TcpServer.cc:80
+20260330 10:47:22.009163Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#97] from 127.0.0.1:45464 - TcpServer.cc:80
+20260330 10:47:22.015896Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#98] from 127.0.0.1:45476 - TcpServer.cc:80
+20260330 10:47:22.030830Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#99] from 127.0.0.1:45484 - TcpServer.cc:80
+20260330 10:47:22.168932Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#96 - TcpServer.cc:109
+20260330 10:47:22.169104Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#99 - TcpServer.cc:109
+20260330 10:47:22.169147Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#95 - TcpServer.cc:109
+20260330 10:47:22.169187Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#97 - TcpServer.cc:109
+20260330 10:47:22.169228Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#98 - TcpServer.cc:109
+20260330 10:47:22.169269Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#94 - TcpServer.cc:109
+20260330 10:47:22.169308Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#92 - TcpServer.cc:109
+20260330 10:47:22.170565Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#91 - TcpServer.cc:109
+20260330 10:47:22.176680Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#90 - TcpServer.cc:109
+20260330 10:47:22.177886Z 1947113 INFO  TcpServer::removeConnectionInLoop [KrpcProvider] - connection KrpcProvider-127.0.0.1:8000#93 - TcpServer.cc:109
+20260330 10:47:22.288923Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#100] from 127.0.0.1:45500 - TcpServer.cc:80
+20260330 10:47:22.312810Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#101] from 127.0.0.1:45502 - TcpServer.cc:80
+20260330 10:47:22.313425Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#102] from 127.0.0.1:45516 - TcpServer.cc:80
+20260330 10:47:22.333242Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#103] from 127.0.0.1:45526 - TcpServer.cc:80
+20260330 10:47:22.339210Z 1947113 INFO  TcpServer::newConnection [KrpcProvider] - new connection [KrpcProvider-127.0.0.1:8000#104] from 127.0.0.1:45532 - TcpServe

@@ -15,7 +15,6 @@
 #include "Krpcmsgpack_protocol.h"
 #include "metrics_export.h"
 #include "metrics_http_server.h"
-#include "zookeeperutil.h"
 
 namespace {
 
@@ -89,20 +88,25 @@ void KrpcMsgpackProvider::Run() {
         }
     }
 
-    ZkClient zkclient;
-    zkclient.Start();
-    for (const auto &svc : service_methods_) {
-        const std::string service_path = "/" + svc.first;
-        zkclient.Create(service_path.c_str(), nullptr, 0);
-        for (const auto &method : svc.second) {
-            const std::string method_path = service_path + "/" + method;
-            zkclient.Create(method_path.c_str(), nullptr, 0);
-            char addr[128] = {0};
-            std::snprintf(addr, sizeof(addr), "%s:%d", ip.c_str(), port);
-            const std::string child_path = method_path + "/" + addr;
-            zkclient.Create(child_path.c_str(), addr, std::strlen(addr), ZOO_EPHEMERAL);
-            LOG(INFO) << "zk register ok " << child_path;
+    const bool skip_zk = ParseConfigInt(config.Load("skip_zookeeper_registration"), 0) != 0;
+    if (!skip_zk) {
+        zk_registry_.reset(new ZkClient());
+        zk_registry_->Start();
+        for (const auto &svc : service_methods_) {
+            const std::string service_path = "/" + svc.first;
+            zk_registry_->Create(service_path.c_str(), nullptr, 0);
+            for (const auto &method : svc.second) {
+                const std::string method_path = service_path + "/" + method;
+                zk_registry_->Create(method_path.c_str(), nullptr, 0);
+                char addr[128] = {0};
+                std::snprintf(addr, sizeof(addr), "%s:%d", ip.c_str(), port);
+                const std::string child_path = method_path + "/" + addr;
+                zk_registry_->Create(child_path.c_str(), addr, std::strlen(addr), ZOO_EPHEMERAL);
+                LOG(INFO) << "zk register ok " << child_path;
+            }
         }
+    } else {
+        LOG(WARNING) << "skip_zookeeper_registration=1: ZooKeeper registration skipped (use LB_STATIC_ENDPOINTS on clients)";
     }
 
     std::cout << "KrpcMsgpackProvider start service at ip:" << ip << " port:" << port << std::endl;

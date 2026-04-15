@@ -22,6 +22,18 @@ set(LIBS
     muduo_base
     glog
 )
-#添加子目录
-add_subdirectory(src)
-add_subdirectory(example)
+# 添加子目录
+# 为了让 CI/本地单测在不依赖 Muduo/ZK 的情况下也能跑通：
+# - KRPC_BUILD_FRAMEWORK=ON（默认）：构建完整框架 + example
+# - KRPC_BUILD_FRAMEWORK=OFF：仅构建 tests（Catch2 单测），跳过 muduo/zookeeper 依赖
+option(KRPC_BUILD_FRAMEWORK "Build muduo/zookeeper based framework and examples" ON)
+if(KRPC_BUILD_FRAMEWORK)
+    add_subdirectory(src)
+    add_subdirectory(example)
+endif()
+
+option(KRPC_BUILD_TESTS "Build unit tests (Catch2, no Muduo)" ON)
+if(KRPC_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

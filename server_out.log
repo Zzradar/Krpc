@@ -1,0 +1,42 @@
+2026-03-30 12:05:21,891:1913843(0x7044b02db140):ZOO_INFO@log_env@753: Client environment:zookeeper.version=zookeeper C client 3.4.13
+2026-03-30 12:05:21,892:1913843(0x7044b02db140):ZOO_INFO@log_env@757: Client environment:host.name=zzz-virtual-machine
+2026-03-30 12:05:21,892:1913843(0x7044b02db140):ZOO_INFO@log_env@764: Client environment:os.name=Linux
+2026-03-30 12:05:21,892:1913843(0x7044b02db140):ZOO_INFO@log_env@765: Client environment:os.arch=6.8.0-87-generic
+2026-03-30 12:05:21,892:1913843(0x7044b02db140):ZOO_INFO@log_env@766: Client environment:os.version=#88~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Oct 14 14:03:14 UTC 2
+2026-03-30 12:05:21,893:1913843(0x7044b02db140):ZOO_INFO@log_env@774: Client environment:user.name=zzz
+2026-03-30 12:05:21,893:1913843(0x7044b02db140):ZOO_INFO@log_env@782: Client environment:user.home=/home/zzz
+2026-03-30 12:05:21,893:1913843(0x7044b02db140):ZOO_INFO@log_env@794: Client environment:user.dir=/home/zzz/Krpc
+2026-03-30 12:05:21,893:1913843(0x7044b02db140):ZOO_INFO@zookeeper_init@818: Initiating client connection, host=127.0.0.1:2181 sessionTimeout=6000 watcher=0x641236ec8b50 sessionId=0 sessionPasswd=<null> context=0x7ffd286b5490 flags=0
+2026-03-30 12:05:21,902:1913843(0x7044ab7f7640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2026-03-30 12:05:22,151:1913843(0x7044ab7f7640):ZOO_INFO@check_events@1809: session establishment complete on server [127.0.0.1:2181], sessionId=0x10000002c871b9c, negotiated timeout=6000
+KrpcMsgpackProvider start service at ip:127.0.0.1 port:8000
+20260330 04:05:36.484124Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#1] from 127.0.0.1:44434 - TcpServer.cc:80
+20260330 04:05:36.486494Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#2] from 127.0.0.1:44446 - TcpServer.cc:80
+20260330 04:05:36.493771Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#3] from 127.0.0.1:44462 - TcpServer.cc:80
+20260330 04:05:36.494097Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#4] from 127.0.0.1:44468 - TcpServer.cc:80
+20260330 04:05:36.735527Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#2 - TcpServer.cc:109
+20260330 04:05:36.746867Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#4 - TcpServer.cc:109
+20260330 04:05:36.758972Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#1 - TcpServer.cc:109
+20260330 04:05:36.768881Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#3 - TcpServer.cc:109
+20260330 04:09:06.289733Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#5] from 127.0.0.1:37862 - TcpServer.cc:80
+20260330 04:09:06.295833Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#6] from 127.0.0.1:37864 - TcpServer.cc:80
+20260330 04:09:06.300483Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#7] from 127.0.0.1:37878 - TcpServer.cc:80
+20260330 04:09:06.307022Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#8] from 127.0.0.1:37892 - TcpServer.cc:80
+20260330 04:09:06.313874Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#9] from 127.0.0.1:37908 - TcpServer.cc:80
+20260330 04:09:06.318757Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#10] from 127.0.0.1:37916 - TcpServer.cc:80
+20260330 04:09:06.327596Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#11] from 127.0.0.1:37918 - TcpServer.cc:80
+20260330 04:09:06.346492Z 1913843 INFO  TcpServer::newConnection [KrpcMsgpackProvider] - new connection [KrpcMsgpackProvider-127.0.0.1:8000#12] from 127.0.0.1:37928 - TcpServer.cc:80
+20260330 04:09:06.638859Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#11 - TcpServer.cc:109
+20260330 04:09:06.639014Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#10 - TcpServer.cc:109
+20260330 04:09:06.702626Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#6 - TcpServer.cc:109
+20260330 04:09:06.707919Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#12 - TcpServer.cc:109
+20260330 04:09:06.743057Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#9 - TcpServer.cc:109
+20260330 04:09:06.751521Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#5 - TcpServer.cc:109
+20260330 04:09:06.754117Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvider] - connection KrpcMsgpackProvider-127.0.0.1:8000#7 - TcpServer.cc:109
+20260330 04:09:06.755472Z 1913843 INFO  TcpServer::removeConnectionInLoop [KrpcMsgpackProvi2026-03-30 12:54:57,378:1913843(0x7044ab7f7640):ZOO_WARN@zookeeper_interest@1597: Exceeded deadline by 110ms
+2026-03-30 15:24:32,628:1913843(0x7044ab7f7640):ZOO_WARN@zookeeper_interest@1597: Exceeded deadline by 2796ms
+2026-03-30 15:24:32,706:1913843(0x7044ab7f7640):ZOO_ERROR@handle_socket_error_msg@1702: Socket [127.0.0.1:2181] zk retcode=-7, errno=110(Connection timed out): connection to 127.0.0.1:2181 timed out (exceeded timeout by 408ms)
+2026-03-30 15:24:32,722:1913843(0x7044ab7f7640):ZOO_WARN@zookeeper_interest@1597: Exceeded deadline by 2899ms
+2026-03-30 15:24:34,725:1913843(0x7044ab7f7640):ZOO_WARN@zookeeper_interest@1597: Exceeded deadline by 4902ms
+2026-03-30 15:24:34,731:1913843(0x7044ab7f7640):ZOO_INFO@check_events@1763: initiated connection to server [127.0.0.1:2181]
+2026-03-30 15:24:34,836:1913843(0x7044ab7f7640):ZOO_ERROR@handle_socket_error_msg@1800: Socket [127.0.0.1:2181] zk retcode=-112, errno=116(Stale file handle): sessionId=0x10000002c871b9c has expired.

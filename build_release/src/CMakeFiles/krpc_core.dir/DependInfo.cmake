@@ -1,0 +1,29 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/zzz/Krpc/src/Krpcapplication.cc" "src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcapplication.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcchannel.cc" "src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcchannel.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcconfig.cc" "src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcconfig.cc.o.d"
+  "/home/zzz/Krpc/src/Krpccontroller.cc" "src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpccontroller.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcheader.pb.cc" "src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcheader.pb.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcmsgpack_channel.cc" "src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcmsgpack_channel.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcmsgpack_provider.cc" "src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcmsgpack_provider.cc.o.d"
+  "/home/zzz/Krpc/src/Krpcprovider.cc" "src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/Krpcprovider.cc.o.d"
+  "/home/zzz/Krpc/src/load_balancer.cc" "src/CMakeFiles/krpc_core.dir/load_balancer.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/load_balancer.cc.o.d"
+  "/home/zzz/Krpc/src/metrics_http_server.cc" "src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/metrics_http_server.cc.o.d"
+  "/home/zzz/Krpc/src/zookeeperutil.cc" "src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o" "gcc" "src/CMakeFiles/krpc_core.dir/zookeeperutil.cc.o.d"
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

@@ -962,3 +962,12 @@ int main(void)
   return 0;
 }
 
+Performing C++ SOURCE FILE Test HAVE_FLAG__ffile_prefix_map__home_zzz_Krpc_build__deps_catch2_src__ succeeded with the following output:
+Change Dir: /home/zzz/Krpc/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_f5303 && [1/2] Building CXX object CMakeFiles/cmTC_f5303.dir/src.cxx.o
+[2/2] Linking CXX executable cmTC_f5303
+
+
+Source file was:
+int main() { return 0; }

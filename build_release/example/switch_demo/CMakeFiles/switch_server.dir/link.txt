@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -rdynamic CMakeFiles/switch_server.dir/SwitchServer.cc.o CMakeFiles/switch_server.dir/__/user.pb.cc.o -o ../../../bin/switch_server  ../../src/libkrpc_core.a -lprotobuf -lpthread -lzookeeper_mt -lmuduo_net -lmuduo_base -lglog 

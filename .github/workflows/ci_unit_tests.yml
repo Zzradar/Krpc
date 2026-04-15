@@ -1,0 +1,31 @@
+name: ci_unit_tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ build-essential protobuf-compiler libprotobuf-dev
+
+      - name: Configure (unit tests only)
+        run: |
+          cmake -S . -B build_ci_unit \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DKRPC_BUILD_FRAMEWORK=OFF \
+            -DKRPC_BUILD_TESTS=ON
+
+      - name: Build
+        run: cmake --build build_ci_unit -j"$(nproc)"
+
+      - name: Test
+        run: ctest --test-dir build_ci_unit --output-on-failure -V
+

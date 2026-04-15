@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <sstream>
 #include <sys/uio.h>
+#include <cstdlib>
 #include "metrics_export.h"
 
 std::mutex g_data_mutx;  // 全局互斥锁，用于保护共享数据的线程安全
@@ -531,6 +532,23 @@ std::shared_ptr<KrpcChannel::PendingCall> KrpcChannel::CallFuture(
     pending->request_id = request_id;
     krpcheader.set_request_id(request_id);
 
+    std::string trace_id;
+    if (controller) {
+        if (auto *kc = dynamic_cast<Krpccontroller *>(controller)) {
+            trace_id = kc->TraceId();
+        }
+    }
+    if (trace_id.empty()) {
+        const char *env_trace = std::getenv("KRPC_TRACE_ID");
+        if (env_trace != nullptr && env_trace[0] != '\0') {
+            trace_id = env_trace;
+        }
+    }
+    if (trace_id.empty()) {
+        trace_id = std::string("req-") + std::to_string(request_id);
+    }
+    krpcheader.set_trace_id(trace_id);
+
     std::string rpc_header_str;
     if (!krpcheader.SerializeToString(&rpc_header_str)) {
         return fail_immediately("serialize rpc header error");
@@ -1036,10 +1054,19 @@ void KrpcChannel::StopRecvThread() {
     if (!m_recv_thread_started) {
         return;
     }
+    const bool same_thread = m_recv_thread.joinable() &&
+                             m_recv_thread.get_id() == std::this_thread::get_id();
     m_recv_running.store(false, std::memory_order_release);
+    if (!same_thread) {
+        // Wake poll/recv immediately so short-lived channels don't block destructor joins.
+        std::lock_guard<std::mutex> socket_lock(m_socket_mutex);
+        if (m_clientfd != -1) {
+            ::shutdown(m_clientfd, SHUT_RDWR);
+        }
+    }
     m_recv_cv.notify_all();
     if (m_recv_thread.joinable()) {
-        if (m_recv_thread.get_id() == std::this_thread::get_id()) {
+        if (same_thread) {
             // 避免在线程自身上调用 join 导致的 deadlock 异常
             m_recv_thread.detach();
         } else {

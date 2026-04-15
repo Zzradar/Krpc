@@ -20,6 +20,7 @@
 
 #include "Krpcmsgpack_dispatcher.h"
 #include "Krpcmsgpack_protocol.h"
+#include "zookeeperutil.h"
 
 class KrpcMsgpackProvider {
 public:
@@ -82,4 +83,7 @@ private:
     std::atomic<bool> stop_workers_{false};
     size_t task_queue_capacity_{1024};
     int worker_thread_count_{0};
+
+    // 保持 ZK 会话存活至进程退出（见 KrpcProvider 中 zk_registry_ 注释）。
+    std::unique_ptr<ZkClient> zk_registry_;
 };

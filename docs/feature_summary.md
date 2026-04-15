@@ -1,178 +1,351 @@
-# 阶段性功能记录
+# Krpc 功能说明书（实现侧）
 
-> 记录当前已完成的框架增强项，便于后续继续扩展。
+本文档面向**已打开仓库、需要对照代码或配置**的读者，按功能说明**谁负责（客户端 / 服务端 / 双方）**、**做什么**、**如何验证**。与 [README.md](../README.md) 的「整体介绍」互补；更细的架构见 [项目说明书_架构与模块.md](项目说明书_架构与模块.md)。
 
-## 1. 协议头扩展
-- **改动文件**：`src/Krpcheader.proto` 及生成的 `.pb.cc/.pb.h`。
-- **新增字段**：`magic`、`version`、`msg_type`、`request_id`、`body_size`、`compress_type`、`service_name`、`method_name`。
-- **作用**：
-  - 统一帧格式，校验魔数/版本，防止粘包解析错误。
-  - `msg_type` 区分 Request/Response/Ping/Pong，为心跳与后续扩展预留空间。
-  - `request_id` 让客户端能够匹配响应，与超时/重试逻辑绑定。
+---
 
-## 2. 客户端调用与超时控制
-- **核心文件**：`src/Krpcchannel.cc`、`src/include/Krpcchannel.h`、`src/Krpccontroller.cc`。
-- **功能**：
-  - 引入 `Krpccontroller::SetTimeoutMs`，RPC 调用可自定义超时时间，默认值来自配置 `rpc_timeout_ms`。
-  - 使用 `poll()` 等待可读事件，超时后返回错误并关闭 socket，避免永久阻塞。
-  - 保留 `Krpccontroller::Reset` 以便并发压测场景循环复用控制器。
+## 阅读约定
 
-## 3. 客户端心跳与自动重连
-- **线程模型**：在 `KrpcChannel` 构造时启动心跳线程，利用 `condition_variable` 结合 `HeartbeatActivityNotifier` 唤醒。
-- **心跳流程**：
-  1. 每 `heartbeat_interval_ms` 发送 `MSG_TYPE_PING` 帧，沿用请求序列化 + `send()`。
-  2. `poll()` 等待 `MSG_TYPE_PONG`，失败会累计 `m_missed_heartbeat_count`。
-  3. 连续超时超过 `heartbeat_miss_limit` 时，触发 `HandleHeartbeatFailure` 关闭 fd，业务线程下一次调用时自动重新连接。
-- **线程安全**：所有 socket 操作通过 `m_socket_mutex` 保护，避免心跳线程和业务线程抢占导致 `EBADF`。
+| 用语 | 含义 |
+|------|------|
+| **客户端** | 发起 RPC 的进程：建立连接、序列化请求、等待或异步接收响应。 |
+| **服务端** | 监听端口、收包、解析协议、执行业务并返回结果的进程。 |
+| **双方** | 协议或配置上必须一致，不单独属于某一侧。 |
 
-## 4. 服务端心跳与空闲踢除
-- **消息层**：`KrpcProvider::OnMessage` 支持 `MSG_TYPE_PING/PONG`，立刻回复 PONG 并刷新连接活跃时间。
-- **连接状态**：`connection_states_` 记录 `last_activity` + `std::weak_ptr<TcpConnection>`。
-- **空闲扫描**：
-  - `Run()` 启动定时器 `runEvery(interval)`，周期取 `heartbeat_interval_ms`。
-  - 每轮计算 `idle_ms = timeDifference(now, last_activity)`；超过 `interval * (miss_limit + 1)` 的连接执行 `forceClose()`。
-  - 日志中会输出 `closing idle connection` 以及 Muduo 的 `removeConnectionInLoop`。
+---
 
-## 5. 示例 & 测试
-- **timeout_demo**（`example/timeout_demo/TimeoutClient.cc`）：展示正常调用 + 自定义 1s 超时的慢调用。
-- **压力客户端**（`example/caller/Kclient.cc`）：支持多线程循环请求，适配新的 `controller.Reset()`。
-- **heartbeat_demo**（`example/heartbeat_demo/HeartbeatClient.cc`）：通过环境变量配置空闲时间/轮数，用于观察心跳保活与服务器踢除行为。
-- **README 更新**：新增“心跳与空闲连接测试指引”章节，描述配置含义与完整验证步骤。
-- **运行验证**：`cmake --build build && ./bin/server -i ./bin/test.conf` 后，在单独终端执行 `./bin/client -i ./bin/test.conf`、`./bin/timeout_client -i ./bin/test.conf`、`./bin/heartbeat_client -i ./bin/test.conf`，覆盖正常压测、超时、心跳稳定性场景。
+## 1. 协议帧头（双方约定）
 
-## 6. 配置项（`bin/test.conf`）
-- `rpcserverip` / `rpcserverport`：服务地址。
-- `zookeeperip` / `zookeeperport`：注册中心。
-- `heartbeat_interval_ms`：心跳周期（默认 5000）。
-- `heartbeat_miss_limit`：允许的连续心跳丢失次数（默认 3）。
-- `rpc_timeout_ms`：RPC 默认超时（默认 3000）。
-- `lb_fail_cooldown_ms`：负载均衡端点失败冷却时间（默认 3000）。
-- `log_minlevel`：日志最小级别（0=INFO，1=WARNING，2=ERROR，3=FATAL，默认 1）。
-- `logtostderr`：日志输出到 stderr（1 开、0 关，默认 1）。
-- `colorlogtostderr`：stderr 彩色输出（1 开、0 关，默认 1）。
+| 项目 | 说明 |
+|------|------|
+| **归属** | **双方**：编解码规则一致；具体序列化在客户端打包、服务端解析。 |
+| **做什么** | 在 TCP 字节流上定义固定含义的帧头，避免把多帧粘在一起读错。 |
+| **内容** | 魔数、版本、`msg_type`（请求/响应/心跳等）、`request_id`、`body` 长度、可选压缩类型、服务名与方法名等。 |
+| **效果** | 可校验连接是否为本协议；请求与响应可按 `request_id` 配对；为心跳、后续消息类型扩展留字段。 |
+| **相关代码** | `src/Krpcheader.proto` 及生成代码。 |
 
-## 7. 后续可扩展点
-- 引入真正的心跳 failover（重连后自动重新注册订阅）。
-- 在服务端补充监控指标（心跳 RTT、idle close 次数）。
-- 扩展 `msg_type`：如 ONEWAY 通知、服务端推送等。
-- 完善文档中对压测结果、性能指标的记录。
+---
 
-## 8. 客户端异步调用 MVP（Phase 1）
-- **待处理映射**：`KrpcChannel` 新增 `PendingCall` 结构（响应指针、Controller、promise/future、回调与 request_id），所有在途请求集中放入 `m_pending_calls`，便于匹配响应与超时清理。
-- **通俗说法**：就像把所有挂号单放进取号柜，编号一一对应，服务窗口（服务器响应）一来就能找到原始请求，没人会排错队。
-- **CallFuture 流程**：`CallMethod` 退化为 thin wrapper，统一走 `CallFuture` 进行序列化、`EnsureConnection`、注册 pending，再交由 `SendBuffer` 写 socket。传入 `done` 时完全异步执行，不传时使用 `shared_future` 阻塞等待。
-- **通俗说法**：业务线程只负责填好表格塞进传送带，后面的流水线会自动连线、发包、等结果；要同步就原地等，要异步就登记一个回拨电话。
-- **RecvLoop + 心跳整合**：新增后台接收线程解析 length-prefix 帧、调用 `ResolvePendingCall` 或 `ResolveHeartbeat`。心跳发送端只负责编写 PING，由 recv loop 识别 PONG，避免与业务读抢占。
-- **通俗说法**：相当于安排了一个专门的前台负责收快递，正常包裹和“我还活着”的心跳信号都它来拆，别的线程不用再手忙脚乱抢着读 socket。
-- **失败兜底**：`HandleHeartbeatFailure`、`RemovePendingCall`、`FailPendingCalls` 统一收口，出现发送异常、心跳超时或连接关闭时能及时关闭 fd、标记 Controller 出错并唤醒回调。
-- **通俗说法**：一旦线路掉线，这个“事故处理中心”会立刻通知所有等待的人“今天别等了”，同时把电话线重新插好，避免有人傻站着不走。
+## 2. 调用超时（客户端）
 
-## 9. 客户端异步 Phase 2（Callback + Timeout Manager）
-- **CallAsync 接口**：新增 `KrpcChannel::CallAsync(..., AsyncCallback cb)`，业务侧可直接传入 `std::function`（签名：`RpcController*, Message*`），无需再手动创建 `Closure`。原有 `CallMethod` 仍兼容同步/`done` 异步调用。
-- **通俗说法**：除了“打电话等结果”，现在还能留个号码就走，系统自己回拨，业务不用知道底下是 promise 还是 closure。
-- **SendQueue & SendLoop**：`CallFuture` 不再直接 `send()`，而是把序列化后的包入队，由独立 `SendLoop` 串行写 socket，保证业务线程立刻返回，同时与心跳写操作通过同一把锁协作。
-- **通俗说法**：所有包裹统一交给物流分拣中心发货，避免大家挤在快递窗口，自然也不会和心跳线程抢同一根网线。
-- **TimeoutManager**：后台线程每 50ms 扫描 `m_pending_calls`，超过 `timeout_ms` 的请求会立刻标记失败并触发 promise/回调，异步调用不再依赖业务线程轮询判定超时。
-- **通俗说法**：有个计时器专门盯着“谁已经等太久”，超点就发通知，不用业务写额外的 watchdog。
-- **统一完成路径**：所有成功/失败场景（正常响应、发送异常、心跳掉线、显式超时）都经 `CompletePending`，确保 `controller->Failed()`、`done->Run()`、`AsyncCallback` 只触发一次。
-- **通俗说法**：就像客服工单中心，任何结论都得通过同一个出口广播，避免一个问题被重复通知或完全遗忘。
-- **排队清理**：连接断开时会清空发送队列并逐个 `RemovePendingCall`，避免仍在排队的请求挂死；`HandleHeartbeatFailure` 也会唤醒发送/接收/心跳等待者。
-- **通俗说法**：一旦发现公交停运，会把站台上排队的人统统劝走重新安排，保证没有“排在队里却永远上不了车”的尴尬。
-- **验证方式**：重新 `cmake --build build && ./bin/server -i ./bin/test.conf` 后，在不同终端执行 `./bin/client -i ./bin/test.conf`（压力 + CallAsync stub）、`./bin/timeout_client -i ./bin/test.conf`（观察 TimeoutManager 回调）、`./bin/heartbeat_client -i ./bin/test.conf`（确保心跳丢包后请求被及时 fa123456
-il），日志中可看到 send loop、timeout manager 的相关输出。
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**：在本地限制「等响应」的最长时间。 |
+| **做什么** | 每次调用可设置超时；默认取自配置项 `rpc_timeout_ms`。 |
+| **行为** | 超时后判定本次调用失败并关闭本次使用的连接相关资源，避免线程永久阻塞。 |
+| **相关代码** | `Krpccontroller`（设置超时）、`KrpcChannel` 内等待可读与超时处理。 |
 
-## 10. 服务端异步 Phase 3（线程池调度 RPC）
-- **线程池调度**：`KrpcProvider` 在 `Run()` 时启动固定大小的 worker 组（默认取 `std::thread::hardware_concurrency()`，最少 4）。Muduo IO 线程仅负责解析帧并将 RPC 任务压入队列，`Service::CallMethod` 由 worker 顺序执行，避免耗时 handler 阻塞网络事件。
-- **通俗说法**：把“窗口收材料 + 后台审批”拆开，接待窗口只负责收单，真正审件的搬到后仓；窗口就算来了一堆慢单也不会被拖死。
-- **任务队列与背压**：借助 `std::deque` + `condition_variable` 实现阻塞队列，容量由 `provider_queue_capacity`（默认 1024）控制。队列满时生产者会等待，框架停机或超出限制时会回退为当前线程同步执行并打印告警，防止无限排队占满内存。
-- **通俗说法**：等于在前台放了一个限流取号机，号满了就让人临时原地办理或稍后再试，不会让大厅挤爆。
-- **资源/异常处理**：任务持有 request/response/`Closure` 指针，worker 通过 `unique_ptr` 自动释放 request，执行期间捕获异常并写入日志，必要时丢弃响应/回调，确保单个服务崩溃不会毒死整个池子。
-- **通俗说法**：审核员的桌子自带碎纸机，谁把材料弄坏了自己清理，别指望保洁；就算有人发脾气砸桌子，也只影响当前办件。
-- **心跳与连接管理**：`MSG_TYPE_PING/PONG` 仍在 IO 线程即时应答，不进入队列，`connection_states_` 能持续刷新，长时间运行不会误判为超时。
-- **通俗说法**：保安巡逻、心跳打卡仍在原班人马负责，后仓再忙也不耽误门卫登记。
-- **验证方式**：`cmake --build build && ./bin/server -i ./bin/test.conf` 后，同时运行 `./bin/client`、`./bin/heartbeat_client`、`./bin/timeout_client`，并在服务实现中注入 `sleep` 模拟慢调用，确认心跳/超时仍按预期触发且 server 日志无阻塞告警。
+---
 
-## 12. 客户端连接池（ZK 缓存 + 复用）
-- **功能**：按端点缓存空闲连接，避免每次调用握手；ZK 查询结果做进程内缓存，减少重复读取。
-- **配置**（`bin/test.conf`）：`enable_connection_pool`（1 开、0 关，默认 1），`connection_pool_max_idle`（每端点最大空闲连接数，默认 4）。
-- **实现要点**：
-  - `Krpcchannel` 归还连接前做基础健康检查，超过池上限直接关闭；出池会再校验 fd 健康，失效则丢弃并重建；缓存服务地址（method_path -> ip:port）。
-  - 复用/新建日志：`reuse pooled connection` vs `connect server success`。
-  - `example/pool_demo` 支持 `POOL_DEMO_MODE=new_channel`，开池时首条握手后续复用，关池时每次握手。
-- **验证命令**：
-  ```bash
-  # 开池复用
-  enable_connection_pool=1  # 配置
+## 3. 心跳保活与断线重连（客户端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**：独立心跳线程 + 业务线程共用连接时需加锁。 |
+| **做什么** | 按配置周期发送心跳帧；收不到对端应答则累计失败次数，超过阈值则关闭连接；业务下次调用时重新建连。 |
+| **行为** | 长连接在空闲时仍保持存活；网络抖动或服务器重启后，通过重连恢复后续 RPC。 |
+| **相关代码** | `KrpcChannel` 构造时启动心跳线程，与 `HeartbeatActivityNotifier`、socket 互斥配合。 |
+
+---
+
+## 4. 心跳应答与空闲踢连接（服务端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **服务端**：在 IO 线程处理 Ping/Pong；定时任务扫描连接是否长期无活动。 |
+| **做什么** | 收到心跳立即回复并刷新「最后活动时间」；超过阈值未活动的连接被主动关闭。 |
+| **行为** | 僵尸连接不会一直占文件描述符；与客户端心跳配合形成可预期的连接生命周期。 |
+| **相关代码** | `KrpcProvider::OnMessage`（Ping/Pong）、`connection_states_`、定时 `runEvery` 扫描。 |
+
+---
+
+## 5. 客户端异步调用（多阶段）
+
+### 5.1 在途请求管理与接收线程（客户端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**。 |
+| **做什么** | 用 `request_id` 把「已发出、尚未完成」的请求记在表里；独立接收线程解析 TCP 上的帧，把响应分发给对应等待方或心跳处理。 |
+| **行为** | 同步、异步、心跳共用一条读路径，避免多线程抢读同一 socket。 |
+| **相关代码** | `PendingCall`、`m_pending_calls`、`RecvLoop`，与心跳失败时批量失败在途请求的逻辑。 |
+
+### 5.2 异步 API、发送队列与超时扫描（客户端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**。 |
+| **做什么** | 提供 `CallAsync` 等接口；发送侧先入队再由单独线程顺序写 socket；后台线程按时间扫描在途请求，超时则完成并回调/置失败。 |
+| **行为** | 业务线程可快速返回；超时不必依赖业务自己轮询；成功/失败统一走一套完成逻辑，避免重复回调。 |
+| **相关代码** | `SendQueue` / `SendLoop`、`TimeoutManager`、`CompletePending`。 |
+
+---
+
+## 6. 服务端业务线程池（服务端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **服务端**：网络 IO 与业务执行分离。 |
+| **做什么** | IO 线程只负责收包、解析 RPC 并入队；worker 线程从队列取任务并调用用户注册的 `Service::CallMethod`。 |
+| **行为** | 慢业务不会阻塞 epoll/读事件；队列有容量上限，满时可阻塞生产者或降级策略（见实现与日志）。 |
+| **相关代码** | `KrpcProvider::Run` 启动 worker、队列与 `KrpcMsgpackProvider` 对称逻辑。 |
+| **注意** | 心跳仍在 IO 路径快速处理，不进入业务队列。 |
+
+---
+
+## 7. 示例与可执行程序（验证用）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | 仓库内示例程序，通常需同时起服务端与客户端。 |
+| **内容** | 超时演示、心跳演示、压力客户端、`pool_demo`、`bench_demo`、`async_client` 等。 |
+| **用途** | 验证超时、心跳、连接池、同步/异步、长/短连接与指标输出。 |
+
+**典型验证流程**：编译后启动 `server` 与对应 `client` / 脚本；具体命令以 README 或各 example 目录说明为准。
+
+---
+
+## 8. 连接池与地址缓存（客户端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**（按服务端地址 `ip:port` 缓存连接；与发现结果配合）。 |
+| **做什么** | 对同一端点复用已建立的 TCP，减少重复握手；归还前做简单健康检查；可配置每端点最大空闲连接数。 |
+| **行为** | 首次连接日志与后续「复用」可区分；服务端踢掉空闲连接后，客户端下次会重建连接。 |
+| **配置** | `enable_connection_pool`、`connection_pool_max_idle`（见 `bin/test.conf`）。 |
+
+---
+
+## 9. 负载均衡与服务发现（客户端 + 注册中心）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **服务端**向注册中心登记实例；**客户端**拉取列表并选择地址。 |
+| **做什么** | 同一服务方法可对应多个 `ip:port`；客户端轮询选择；失败端点可进入短时冷却，并尝试其他节点。 |
+| **无 ZK 时** | 可用环境变量提供静态端点列表，行为与「多节点轮询」一致。 |
+| **与连接池** | 先选定端点，再对该端点取/还连接；换节点会建新连到目标地址。 |
+| **服务端 ZK 会话** | 实例在 ZK 下的子节点为 **EPHEMERAL**，依赖服务端进程内 **保持长连接**；会话一旦关闭，子节点会消失。实现上 `ZkClient` 挂在 `KrpcProvider` / `KrpcMsgpackProvider` 成员上，与 `Run()` 事件循环同生命周期，避免「注册即关」导致 `ls` 为空。 |
+
+---
+
+## 10. 压测与对比 Demo（客户端为主）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**发压；**服务端**承载请求。 |
+| **做什么** | 同步/异步、长连接/短连接等组合下统计 QPS、延迟分位与成功率。 |
+| **用途** | 对比不同调用方式与连接策略的大致性能差异。 |
+
+---
+
+## 11. 异步示例（验证客户端 API）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**示例（`async_demo`）。 |
+| **做什么** | 演示 future 等待与 callback 两种异步用法及并发、超时参数。 |
+
+---
+
+## 12. 发送路径优化：聚合写（客户端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **客户端**发送路径。 |
+| **做什么** | 将多段缓冲区通过一次系统调用写出，减少拼接大缓冲的拷贝。 |
+| **行为** | 与发送队列、长连接复用、错误时清空队列等逻辑一致。 |
+
+---
+
+## 13. Msgpack 通道能力对齐（客户端 + 服务端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **双方**使用 msgpack 编解码时；超时/异步/发送队列主要在**客户端**；指标暴露在**服务端**（若开启）。 |
+| **做什么** | 与 Protobuf 通道类似：单次调用超时、异步回调、发送侧队列与聚合写；服务端可暴露 Prometheus 文本指标（含按方法维度）。 |
+| **配置** | 序列化协议在配置中与服务端一致（如 `rpc_codec`）。 |
+
+---
+
+## 14. 日志（glog）与排障
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **双方进程**均可通过配置文件初始化 **glog**（入口在 `KrpcApplication`，凡带 `-i` 读配置的 `bin/*` 客户端/服务端都会走同一套初始化逻辑）。 |
+| **做什么** | 控制最小日志级别、是否打到 stderr、是否彩色；便于本地调试与保留现场。 |
+
+### 14.1 常用配置项（写在 `*.conf`）
+
+| 配置项 | 含义 |
+|--------|------|
+| `log_minlevel` | 最小级别：`0=INFO`，`1=WARNING`，`2=ERROR`，`3=FATAL`（默认多为 `1`，压测配置里有时会调到 `2` 降噪）。 |
+| `logtostderr` | `1` 输出到 stderr，`0` 否（默认多为 `1`）。 |
+| `colorlogtostderr` | stderr 是否彩色（默认多为 `1`）。 |
+
+### 14.2 排障时建议看什么
+
+- **客户端**：连接建立/复用、超时、异步发送队列与 `pending` 清理、负载均衡选端点（日志里常有 `lb`、`zk`、`connect` 等关键词，具体以当前版本输出为准）。
+- **服务端**：收包解析、业务线程池、心跳 Ping/Pong、空闲踢连接、Metrics HTTP 启动失败等。
+- **跨进程对齐**：若在 Protobuf 路径下使用 **`trace_id`**，可在客户端与服务端日志里按同一 ID 过滤；细节见 [深挖_trace_id_日志传播.md](深挖_trace_id_日志传播.md)。
+
+---
+
+## 15. Metrics（Prometheus 文本，服务端）
+
+| 项目 | 说明 |
+|------|------|
+| **归属** | **服务端**：在 `KrpcProvider` / `KrpcMsgpackProvider` 启动流程中，若开启则拉起简易 HTTP，对外暴露 **Prometheus 文本格式** 指标（与 RPC 监听端口**不是**同一个端口）。 |
+| **做什么** | 便于本地或 Prometheus 拉取：观察 QPS、延迟分位、按方法维度聚合等（具体指标名以 `/metrics` 实际输出为准）。 |
+
+### 15.1 配置项
+
+| 配置项 | 含义 |
+|--------|------|
+| `metrics_http_enabled` | `1` 开启，`0` 关闭（默认依示例配置而定；本地压测用 `bench_local_*.conf` 时常为 `0`）。 |
+| `metrics_http_port` | 监听端口，例如 `9100`。访问路径一般为 **`http://<host>:<port>/metrics`**。 |
+
+### 15.2 多实例时注意
+
+- 每个 **server 进程**各自监听自己的 metrics 端口；**两个实例不能共用同一 `metrics_http_port`**，否则第二个会启动失败或冲突。  
+- 例如实例 A 用 `9100`，实例 B 在配置里改为 `9101`（同时 `metrics_http_enabled=1`）。
+
+### 15.3 快速验证
+
+```bash
+# 服务端已用 test.conf 启动且 metrics_http_enabled=1、metrics_http_port=9100 时：
+curl -sS http://127.0.0.1:9100/metrics | head
+```
+
+README 中也有与 `rpc_codec` 切换配合的示例命令，可与本节对照。
+
+---
+
+## 16. 配置项速查（`bin/test.conf` 等）
+
+| 配置项 | 含义 |
+|--------|------|
+| `rpcserverip` / `rpcserverport` | 服务端地址（直连或配合发现使用）。 |
+| `zookeeperip` / `zookeeperport` | 注册中心（可选）。 |
+| `heartbeat_interval_ms` | 心跳周期。 |
+| `heartbeat_miss_limit` | 允许连续心跳失败次数。 |
+| `rpc_timeout_ms` | 默认 RPC 超时。 |
+| `lb_fail_cooldown_ms` | 负载均衡失败端点冷却时间。 |
+| `log_minlevel` / `logtostderr` / `colorlogtostderr` | 日志级别与输出（详见 **§14**）。 |
+| `metrics_http_enabled` / `metrics_http_port` | 服务端 Prometheus 文本导出（详见 **§15**）。 |
+
+更全列表以仓库内示例配置为准。
+
+---
+
+## 17. 后续可扩展点（备忘）
+
+- 心跳失败后的故障转移（重连后状态恢复）。
+- 服务端指标：心跳 RTT、idle 关闭次数等。
+- 扩展 `msg_type`：单向、推送等。
+- 文档与压测数据持续更新。
+
+---
+
+## 文档与代码索引（便于检索）
+
+| 主题 | 主要路径 |
+|------|----------|
+| 协议头 | `src/Krpcheader.proto` |
+| 客户端通道 / 超时 / 异步 / 连接池 | `src/Krpcchannel.cc`、`src/include/Krpcchannel.h` |
+| 控制器 | `src/Krpccontroller.cc` |
+| 服务端 Protobuf | `KrpcProvider` 相关 |
+| 服务端 Msgpack | `KrpcMsgpackProvider` 相关 |
+| 日志初始化（glog） | `src/Krpcapplication.cc`、`src/include/KrpcLogger.h` |
+| Metrics HTTP | `src/include/metrics_http_server.h`、`KrpcProvider` / `KrpcMsgpackProvider` 启动处、`metrics_export.h` |
+| trace_id 深挖 | [深挖_trace_id_日志传播.md](深挖_trace_id_日志传播.md) |
+| 故障演练 | [故障演练_稳定性验证.md](故障演练_稳定性验证.md) |
+| 超时演示 | `example/timeout_demo/` |
+| 心跳演示 | `example/heartbeat_demo/` |
+| 连接池演示 | `example/pool_demo/` |
+| 压测 | `example/bench_demo/` |
+| 异步示例 | `example/async_demo/` |
+
+---
+
+## 附录：常用验证命令（复制即用）
+
+以下均假设已 `cmake` 编译，且**先启动服务端**再跑客户端类程序。工作目录以仓库根为准。
+
+### 连接池（`pool_demo`）
+
+```bash
+# 开池：预期首条 connect，后续多 reuse
+# 在 test.conf 中 enable_connection_pool=1
+POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
+grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
+
+# 关池对比：enable_connection_pool=0，同上命令，预期每次 connect
+
+# 闲置后验证出池重建（按需调大空闲时间）
+POOL_DEMO_MODE=new_channel POOL_DEMO_IDLE_MS=30000 POOL_DEMO_IDLE_AT=1 ./bin/pool_demo -i ./bin/test.conf
+```
+
+### 负载均衡静态端点（无需 ZK）
+
+```bash
+LB_STATIC_ENDPOINTS=127.0.0.1:8000,127.0.0.1:8001,127.0.0.1:8002 \
   POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
-  grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
-  # 关池对比
-  enable_connection_pool=0  # 配置
-  POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1
-  grep -E "connect server success|reuse pooled connection" /tmp/pool_demo.log
-  # 触发服务端闲置踢除，验证出池校验与自动重建
-  POOL_DEMO_MODE=new_channel POOL_DEMO_IDLE_MS=30000 POOL_DEMO_IDLE_AT=1 ./bin/pool_demo -i ./bin/test.conf
-  # 每次调用间隔，可观察池内复用统计
-  POOL_DEMO_SLEEP_MS=500 POOL_DEMO_ITERATIONS=5 ./bin/pool_demo -i ./bin/test.conf
-  ```
-- **验证结论**：首条握手、后续复用；空闲 30s 后出池重建坏 FD；双实例轮询时各端点首条握手、后续各自复用。
-- **通俗说法**：像在车站存了几串备用钥匙，用之前都会先确认钥匙没坏，坏了立刻配新钥匙；换站台（切换端点）时用对应那串钥匙，回来还能继续用老钥匙。
+# 日志中应能看到轮询与连接复用（需对应端口有服务）
+```
 
-## 13. 负载均衡基础（Round Robin + 多节点注册）
-- **节点注册**：服务端在 `/service/method` 下创建持久节点，并为每个实例创建子节点 `/service/method/<ip:port>`（ZK 临时节点），支持同一方法多副本并存。
-- **客户端发现**：`KrpcChannel` 通过 `GetChildren` 拉取子节点列表，缓存 method_path -> [ip:port]，兼容旧格式（节点数据直接存 ip:port）；端点列表进程内 5s TTL 缓存，减少频繁 ZK 连接；`LB_STATIC_ENDPOINTS` 仅解析一次并走静态列表，不再反复打印。
-- **策略**：内置 `RoundRobinLoadBalancer`（原子轮询），每次调用按节点列表选一个端点；连接失败会顺次尝试其他节点兜底，失败端点进入冷却窗口（`lb_fail_cooldown_ms`，默认 3s），无节点时返回错误。
-- **连接复用**：选择节点后结合连接池按端点取/还连接，若切换节点会关闭旧连接并建立新连接。
-- **验证方式**：
-  - 静态端点覆盖（无需 ZK）：`LB_STATIC_ENDPOINTS=127.0.0.1:8000,127.0.0.1:8001,127.0.0.1:8002 POOL_DEMO_MODE=new_channel ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_demo.log 2>&1`，日志中 `lb selected endpoint` 轮询 8000/8001/8002，首次握手后显示 `reuse pooled connection`。
-  - ZK 模式：确保 `/UserServiceRpc/Login/<ip:port>` 子节点存在（多实例注册后），运行 `pool_demo`，观察 `zk children ...` 数量与 `selected endpoint` 轮换。
-- **验证结论**：双实例轮询分发正常；宕掉的端点（连接拒绝）会被记录并自动回退到存活端点，整体成功率保持 100%。
-- **通俗说法**：就像两辆班车轮流来，坏掉的那班车到站后直接被跳过，乘客自动换乘另一班，不耽误大家上路。
+### ZK 发现 + 多实例（`pool_demo` 日志，无需安装 ripgrep）
 
-## 14. 压测对比 Demo（同步 vs 异步，长连接 vs 短连接）
-- **新增示例**：`example/bench_demo/BenchClient.cc`，支持同步/异步调用、长连接/短连接切换，统计成功/失败、QPS 与延迟分位（p50/p95/p99/max），定期输出 `[metrics]`。
-- **运行方式**：
-  ```bash
-  # 同步 + 长连接（默认）
-  BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
-  # 异步 + 长连接
-  BENCH_MODE=async BENCH_CONN=keepalive BENCH_CONCURRENCY=8 BENCH_REQUESTS=500 ./bin/bench_demo -i ./bin/test.conf
-  # 同步 + 短连接
-  BENCH_MODE=sync BENCH_CONN=short BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
-  ```
-  可选：`BENCH_SLEEP_MS` 控制请求间隔毫秒。
-- **输出**：实时统一调用日志；每 10s 自动汇总窗口 QPS/成功/失败/失败率及 p50/p95/p99/max；结束时打印总览。
-- **通俗说法**：像用同一条电话线连续拨号（长连接）和每次挂断重拨（短连接）对比；还能切换“边说边等”（同步）和“说完就挂等回拨”（异步），看哪种拨号方式更快。
+先起多个 `bin/server`（不同端口、未设置 `skip_zookeeper_registration`），客户端**不要**设置 `LB_STATIC_ENDPOINTS`。跑 demo 后从日志里筛关键词请用系统自带的 **`grep -E`**（未安装 `rg` 时也可用）。
 
-## 11. 异步示例 Phase 4（示例/验证）
-- **新增示例**：`example/async_demo/AsyncClient.cc`，通过 `KrpcChannel::CallAsync` 演示 future 等待与 callback 回调两种形态，支持并发、请求数、超时、自定义间隔（环境变量：`ASYNC_MODE`=`future|callback`、`ASYNC_CONCURRENCY`、`ASYNC_REQUESTS`、`ASYNC_TIMEOUT_MS`、`ASYNC_SLEEP_MS`）。
-- **构建**：`cmake --build build --target async_client`。
-- **运行**：
-  - future 模式：`./bin/async_client -i ./bin/test.conf`（默认 future，可用 `ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20` 调整）。
-  - callback 模式：`ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf`。
-- **输出**：打印总请求数、成功/失败、p50/p95/p99 延迟、总耗时，便于对比同步 vs 异步、future vs callback。
+```bash
+unset LB_STATIC_ENDPOINTS
+```
 
-## 15. 客户端零拷贝发送路径（writev 聚合）
-- **改动文件**：`src/Krpcchannel.cc`、`src/include/Krpcchannel.h`。
-- **实现要点**：
-  - 发送线程改为使用 `writev` 将 varint header + protobuf header + body 三段聚合写出，避免拼接大缓冲区的额外拷贝，并正确处理部分写和重试。
-  - 发送队列串行写 socket，与心跳/recv 分离，错误时会清空队列、关闭 fd 并批量失败 pending call，保证一致性。
-  - 长连接复用仍通过连接池/负载均衡选择端点，再在 send loop 中零拷贝发包。
-- **验证命令（同步 + 长连接）**：
-  ```bash
-  mkdir -p bench_logs
-  for KB in 1 4 16 64 256 1024; do
-    LOG=bench_logs/sync_${KB}k_zero.log
-    BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 BENCH_PAYLOAD_KB=$KB \
-      ./bin/bench_demo -i ./bin/test.conf >"$LOG" 2>&1
-    grep "=== bench summary ===" -A5 "$LOG"
-    echo ""
-  done
-  ```
-  最近一次运行（1KB→1MB）QPS ≈ 608–627，p95=0–1ms，p99≈103ms，成功率 100%。
-- **后续优化方向**：p99 被固定 ~103ms 的处理/计时开销主导，可在服务端去除固定延迟或拉长基准请求数以放大零拷贝收益；补充异步 + 更高并发基准对比零拷贝开/关。
+```bash
+POOL_DEMO_MODE=new_channel POOL_DEMO_ITERATIONS=40 POOL_DEMO_SLEEP_MS=200 \
+  ./bin/pool_demo -i ./bin/test.conf > /tmp/pool_zk.log 2>&1
+```
 
-## 16. Msgpack 通道能力对齐（per-call 超时 / callback / 发送队列 / metrics）
-- **per-call 超时**：`KrpcMsgpackChannel::CallWithTimeout` 与 `CallAsyncWithTimeout` 支持单次调用超时，不再仅依赖全局 `rpc_timeout_ms`。
-- **callback 异步**：msgpack 新增 `CallAsync`/`CallAsyncWithTimeout`，回调在响应到达时触发，语义与 protobuf 通道一致。
-- **发送队列 + writev**：msgpack 客户端新增 send 线程，统一串行写 socket；发送路径使用 `writev` 聚合 length + payload，减少拷贝与系统调用。
-- **metrics 对齐**：msgpack 服务端记录调用耗时/成功率并复用 `metrics_http_*` 配置启动 metrics HTTP 服务；Prometheus 输出增加按 `service.method` 维度的分组指标。
+```bash
+grep -E "zk children|lb selected endpoint|connect server success|reuse pooled connection|fail|error" /tmp/pool_zk.log
+```
+
+### 压测 `bench_demo`
+
+```bash
+BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
+BENCH_MODE=async BENCH_CONN=keepalive BENCH_CONCURRENCY=8 BENCH_REQUESTS=500 ./bin/bench_demo -i ./bin/test.conf
+BENCH_MODE=sync BENCH_CONN=short BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 ./bin/bench_demo -i ./bin/test.conf
+# 可选 BENCH_SLEEP_MS 控制间隔
+```
+
+### 同步 + 长连接 + 不同 payload（观察聚合写与吞吐）
+
+```bash
+mkdir -p bench_logs
+for KB in 1 4 16 64 256 1024; do
+  LOG=bench_logs/sync_${KB}k_zero.log
+  BENCH_MODE=sync BENCH_CONN=keepalive BENCH_CONCURRENCY=4 BENCH_REQUESTS=200 BENCH_PAYLOAD_KB=$KB \
+    ./bin/bench_demo -i ./bin/test.conf >"$LOG" 2>&1
+  grep "=== bench summary ===" -A5 "$LOG"
+  echo ""
+done
+```
+
+### 异步示例
+
+```bash
+cmake --build build --target async_client
+./bin/async_client -i ./bin/test.conf
+ASYNC_MODE=callback ASYNC_CONCURRENCY=4 ASYNC_REQUESTS=20 ./bin/async_client -i ./bin/test.conf
+```
+
+### 全量冒烟（与原文档一致）
+
+```bash
+cmake --build build && ./bin/server -i ./bin/test.conf
+# 另开终端：
+./bin/client -i ./bin/test.conf
+./bin/timeout_client -i ./bin/test.conf
+./bin/heartbeat_client -i ./bin/test.conf
+```

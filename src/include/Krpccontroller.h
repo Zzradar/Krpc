@@ -16,14 +16,19 @@ void SetFailed(const std::string &reason);
  void SetTimeoutMs(int timeout_ms);
  int TimeoutMs() const;
 
+ /** Optional correlation id propagated in RpcHeader.trace_id (for logs / tracing). */
+ void SetTraceId(const std::string &trace_id);
+ const std::string &TraceId() const;
+
 //目前未实现具体的功能
 void StartCancel();
 bool IsCanceled() const;
 void NotifyOnCancel(google::protobuf::Closure* callback);
-private:
+ private:
  bool m_failed;//RPC方法执行过程中的状态
  std::string m_errText;//RPC方法执行过程中的错误信息
  int m_timeout_ms;//本次RPC调用的超时时间
+ std::string m_trace_id;
 };
 
 #endif
